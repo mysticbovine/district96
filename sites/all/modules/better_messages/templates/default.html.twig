@@ -1,0 +1,41 @@
+{#
+
+/**
+ * @file
+ * Template file for better_messages module.
+ */
+#}
+<div id="better-messages-default">
+    <div id="messages-inner">
+	{%block content%}
+	    <table><tbody>
+		    <tr><td class="tl"></td><td class="b"></td><td class="tr"></td></tr>
+		    <tr><td class="b"></td>
+			<td class="body">
+			    <div class="content">
+			    {%for type, messages in  message_list%}
+				<h2 class="messages-label {{type}}">{{ type|capitalize }}</h2>
+				<div class="messages {{type}}">
+				    {% if messages|length > 0 %}
+					<ul>
+				{%for message in  messages%}
+
+						<li class="message-item {%if loop.first%} first {%elseif loop.last%} last {%endif%}">{{message}}</li>
+
+			    {%endfor%}
+
+					    </ul>
+					{%endif%}
+					</div>
+			    {%endfor%}
+
+				    </div>
+				    <div class="footer"><span class="message-timer"></span><a class="message-close" href="#"></a></div>
+				</td>
+				<td class="b"></td>
+			    </tr>
+			    <tr><td class="bl"></td><td class="b"></td><td class="br"></td></tr>
+			</tbody></table>
+	    {%endblock%}
+		</div>
+	    </div>

@@ -1,0 +1,22 @@
+<?php
+
+/**
+ * @file
+ * Module file.
+ */
+
+/**
+ * Implements hook_theme().
+ */
+function entity_bs_accordion_tab_formatter_theme() {
+  return [
+    'entity_bs_tab_formatter' => [
+      'variables' => ['tabs' => NULL, 'attributes' => NULL],
+      'template' => 'entity-bs-tab-formatter',
+    ],
+    'entity_bs_accordion_formatter' => [
+      'variables' => ['tabs' => NULL, 'attributes' => NULL],
+      'template' => 'entity-bs-accordion-formatter',
+    ],
+  ];
+}

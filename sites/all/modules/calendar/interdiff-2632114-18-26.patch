@@ -1,0 +1,63 @@
+diff --git a/calendar/calendar.module b/calendar/calendar.module
+index 3697935..713fd95 100644
+--- a/calendar/calendar.module
++++ b/calendar/calendar.module
+@@ -260,3 +260,58 @@ function calendar_granularity_path(ViewExecutable &$view, $granularity) {
+   }
+   return $paths[$view->id()][$granularity];
+ }
++
++/**
++ * Implements hook_views_query_alter().
++ */
++function calendar_views_query_alter($view, $query) {
++
++  // If timezone offset is enabled, alter query to accordingly.
++  if (\Drupal::config('calendar.settings')->get('timezone_offset')) {
++
++    // Loop through statements in this query.
++    foreach ($query->where as $statement_key => $statement) {
++
++      // If view style plugin is calendar...
++      if ($view->style_plugin->getPluginId() == 'calendar') {
++
++        // Loop through conditions within this statement.
++        foreach ($statement['conditions'] as $condition_key => $condition) {
++
++          // If this condition is a formula...
++          if ($condition['operator'] == 'formula') {
++
++            // If this condition formula uses the date format function...
++            if (strpos($condition['field'], 'DATE_FORMAT') !== false) {
++
++              // Retrieve this condition's current field value for modification.
++              $condition_field = $query->where[$statement_key]['conditions'][$condition_key]['field'];
++
++              // Split condition field into parts.
++              $condition_field_parts = array_map('trim', explode('=', $condition_field));
++
++              // If the split returned 2 parts, as expected...
++              if (count($condition_field_parts) == 2) {
++
++                // Modify query to include records from the next month and year.
++                $condition_field_parts[1] = '(' . $condition_field_parts[1] . ',' . $condition_field_parts[1] . ' + 1, ' . $condition_field_parts[1] . ' + 89)';
++                $condition_field = implode(' IN ', $condition_field_parts);
++
++              }
++
++              // Substitute the original field value for the modified one.
++              $query->where[$statement_key]['conditions'][$condition_key]['field'] = $condition_field;
++
++            }
++
++          }
++
++        }
++
++      }
++
++    }
++
++  }
++
++}

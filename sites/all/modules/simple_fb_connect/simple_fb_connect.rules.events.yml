@@ -1,0 +1,14 @@
+simple_fb_connect.user_login:
+  label: 'User has logged in via Facebook login'
+  category: 'User'
+  context:
+    account:
+      type: 'entity:user'
+      label: 'Logged in user'
+simple_fb_connect.user_created:
+  label: 'User has been created via Facebook login'
+  category: 'User'
+  context:
+    account:
+      type: 'entity:user'
+      label: 'Logged in user'

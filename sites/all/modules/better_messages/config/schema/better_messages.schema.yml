@@ -1,0 +1,66 @@
+better_messages.settings.*:
+  type: mapping
+  label: 'Better Messages settings'
+  mapping:
+    position:
+      type: string
+      label: 'Position'
+    vertical:
+      type: integer
+      label: 'Vertical'
+    horizontal:
+      type: integer
+      label: 'Horizontal'
+    fixed:
+      type: integer
+      label: 'Fixed'
+    width:
+      type: string
+      label: 'Width'
+    autoclose:
+      type: integer
+      label: 'autoclose'
+    opendelay:
+      type: float
+      label: 'Opendelay'
+    disable_autoclose:
+      type: integer
+      label: 'Disable autoclose'
+    show_countdown:
+      type: integer
+      label: 'Show countdown'
+    hover_autoclose:
+      type: integer
+      label: 'Hover autoclose'
+    popin:
+      effect:
+        type: string
+        label: 'Effect'
+      duration:
+        type: string
+        label: 'Duration'
+    popout:
+      effect:
+        type: string
+        label: 'Effect'
+      duration:
+        type: string
+        label: 'Duration'
+    jquery_ui:
+      draggable:
+        type: integer
+        label: 'Draggable'
+      resizable :
+        type: integer
+        label: 'Resizable'
+    extra:
+      admin:
+        type: integer
+        label: 'Admin show'
+      pages:
+        type: string
+        label: 'Pages'
+      visibility:
+        type: integer
+        label: 'Visibility'
+   

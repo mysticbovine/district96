@@ -1,0 +1,12 @@
+name: 'Form Placeholder'
+description: 'Use field labels as placeholders for all elements in chosen form.'
+package: 'User interface'
+# core: 8.x
+type: module
+configure: form_placeholder.admin_settings
+
+# Information added by Drupal.org packaging script on 2018-02-22
+version: '8.x-1.0'
+core: '8.x'
+project: 'form_placeholder'
+datestamp: 1519312388
