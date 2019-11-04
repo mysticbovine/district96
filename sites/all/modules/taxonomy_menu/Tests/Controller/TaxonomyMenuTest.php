@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains Drupal\taxonomy_menu\Tests\TaxonomyMenu.
- */
-
 namespace Drupal\taxonomy_menu\Tests;
 
 use Drupal\simpletest\WebTestBase;
@@ -13,15 +8,16 @@ use Drupal\simpletest\WebTestBase;
  * Provides automated tests for the taxonomy_menu module.
  */
 class TaxonomyMenuTest extends WebTestBase {
+
   /**
    * {@inheritdoc}
    */
   public static function getInfo() {
-    return array(
+    return [
       'name' => "taxonomy_menu TaxonomyMenu's controller functionality",
       'description' => 'Test Unit for module taxonomy_menu and controller TaxonomyMenu.',
       'group' => 'Other',
-    );
+    ];
   }
 
   /**

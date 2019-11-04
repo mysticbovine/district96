@@ -5,9 +5,11 @@ package: Views
 # core: 8.x
 dependencies:
   - drupal:views
+libraries:
+  - views_bootstrap/components
 
-# Information added by Drupal.org packaging script on 2017-10-04
-version: '8.x-3.0'
+# Information added by Drupal.org packaging script on 2018-09-19
+version: '8.x-3.1'
 core: '8.x'
 project: 'views_bootstrap'
-datestamp: 1507098247
+datestamp: 1537360698

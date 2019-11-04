@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\taxonomy_menu\Tests\KeyService.
- */
-
 namespace Drupal\taxonomy_menu\Tests;
 
 use Drupal\simpletest\WebTestBase;
@@ -16,7 +11,7 @@ use Drupal\simpletest\WebTestBase;
  */
 class TaxonomyMenuOperations extends WebTestBase {
 
-  public static $modules = array('taxonomy_menu', 'system', 'menu_ui', 'taxonomy', 'dblog');
+  public static $modules = ['taxonomy_menu', 'system', 'menu_ui', 'taxonomy', 'dblog'];
 
   /**
    * Set up for all tests.
@@ -25,7 +20,7 @@ class TaxonomyMenuOperations extends WebTestBase {
     parent::setUp();
 
     // Create user with permission to create policy.
-    $user1 = $this->drupalCreateUser(array('administer site configuration', 'administer taxonomy'));
+    $user1 = $this->drupalCreateUser(['administer site configuration', 'administer taxonomy']);
     $this->drupalLogin($user1);
 
     // Create a testing taxonomy vocabulary.

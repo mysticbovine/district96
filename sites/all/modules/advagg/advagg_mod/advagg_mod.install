@@ -20,6 +20,15 @@ function advagg_mod_update_8201() {
 }
 
 /**
+ * Remove orphaned configuration option for google analytics.
+ */
+function advagg_mod_update_8301() {
+  $config = \Drupal::configFactory()->getEditable('advagg_mod.settings');
+  $config->clear('ga_inline_to_file');
+  $config->save();
+}
+
+/**
  * Implements hook_install().
  *
  * Clear caches.

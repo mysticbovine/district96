@@ -13,6 +13,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\State\StateInterface;
 use Drupal\Core\Url;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\Component\Datetime\TimeInterface;
 
 /**
  * Configure advagg settings for this site.
@@ -48,6 +49,13 @@ class SettingsForm extends ConfigFormBase {
   protected $cache;
 
   /**
+   * Obtaining system time.
+   *
+   * @var \Drupal\Component\Datetime\TimeInterface
+   */
+  protected $time;
+
+  /**
    * Constructs a SettingsForm object.
    *
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
@@ -60,13 +68,16 @@ class SettingsForm extends ConfigFormBase {
    *   The module handler service.
    * @param \Drupal\Core\Cache\CacheBackendInterface $cache
    *   The advagg cache.
+   * @param \Drupal\Component\Datetime\TimeInterface $time
+   *   Obtaining system time.
    */
-  public function __construct(ConfigFactoryInterface $config_factory, DateFormatterInterface $date_formatter, StateInterface $state, ModuleHandlerInterface $module_handler, CacheBackendInterface $cache) {
+  public function __construct(ConfigFactoryInterface $config_factory, DateFormatterInterface $date_formatter, StateInterface $state, ModuleHandlerInterface $module_handler, CacheBackendInterface $cache, TimeInterface $time) {
     parent::__construct($config_factory);
     $this->dateFormatter = $date_formatter;
     $this->state = $state;
     $this->moduleHandler = $module_handler;
     $this->cache = $cache;
+    $this->time = $time;
   }
 
   /**
@@ -78,7 +89,8 @@ class SettingsForm extends ConfigFormBase {
       $container->get('date.formatter'),
       $container->get('state'),
       $container->get('module_handler'),
-      $container->get('cache.advagg')
+      $container->get('cache.advagg'),
+      $container->get('datetime.time')
     );
   }
 
@@ -103,42 +115,42 @@ class SettingsForm extends ConfigFormBase {
     $config = $this->config('advagg.settings');
     $form['global'] = [
       '#type' => 'fieldset',
-      '#title' => t('Global Options'),
+      '#title' => $this->t('Global Options'),
     ];
     $form['global']['enabled'] = [
       '#type' => 'checkbox',
-      '#title' => t('Enable advanced aggregation'),
+      '#title' => $this->t('Enable advanced aggregation'),
       '#default_value' => $config->get('enabled'),
-      '#description' => t('Uncheck this box to temporarily disable AdvAgg functionality.'),
+      '#description' => $this->t('Uncheck this box to temporarily disable AdvAgg functionality.'),
     ];
     $form['global']['dns_prefetch'] = [
       '#type' => 'checkbox',
-      '#title' => t('Use DNS Prefetch for external CSS/JS.'),
+      '#title' => $this->t('Use DNS Prefetch for external CSS/JS.'),
       '#default_value' => $config->get('dns_prefetch'),
-      '#description' => t('Start the DNS lookup for external CSS and JavaScript files as soon as possible.'),
+      '#description' => $this->t('Start the DNS lookup for external CSS and JavaScript files as soon as possible.'),
     ];
     $form['global']['server_config'] = [
       '#type' => 'fieldset',
-      '#title' => t('Server Config'),
+      '#title' => $this->t('Server Config'),
       'immutable_group' => [
         'title' => [
           '#type' => 'html_tag',
           '#tag' => 'strong',
-          '#value' => t('Cache-Control: Immutable'),
+          '#value' => $this->t('Cache-Control: Immutable'),
         ],
         'information' => [
           '#type' => 'html_tag',
           '#tag' => 'p',
-          '#value' => t('Your server can send <a href="@url1">Cache-Control: immutable</a> header for all optimized files. This should improve performance for some users. Current <a href="@url2">browser support</a>', [
+          '#value' => $this->t('Your server can send <a href="@url1">Cache-Control: immutable</a> header for all optimized files. This should improve performance for some users. Current <a href="@url2">browser support</a>', [
             '@url1' => 'http://bitsup.blogspot.de/2016/05/cache-control-immutable.html',
             '@url2' => 'https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control#Browser_compatibility',
           ]),
         ],
         'immutable' => [
           '#type' => 'checkbox',
-          '#title' => t('Include Cache-Control: immutable in generated .htaccess files.'),
+          '#title' => $this->t('Include Cache-Control: immutable in generated .htaccess files.'),
           '#default_value' => $config->get('immutable'),
-          '#description' => t('With the Apache server, AdvAgg can generate config to send the header for all optimized files.'),
+          '#description' => $this->t('With the Apache server, AdvAgg can generate config to send the header for all optimized files.'),
         ],
       ],
     ];
@@ -147,25 +159,25 @@ class SettingsForm extends ConfigFormBase {
       $form['global']['server_config']['immutable_group']['nginx'] = [
         '#type' => 'html_tag',
         '#tag' => 'p',
-        '#value' => t("With Nginx, AdvAgg can't set the headers for optimized files in a performant manner. However, you can easily do so in your server config. See the <a href='@url'>manual for instructions</a>.", [
+        '#value' => $this->t("With Nginx, AdvAgg can't set the headers for optimized files in a performant manner. However, you can easily do so in your server config. See the <a href='@url'>manual for instructions</a>.", [
           '@url' => 'https://www.drupal.org/docs/8/modules/advanced-cssjs-aggregation/advanced-aggregates#server-settings',
         ]),
       ];
     }
 
     $options = [
-      0 => t('Development'),
-      1 => t('Low'),
-      2 => t('Normal'),
-      3 => t('High'),
+      0 => $this->t('Development'),
+      1 => $this->t('Low'),
+      2 => $this->t('Normal'),
+      3 => $this->t('High'),
     ];
 
     $form['global']['cache_level'] = [
       '#type' => 'radios',
-      '#title' => t('AdvAgg Cache Settings'),
+      '#title' => $this->t('AdvAgg Cache Settings'),
       '#default_value' => $config->get('cache_level'),
       '#options' => $options,
-      '#description' => t("No performance data yet but most use cases will probably want to use the Normal cache mode.", [
+      '#description' => $this->t("No performance data yet but most use cases will probably want to use the Normal cache mode.", [
         '@information' => Url::fromRoute('advagg.info')->toString(),
       ]),
     ];
@@ -183,37 +195,37 @@ class SettingsForm extends ConfigFormBase {
       '#type' => 'details',
       '#open' => TRUE,
       '#title' => $this->t('Compression Options'),
-      '#description' => t('Compressed files will automatically be served by the Apache server'),
+      '#description' => $this->t('Compressed files will automatically be served by the Apache server'),
     ];
     if (stripos($_SERVER['SERVER_SOFTWARE'], 'nginx') !== FALSE) {
-      $form['compression']['#description'] = t("AdvAgg can't configure your Nginx server to automatically serve compressed assets. See the <a href='@url'>AdvAgg manual</a> for instructions on manually doing so.", [
+      $form['compression']['#description'] = $this->t("AdvAgg can't configure your Nginx server to automatically serve compressed assets. See the <a href='@url'>AdvAgg manual</a> for instructions on manually doing so.", [
         '@url' => 'https://www.drupal.org/docs/8/modules/advanced-cssjs-aggregation/advanced-aggregates#server-settings',
       ]);
     }
     $form['compression']['css_gzip'] = [
       '#type' => 'checkbox',
-      '#title' => t('Gzip CSS assets'),
+      '#title' => $this->t('Gzip CSS assets'),
       '#default_value' => $this->config('system.performance')->get('css.gzip'),
-      '#description' => t('This should be enabled unless you are experiencing corrupted compressed asset files.'),
+      '#description' => $this->t('This should be enabled unless you are experiencing corrupted compressed asset files.'),
     ];
     $form['compression']['js_gzip'] = [
       '#type' => 'checkbox',
-      '#title' => t('Gzip JavaScript assets'),
+      '#title' => $this->t('Gzip JavaScript assets'),
       '#default_value' => $this->config('system.performance')->get('js.gzip'),
-      '#description' => t('This should be enabled unless you are experiencing corrupted compressed asset files.'),
+      '#description' => $this->t('This should be enabled unless you are experiencing corrupted compressed asset files.'),
     ];
     $brotli_available = function_exists('brotli_compress');
     $brotli_message = ($brotli_available) ? $this->t("Select to compress this asset type with brotli compression. See <a href='https://github.com/kjdev/php-ext-brotli'>PHP Brotli</a> page for more information.") : $this->t("Brotli compression is not available on your server. See <a href='https://github.com/kjdev/php-ext-brotli'>PHP Brotli</a> page for more information.");
     $form['compression']['css_brotli'] = [
       '#type' => 'checkbox',
-      '#title' => t('Brotli compress CSS assets'),
+      '#title' => $this->t('Brotli compress CSS assets'),
       '#default_value' => $config->get('css.brotli'),
       '#description' => $brotli_message,
       '#disabled' => !$brotli_available,
     ];
     $form['compression']['js_brotli'] = [
       '#type' => 'checkbox',
-      '#title' => t('Brotli compress JavaScript assets'),
+      '#title' => $this->t('Brotli compress JavaScript assets'),
       '#default_value' => $config->get('js.brotli'),
       '#description' => $brotli_message,
       '#disabled' => !$brotli_available,
@@ -221,28 +233,28 @@ class SettingsForm extends ConfigFormBase {
 
     $form['css'] = [
       '#type' => 'details',
-      '#title' => t('CSS Options'),
+      '#title' => $this->t('CSS Options'),
       '#open' => TRUE,
     ];
     $form['css']['css_combine_media'] = [
       '#type' => 'checkbox',
-      '#title' => t('Combine CSS files by using media queries'),
+      '#title' => $this->t('Combine CSS files by using media queries'),
       '#default_value' => $config->get('css.combine_media'),
-      '#description' => t('Will combine more CSS files together because different CSS media types can be used in the same file by using media queries. Use cores grouping logic needs to be unchecked in order for this to work. Also noted is that due to an issue with IE9, compatibility mode is forced off if this is enabled.'),
+      '#description' => $this->t('Will combine more CSS files together because different CSS media types can be used in the same file by using media queries. Use cores grouping logic needs to be unchecked in order for this to work. Also noted is that due to an issue with IE9, compatibility mode is forced off if this is enabled.'),
     ];
     $form['css']['css_fix_type'] = [
       '#type' => 'checkbox',
-      '#title' => t('Fix improperly set type'),
+      '#title' => $this->t('Fix improperly set type'),
       '#default_value' => $config->get('css.fix_type'),
-      '#description' => t('If type is external but does not start with http, https, or // change it to be type file. If type is file but it starts with http, https, or // change type to be external. Note that if this is causing issues, odds are you have a double slash when there should be a single; see <a href="@link">this issue</a>', [
+      '#description' => $this->t('If type is external but does not start with http, https, or // change it to be type file. If type is file but it starts with http, https, or // change type to be external. Note that if this is causing issues, odds are you have a double slash when there should be a single; see <a href="@link">this issue</a>', [
         '@link' => 'https://www.drupal.org/node/2336217',
       ]),
     ];
     $form['css']['css_preserve_external'] = [
       '#type' => 'checkbox',
-      '#title' => t('Do not change external to file if on same host.'),
+      '#title' => $this->t('Do not change external to file if on same host.'),
       '#default_value' => $config->get('css.preserve_external'),
-      '#description' => t('If a CSS file is set as external and is on the same hosts do not convert to file.'),
+      '#description' => $this->t('If a CSS file is set as external and is on the same hosts do not convert to file.'),
       '#states' => [
         'disabled' => [
           '#edit-css-fix-type' => ['checked' => FALSE],
@@ -252,22 +264,22 @@ class SettingsForm extends ConfigFormBase {
 
     $form['js'] = [
       '#type' => 'details',
-      '#title' => t('JS Options'),
+      '#title' => $this->t('JS Options'),
       '#open' => TRUE,
     ];
     $form['js']['js_fix_type'] = [
       '#type' => 'checkbox',
-      '#title' => t('Fix improperly set type'),
+      '#title' => $this->t('Fix improperly set type'),
       '#default_value' => $config->get('js.fix_type'),
-      '#description' => t('If type is external but does not start with http, https, or // change it to be type file. If type is file but it starts with http, https, or // change type to be external. Note that if this is causing issues, odds are you have a double slash when there should be a single; see <a href="@link">this issue</a>', [
+      '#description' => $this->t('If type is external but does not start with http, https, or // change it to be type file. If type is file but it starts with http, https, or // change type to be external. Note that if this is causing issues, odds are you have a double slash when there should be a single; see <a href="@link">this issue</a>', [
         '@link' => 'https://www.drupal.org/node/2336217',
       ]),
     ];
     $form['js']['js_preserve_external'] = [
       '#type' => 'checkbox',
-      '#title' => t('Do not change external to file if on same host.'),
+      '#title' => $this->t('Do not change external to file if on same host.'),
       '#default_value' => $config->get('js.preserve_external'),
-      '#description' => t('If a JS file is set as external and is on the same hosts do not convert to file.'),
+      '#description' => $this->t('If a JS file is set as external and is on the same hosts do not convert to file.'),
       '#states' => [
         'disabled' => [
           '#edit-js-fix-type' => ['checked' => FALSE],
@@ -277,51 +289,50 @@ class SettingsForm extends ConfigFormBase {
 
     $form['cron'] = [
       '#type' => 'details',
-      '#title' => t('Cron Options'),
-      '#description' => t('Unless you have a good reason to adjust these values you should leave them alone.'),
+      '#title' => $this->t('Cron Options'),
+      '#description' => $this->t('Unless you have a good reason to adjust these values you should leave them alone.'),
     ];
 
     $short_times = [
-      900 => t('15 minutes'),
-      1800 => t('30 minutes'),
-      2700 => t('45 minutes'),
-      3600 => t('1 hour'),
-      7200 => t('2 hours'),
-      14400 => t('4 hours'),
-      21600 => t('6 hours'),
-      43200 => t('12 hours'),
-      64800 => t('18 hours'),
-      86400 => t('1 day'),
-      172800 => t('2 days'),
+      900 => $this->t('15 minutes'),
+      1800 => $this->t('30 minutes'),
+      2700 => $this->t('45 minutes'),
+      3600 => $this->t('1 hour'),
+      7200 => $this->t('2 hours'),
+      14400 => $this->t('4 hours'),
+      21600 => $this->t('6 hours'),
+      43200 => $this->t('12 hours'),
+      64800 => $this->t('18 hours'),
+      86400 => $this->t('1 day'),
+      172800 => $this->t('2 days'),
     ];
 
     $long_times = [
-      172800 => t('2 days'),
-      259200 => t('3 days'),
-      345600 => t('4 days'),
-      432000 => t('5 days'),
-      518400 => t('6 days'),
-      604800 => t('1 week'),
-      1209600 => t('2 week'),
-      1814400 => t('3 week'),
-      2592000 => t('1 month'),
-      3628800 => t('6 weeks'),
-      4838400 => t('2 months'),
+      172800 => $this->t('2 days'),
+      259200 => $this->t('3 days'),
+      345600 => $this->t('4 days'),
+      432000 => $this->t('5 days'),
+      518400 => $this->t('6 days'),
+      604800 => $this->t('1 week'),
+      1209600 => $this->t('2 week'),
+      1814400 => $this->t('3 week'),
+      2592000 => $this->t('1 month'),
+      3628800 => $this->t('6 weeks'),
+      4838400 => $this->t('2 months'),
     ];
     $last_ran = $this->state->get('advagg.cron_timestamp', NULL);
     if ($last_ran) {
-      // Todo update to TimeInterface->getRequestTime().
-      $last_ran = t('@time ago', ['@time' => $this->dateFormatter->formatInterval(REQUEST_TIME - $last_ran)]);
+      $last_ran = $this->t('@time ago', ['@time' => $this->dateFormatter->formatInterval($this->time->getRequestTime() - $last_ran)]);
     }
     else {
-      $last_ran = t('never');
+      $last_ran = $this->t('never');
     }
     $form['cron']['cron_frequency'] = [
       '#type' => 'select',
       '#options' => $short_times,
       '#title' => 'Minimum amount of time between advagg_cron() runs.',
       '#default_value' => $config->get('cron_frequency'),
-      '#description' => t('The default value for this is %value. The last time advagg_cron was ran is %time.', [
+      '#description' => $this->t('The default value for this is %value. The last time advagg_cron was ran is %time.', [
         '%value' => $this->dateFormatter->formatInterval($config->get('cron_frequency')),
         '%time' => $last_ran,
       ]),
@@ -332,21 +343,21 @@ class SettingsForm extends ConfigFormBase {
       '#options' => $long_times,
       '#title' => 'Delete aggregates modified more than a set time ago.',
       '#default_value' => $this->config('system.performance')->get('stale_file_threshold'),
-      '#description' => t('The default value for this is %value.', [
+      '#description' => $this->t('The default value for this is %value.', [
         '%value' => $this->dateFormatter->formatInterval($this->config('system.performance')->getOriginal('stale_file_threshold')),
       ]),
     ];
 
     $form['obscure'] = [
       '#type' => 'details',
-      '#title' => t('Obscure Options'),
-      '#description' => t('Some of the more obscure AdvAgg settings. Odds are you do not need to change anything in here.'),
+      '#title' => $this->t('Obscure Options'),
+      '#description' => $this->t('Some of the more obscure AdvAgg settings. Odds are you do not need to change anything in here.'),
     ];
     $form['obscure']['path_convert_absolute_to_protocol_relative'] = [
       '#type' => 'checkbox',
-      '#title' => t('Convert absolute paths to be protocol relative paths.'),
+      '#title' => $this->t('Convert absolute paths to be protocol relative paths.'),
       '#default_value' => $config->get('path.convert.absolute_to_protocol_relative'),
-      '#description' => t('If the src to a CSS/JS file points starts with http:// or https://, convert it to use a protocol relative path //. Will also convert url() references inside of css files.'),
+      '#description' => $this->t('If the src to a CSS/JS file points starts with http:// or https://, convert it to use a protocol relative path //. Will also convert url() references inside of css files.'),
       '#states' => [
         'enabled' => [
           '#edit-path-convert-force-https' => ['checked' => FALSE],
@@ -356,9 +367,9 @@ class SettingsForm extends ConfigFormBase {
     ];
     $form['obscure']['path_convert_absolute'] = [
       '#type' => 'checkbox',
-      '#title' => t('Convert relative paths to be absolute paths.'),
+      '#title' => $this->t('Convert relative paths to be absolute paths.'),
       '#default_value' => $config->get('path.convert.absolute'),
-      '#description' => t('If the src to a CSS/JS file points starts with a relative path / convert to absolute.'),
+      '#description' => $this->t('If the src to a CSS/JS file points starts with a relative path / convert to absolute.'),
       '#states' => [
         'enabled' => [
           '#edit-path-convert-force-https' => ['checked' => FALSE],
@@ -368,9 +379,9 @@ class SettingsForm extends ConfigFormBase {
     ];
     $form['obscure']['path_convert_force_https'] = [
       '#type' => 'checkbox',
-      '#title' => t('Convert http:// to https://.'),
+      '#title' => $this->t('Convert http:// to https://.'),
       '#default_value' => $config->get('path.convert.force_https'),
-      '#description' => t('If the src to a CSS/JS file starts with http:// convert it https://. Will also convert url() references inside of css files.'),
+      '#description' => $this->t('If the src to a CSS/JS file starts with http:// convert it https://. Will also convert url() references inside of css files.'),
       '#states' => [
         'enabled' => [
           '#edit-path-convert-absolute-to-protocol-relative' => ['checked' => FALSE],
@@ -380,9 +391,9 @@ class SettingsForm extends ConfigFormBase {
     ];
     $form['obscure']['symlinks'] = [
       '#type' => 'checkbox',
-      '#title' => t('Use "Options +FollowSymLinks"'),
+      '#title' => $this->t('Use "Options +FollowSymLinks"'),
       '#default_value' => $config->get('symlinks'),
-      '#description' => t('Some shared hosts require "<code>Options +FollowSymLinks</code>" in the .htaccess for asset directories.'),
+      '#description' => $this->t('Some shared hosts require "<code>Options +FollowSymLinks</code>" in the .htaccess for asset directories.'),
       '#states' => [
         'enabled' => [
           '#edit-symlinksifownermatch' => ['checked' => FALSE],
@@ -391,9 +402,9 @@ class SettingsForm extends ConfigFormBase {
     ];
     $form['obscure']['symlinksifownermatch'] = [
       '#type' => 'checkbox',
-      '#title' => t('Use "Options +SymLinksIfOwnerMatch"'),
+      '#title' => $this->t('Use "Options +SymLinksIfOwnerMatch"'),
       '#default_value' => $config->get('symlinksifownermatch'),
-      '#description' => t('Some shared hosts require "<code>Options +SymLinksIfOwnerMatch</code>" in the .htaccess for asset directories.'),
+      '#description' => $this->t('Some shared hosts require "<code>Options +SymLinksIfOwnerMatch</code>" in the .htaccess for asset directories.'),
       '#states' => [
         'enabled' => [
           '#edit-symlinks' => ['checked' => FALSE],

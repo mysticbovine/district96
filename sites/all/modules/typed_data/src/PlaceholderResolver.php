@@ -10,6 +10,8 @@ use Drupal\typed_data\Exception\InvalidArgumentException;
 
 /**
  * Resolver for placeholder tokens based upon typed data.
+ *
+ * @see \Drupal\Core\Utility\Token
  */
 class PlaceholderResolver implements PlaceholderResolverInterface {
 
@@ -67,8 +69,8 @@ class PlaceholderResolver implements PlaceholderResolverInterface {
           if ($filters) {
             $value = $fetched_data->getValue();
             $definition = $fetched_data->getDataDefinition();
-            foreach ($filters as $data) {
-              list($filter_id, $arguments) = $data;
+            foreach ($filters as $filter_data) {
+              list($filter_id, $arguments) = $filter_data;
               $filter = $this->dataFilterManager->createInstance($filter_id);
               if (!$filter->allowsNullValues() && !isset($value)) {
                 throw new MissingDataException("There is no data value for filter '$filter_id' to work on.");
@@ -109,7 +111,7 @@ class PlaceholderResolver implements PlaceholderResolverInterface {
    * @param string $main_part
    *   The main placeholder part.
    * @param string $placeholder
-   *   The full placeholer string.
+   *   The full placeholder string.
    *
    * @return array[]
    *   An numerically indexed arrays containing:
@@ -176,27 +178,33 @@ class PlaceholderResolver implements PlaceholderResolverInterface {
   public function scan($text) {
     // Matches tokens with the following pattern: {{ $name.$property_path }}
     // $name and $property_path may not contain {{ }} characters.
-    // $name may not contain : or whitespace characters, but $property_path may.
-    preg_match_all('/
-      \{\{             # {{ - pattern start
-      ([^\{\}.|]+)      # match $type not containing whitespace . { or }
-      ((.|\|)          # . - separator
-      ([^\{\}]+))?     # match $name not containing { or }
-      \}\}             # }} - pattern end
+    // $name may not contain . or whitespace characters, but $property_path may.
+    $number_of_tokens = preg_match_all('/
+      \{\{\s*            # {{ - pattern start
+      ([^\s\{\}.|]*)     # $match[1] $name not containing whitespace . | { or }
+      (                  # $match[2] begins
+        (
+          (\.|\s*\|\s*)  # . with no spaces on either side, or | as separator
+          [^\s\{\}.|]    # after separator we need at least one character
+        )
+        ([^\{\}]*)       # but then almost anything goes up until pattern end
+      )?                 # $match[2] is optional
+      \s*\}\}            # }} - pattern end
       /x', $text, $matches);
 
     $names = $matches[1];
     $tokens = $matches[2];
 
     // Iterate through the matches, building an associative array containing
-    // $tokens grouped by $types, pointing to the version of the token found in
+    // $tokens grouped by $name, pointing to the version of the token found in
     // the source text. For example,
-    // $results['node']['title'] = '[node.title]';.
+    // $results['node']['title'] = '{{node.title}}';
+    // where '{{node.title}}' is found in the source text.
     $results = [];
-    for ($i = 0; $i < count($tokens); $i++) {
+    for ($i = 0; $i < $number_of_tokens; $i++) {
       // Remove leading whitespaces and ".", but not the | denoting a filter.
       $main_part = trim($tokens[$i], ". \t\n\r\0\x0B");
-      $results[trim($names[$i])][$main_part] = $matches[0][$i];
+      $results[$names[$i]][$main_part] = $matches[0][$i];
     }
 
     return $results;

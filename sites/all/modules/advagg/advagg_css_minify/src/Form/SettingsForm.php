@@ -68,30 +68,30 @@ class SettingsForm extends ConfigFormBase {
     $form = [];
     if ($this->config('advagg.settings')->get('cache_level') === 0) {
       $form['advagg_devel_msg'] = [
-        '#markup' => '<p>' . t('The settings below will not have any effect because AdvAgg is currently in <a href="@devel">development mode</a>. Once the cache settings have been set to a non-development level, CSS minification will take place.', [
+        '#markup' => '<p>' . $this->t('The settings below will not have any effect because AdvAgg is currently in <a href="@devel">development mode</a>. Once the cache settings have been set to a non-development level, CSS minification will take place.', [
           '@devel' => Url::fromRoute('advagg.settings', [], [
             'fragment' => 'edit-advagg-cache-level',
-          ]),
+          ])->toString(),
         ]) . '</p>',
       ];
     }
 
     $options = [
-      0 => t('Disabled'),
-      1 => t('Core'),
-      2 => t('YUI Compressor'),
+      0 => $this->t('Disabled'),
+      1 => $this->t('Core'),
+      2 => $this->t('YUI Compressor'),
     ];
     $form['minifier'] = [
       '#type' => 'radios',
-      '#title' => t('Minification: Select a minifier'),
+      '#title' => $this->t('Minification: Select a minifier'),
       '#default_value' => $config->get('minifier'),
       '#options' => $options,
     ];
     $form['add_license'] = [
       '#type' => 'checkbox',
-      '#title' => t('Add licensing comments'),
+      '#title' => $this->t('Add licensing comments'),
       '#default_value' => $config->get('add_license'),
-      '#description' => t("If unchecked, the Advanced Aggregation module's licensing comments
+      '#description' => $this->t("If unchecked, the Advanced Aggregation module's licensing comments
       will be omitted from the aggregated files. Omitting the comments will produce somewhat better scores in
       some automated security scans but otherwise should not affect your site. These are included by default in order to better follow the spirit of the GPL by providing the source for javascript files."),
     ];

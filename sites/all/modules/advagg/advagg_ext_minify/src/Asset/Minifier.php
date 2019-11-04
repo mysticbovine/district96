@@ -13,6 +13,13 @@ use Psr\Log\LoggerInterface;
 class Minifier extends SingleAssetOptimizerBase {
 
   /**
+   * Gets the app root.
+   *
+   * @var string
+   */
+  protected $root;
+
+  /**
    * Temporary file path to read data from in the command line.
    *
    * @var string
@@ -27,7 +34,7 @@ class Minifier extends SingleAssetOptimizerBase {
   protected $out;
 
   /**
-   * File System Service
+   * File System Service.
    *
    * @var \Drupal\Core\File\FileSystemInterface
    */
@@ -36,6 +43,8 @@ class Minifier extends SingleAssetOptimizerBase {
   /**
    * Construct the optimizer instance.
    *
+   * @param string $root
+   *   Gets the app root.
    * @param \Psr\Log\LoggerInterface $logger
    *   The logger service.
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
@@ -43,12 +52,13 @@ class Minifier extends SingleAssetOptimizerBase {
    * @param \Drupal\Core\File\FileSystemInterface $file
    *   The filesystem service.
    */
-  public function __construct(LoggerInterface $logger, ConfigFactoryInterface $config_factory, FileSystemInterface $file) {
+  public function __construct(string $root, LoggerInterface $logger, ConfigFactoryInterface $config_factory, FileSystemInterface $file) {
     parent::__construct($logger);
     $this->config = $config_factory->get('advagg_ext_minify.settings');
     $this->file = $file;
     $this->in = $file->realpath($file->tempnam('public://js/optimized', 'advagg_in'));
     $this->out = $file->realpath($file->tempnam('public://js/optimized', 'advagg_out'));
+    $this->root = $root;
   }
 
   /**
@@ -111,7 +121,7 @@ class Minifier extends SingleAssetOptimizerBase {
       '{%IN_URL_ENC%}',
       '{%OUT%}',
     ], [
-      \Drupal::root(),
+      $this->root,
       $this->in,
       urlencode(file_create_url($this->in)),
       escapeshellarg(realpath($this->out)),

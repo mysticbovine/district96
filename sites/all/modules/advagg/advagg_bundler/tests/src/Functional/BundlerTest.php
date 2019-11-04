@@ -39,7 +39,7 @@ class BundlerTest extends AdvaggFunctionalTestBase {
     // Requires: https://github.com/minkphp/Mink/pull/744
     // $session->responseContainsCount("<script", 8);
     // $session->responseContainsCount('rel="stylesheet"', 4);
-
+    //
     // Test config form function, enable cdn for jQueryUI, disable minification.
     $edit = [
       'active' => TRUE,
@@ -52,11 +52,12 @@ class BundlerTest extends AdvaggFunctionalTestBase {
     $session = $this->assertSession();
     $session->statusCodeEquals(200);
 
-    // The Drupal settings json is a script element but inline so AdvAgg ignores it.
+    // The Drupal settings json is a script element but inline so
+    // AdvAgg ignores it.
     // Requires: https://github.com/minkphp/Mink/pull/744
     // $session->responseContainsCount("<script", 11);
     // $session->responseContainsCount('rel="stylesheet"', 6);
-
+    //
     // Ensure that bundler works even if the number of non-preprocessed files
     // *exactly* match the selected maximum. See advagg_bundler_test.module.
     $edit['max_js'] = 1;

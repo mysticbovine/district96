@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\weight\Plugin\Field\FieldType\WeightItem.
- */
-
 namespace Drupal\weight\Plugin\Field\FieldType;
 
 use Drupal\Core\Field\FieldItemBase;
@@ -29,18 +24,18 @@ class WeightItem extends FieldItemBase {
    * {@inheritdoc}
    */
   public static function defaultStorageSettings() {
-    return array(
+    return [
       'unsigned' => FALSE,
-    ) + parent::defaultStorageSettings();
+    ] + parent::defaultStorageSettings();
   }
 
   /**
    * {@inheritdoc}
    */
   public static function defaultFieldSettings() {
-    $settings = array(
+    $settings = [
       'range' => 20,
-    ) + parent::defaultFieldSettings();
+    ] + parent::defaultFieldSettings();
 
     return $settings;
   }
@@ -62,15 +57,15 @@ class WeightItem extends FieldItemBase {
     $element = parent::fieldSettingsForm($form, $form_state);
     $range = $this->getSetting('range');
 
-    $element['range'] = array(
+    $element['range'] = [
       '#type' => 'textfield',
-      '#title' => t('Range'),
-      '#description' => t('The range of weights available to select. For
+      '#title' => $this->t('Range'),
+      '#description' => $this->t('The range of weights available to select. For
         example, a range of 20 will allow you to select a weight between -20
         and 20.'),
       '#default_value' => $range,
       '#size' => 5,
-    );
+    ];
 
     return $element;
   }
@@ -90,16 +85,16 @@ class WeightItem extends FieldItemBase {
    * {@inheritdoc}
    */
   public static function schema(FieldStorageDefinitionInterface $field_definition) {
-    return array(
-      'columns' => array(
-        'value' => array(
+    return [
+      'columns' => [
+        'value' => [
           'type' => 'int',
           'not null' => FALSE,
           'unsigned' => $field_definition->getSetting('unsigned'),
           'size' => $field_definition->getSetting('size'),
-        ),
-      ),
-    );
+        ],
+      ],
+    ];
   }
 
 }

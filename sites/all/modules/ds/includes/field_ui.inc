@@ -18,6 +18,8 @@ use Drupal\ds\Ds;
 use Drupal\ds\Plugin\DsField\DsFieldInterface;
 use Drupal\field\FieldConfigInterface;
 use Drupal\field_ui\FieldUI;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\Core\Link;
 
 /**
  * Adds the Display Suite fields and layouts to the form.
@@ -67,7 +69,7 @@ function ds_field_ui_fields_layouts(&$form, FormStateInterface $form_state) {
   ];
   $form['ds_destination'] = [
     '#type' => 'hidden',
-    '#value' => drupal_get_destination(),
+    '#value' => \Drupal::destination()->getAsArray(),
   ];
   $form['ds_entity_type'] = [
     '#type' => 'hidden',
@@ -106,7 +108,7 @@ function ds_field_ui_create_vertical_tabs(&$form) {
     $form['modes']['#weight'] = -10;
     if ($view_mode_admin_access) {
       $url = Url::fromRoute('field_ui.display_mode');
-      $form['modes']['view_modes_custom']['#description'] = \Drupal::l(t('Manage display modes'), $url);
+      $form['modes']['view_modes_custom']['#description'] = Link::fromTextAndUrl(t('Manage display modes'), $url)->toString();
     }
   }
 }
@@ -272,10 +274,10 @@ function ds_field_ui_row_region(array $row) {
  */
 function ds_field_ui_layouts_validate($form, FormStateInterface $form_state) {
   // Determine layout variables.
-  $layout = $form_state->getValue('layout');
+  $layout = $form_state->getValue('ds_layout');
   if ($layout === '_none') {
     $layout = '';
-    $form_state->setValue('layout', '');
+    $form_state->setValue('ds_layout', '');
   }
   $old_layout = $form_state->getValue('old_layout');
   $new_layout = ($layout != $old_layout) || empty($old_layout);
@@ -283,7 +285,7 @@ function ds_field_ui_layouts_validate($form, FormStateInterface $form_state) {
   // Only validate the layout settings if the layout hasn't changed.
   if (!$new_layout && !empty($layout)) {
     /* @var \Drupal\layout_plugin\Plugin\Layout\LayoutInterface $layout_plugin */
-    $layout_plugin = \Drupal::service('plugin.manager.core.layout')->createInstance($form_state->getValue('layout'), []);
+    $layout_plugin = \Drupal::service('plugin.manager.core.layout')->createInstance($form_state->getValue('ds_layout'), []);
     $layout_form = isset($form['layout_configuration']) ? $form['layout_configuration'] : [];
     foreach (Element::children($form) as $name) {
       if (!empty($form[$name]['#ds_layout_configuration'])) {
@@ -326,7 +328,7 @@ function ds_field_ui_layouts_save($form, FormStateInterface $form_state) {
   $view_mode = $display->getMode();
 
   // Determine layout variables.
-  $layout = $form_state->getValue('layout');
+  $layout = $form_state->getValue('ds_layout');
   $disable_css = $form_state->getValue('disable_css');
   $entity_classes = $form_state->getValue('entity_classes');
   if (empty($entity_classes)) {
@@ -367,8 +369,10 @@ function ds_field_ui_layouts_save($form, FormStateInterface $form_state) {
       $display->unsetThirdPartySetting('ds', 'fields');
 
       $fields = $form_state->getValue('fields');
-      foreach (array_keys($display->getComponents()) as $name) {
-        $fields[$name]['region'] = NULL;
+      if (!empty($fields)) {
+        foreach (array_keys($display->getComponents()) as $name) {
+          $fields[$name]['region'] = NULL;
+        }
       }
       $form_state->setValue('fields', $fields);
     }
@@ -610,7 +614,7 @@ function ds_field_ui_layout_clone($form, FormStateInterface $form_state) {
   $clone_display->save();
 
   // Show message.
-  drupal_set_message(t('The layout has been cloned.'));
+  \Drupal::messenger()->addMessage(t('The layout has been cloned.'));
 }
 
 /**
@@ -716,6 +720,9 @@ function _ds_field_ui_table_layouts($entity_type, $bundle, $view_mode, array &$f
   foreach ($ds_layouts as $key => $layout_definition) {
     // Create new layout option group.
     $optgroup = $layout_definition->getCategory() ?: t('Other');
+    if ($optgroup instanceof TranslatableMarkup) {
+      $optgroup = (string) $optgroup;
+    }
     if (!isset($layout_options[$optgroup])) {
       $layout_options[$optgroup] = [];
     }
@@ -750,13 +757,18 @@ function _ds_field_ui_table_layouts($entity_type, $bundle, $view_mode, array &$f
   $display = $entity_form->getEntity();
   if ($display->getThirdPartySetting('ds', 'layout')) {
     $layout_configuration = $display->getThirdPartySetting('ds', 'layout');
-    $layout = (array) $ds_layouts[$layout_configuration['id']];
-    $layout['layout'] = $layout_configuration['id'];
-    $layout['disable_css'] = $layout_configuration['disable_css'];
-    $layout['entity_classes'] = $layout_configuration['entity_classes'];
-    $layout['settings'] = $layout_configuration['settings'] ?: [];
-    $layout['regions'] = $display->getThirdPartySetting('ds', 'regions');
-    $layout['fields'] = $display->getThirdPartySetting('ds', 'fields');
+    if (isset($ds_layouts[$layout_configuration['id']])) {
+      $layout = (array) $ds_layouts[$layout_configuration['id']];
+      $layout['layout'] = $layout_configuration['id'];
+      $layout['disable_css'] = $layout_configuration['disable_css'];
+      $layout['entity_classes'] = $layout_configuration['entity_classes'];
+      $layout['settings'] = $layout_configuration['settings'] ?: [];
+      $layout['regions'] = $display->getThirdPartySetting('ds', 'regions');
+      $layout['fields'] = $display->getThirdPartySetting('ds', 'fields');
+    }
+    else {
+      \Drupal::messenger()->addMessage(t('The configured layout (@layout) is missing, please select a new one', ['@layout' => $layout_configuration['id']]), 'error');
+    }
   }
 
   if (!empty($layout) && isset($layout['layout']) && isset($ds_layouts[$layout['layout']])) {
@@ -793,7 +805,7 @@ function _ds_field_ui_table_layouts($entity_type, $bundle, $view_mode, array &$f
         }
       }
 
-      // If anything is left, then we put it on it's own vertial tab.
+      // If anything is left, then we put it on it's own vertical tab.
       if (!Element::isEmpty($layout_configuration_form)) {
         $form['layout_configuration'] = array_merge($layout_configuration_form, [
           '#group' => 'additional_settings',
@@ -872,7 +884,7 @@ function _ds_field_ui_table_layouts($entity_type, $bundle, $view_mode, array &$f
 function _ds_field_ui_table_layouts_preview(array &$form, FormStateInterface $form_state, array $ds_layouts, array $layout, EntityViewDisplayInterface $display) {
   $layout_string = '';
 
-  $form['ds_layouts']['layout'] = [
+  $form['ds_layouts']['ds_layout'] = [
     '#type' => 'select',
     '#title' => t('Select a layout'),
     '#options' => $layout['layout_options'],
@@ -886,7 +898,7 @@ function _ds_field_ui_table_layouts_preview(array &$form, FormStateInterface $fo
   ];
 
   if (!isset($layout['layout'])) {
-    $form['ds_layouts']['layout']['#description'] = t("A layout must be selected to enable Display Suite functionality.");
+    $form['ds_layouts']['ds_layout']['#description'] = t("A layout must be selected to enable Display Suite functionality.");
   }
 
   $form['ds_layouts']['preview'] = [
@@ -896,22 +908,24 @@ function _ds_field_ui_table_layouts_preview(array &$form, FormStateInterface $fo
     '#weight' => -3,
   ];
 
-  if (isset($layout['layout']) || $form_state->hasValue('layout')) {
-    $layout_string = $form_state->hasValue('layout') ? $form_state->getValue('layout') : $layout['layout'];
+  if (isset($layout['layout']) || $form_state->hasValue('ds_layout')) {
+    $layout_string = $form_state->hasValue('ds_layout') ? $form_state->getValue('ds_layout') : $layout['layout'];
   }
 
+  $suggestions_array = [];
   if (!empty($layout_string)) {
-    /** @var \Drupal\Core\Layout\LayoutDefinition $chosen_layout */
-    $chosen_layout = $ds_layouts[$layout_string];
-    $selected = '<strong>' . $chosen_layout->getLabel() . '</strong>';
-    $selected .= '<br/>' . t('The default template can be found in %path', ['%path' => $chosen_layout->getPath() . '/' . $chosen_layout->getTemplate()]);
-    $suggestions_array = [];
-    $suggestions_array[0] = $chosen_layout->getTemplate() . '--' . $display->getTargetEntityTypeId();
-    $suggestions_array[2] = $chosen_layout->getTemplate() . '--' . $display->getTargetEntityTypeId() . '-' . $display->getTargetBundle();
-    $suggestions_array[4] = $chosen_layout->getTemplate() . '--' . $display->getTargetEntityTypeId() . '--{id}';
-    if ($display->getMode() != 'default') {
-      $suggestions_array[1] = $chosen_layout->getTemplate() . '--' . $display->getTargetEntityTypeId() . '-' . $display->getMode();
-      $suggestions_array[3] = $chosen_layout->getTemplate() . '--' . $display->getTargetEntityTypeId() . '-' . $display->getTargetBundle() . '-' . $display->getMode();
+    if (isset($ds_layouts[$layout_string])) {
+      /** @var \Drupal\Core\Layout\LayoutDefinition $chosen_layout */
+      $chosen_layout = $ds_layouts[$layout_string];
+      $selected = '<strong>' . $chosen_layout->getLabel() . '</strong>';
+      $selected .= '<br/>' . t('The default template can be found in %path', ['%path' => $chosen_layout->getPath() . '/' . $chosen_layout->getTemplate()]);
+      $suggestions_array[0] = $chosen_layout->getTemplate() . '--' . $display->getTargetEntityTypeId();
+      $suggestions_array[2] = $chosen_layout->getTemplate() . '--' . $display->getTargetEntityTypeId() . '-' . $display->getTargetBundle();
+      $suggestions_array[4] = $chosen_layout->getTemplate() . '--' . $display->getTargetEntityTypeId() . '--{id}';
+      if ($display->getMode() != 'default') {
+        $suggestions_array[1] = $chosen_layout->getTemplate() . '--' . $display->getTargetEntityTypeId() . '-' . $display->getMode();
+        $suggestions_array[3] = $chosen_layout->getTemplate() . '--' . $display->getTargetEntityTypeId() . '-' . $display->getTargetBundle() . '-' . $display->getMode();
+      }
     }
 
     ksort($suggestions_array);
@@ -922,9 +936,9 @@ function _ds_field_ui_table_layouts_preview(array &$form, FormStateInterface $fo
       $suggestions_array[$key] = $suggestion_replace . '.html.twig';
     }
 
-    if ($form_state->hasValue('layout') || (!empty($layout) && isset($layout['regions']))) {
+    if ($form_state->hasValue('ds_layout') || (!empty($layout) && isset($layout['regions'])) && (!empty($chosen_layout))) {
       $fallback_image = drupal_get_path('module', 'ds') . '/images/preview.png';
-      $current_layout = $form_state->hasValue('layout') && (!isset($layout->layout) || $form_state->getValue('layout') != $layout->layout) ? t('Current layout (after save)') : t('Current layout');
+      $current_layout = $form_state->hasValue('ds_layout') && (!isset($layout->layout) || $form_state->getValue('ds_layout') != $layout->layout) ? t('Current layout (after save)') : t('Current layout');
       $image = $chosen_layout->getIconPath();
       if (empty($image)) {
         $image = $fallback_image;

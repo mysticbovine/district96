@@ -68,6 +68,7 @@ class DeferCss {
       if (!strpos($content, $path)) {
         $path = Crypt::hashBase64($path . $this->counter);
       }
+      $path = preg_quote($path, '/');
       $pattern = "/<script src=['\"]\/(.*{$path}.*)\?.*['\"]>/";
       $content = preg_replace_callback($pattern, [$this, 'inlineScript'], $content);
     }

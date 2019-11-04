@@ -89,10 +89,10 @@ class SettingsForm extends ConfigFormBase {
     ];
     $form[$params[0]]['cmd'] = [
       '#type' => 'fieldset',
-      '#title' => t('Command Line'),
+      '#title' => $this->t('Command Line'),
     ];
 
-    $description = t('{%CWD%} = \Drupal::root(). <br /> {%IN%} = input file. <br /> {%IN_URL_ENC%} = url pointing to the input file that has been url encoded. <br /> {%OUT%} = output file. <br /><br />');
+    $description = $this->t('{%CWD%} = \Drupal::root(). <br /> {%IN%} = input file. <br /> {%IN_URL_ENC%} = url pointing to the input file that has been url encoded. <br /> {%OUT%} = output file. <br /><br />');
     if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
       $description .= ' ' . $this->t('Example using the <a href="@link1">Microsoft Ajax Minifier</a>. <p><code>@code1</code></p>', [
         '@link1' => 'http://ajaxmin.codeplex.com/',

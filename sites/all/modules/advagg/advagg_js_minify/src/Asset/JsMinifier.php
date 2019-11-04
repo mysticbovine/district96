@@ -5,12 +5,15 @@ namespace Drupal\advagg_js_minify\Asset;
 use Drupal\Component\Utility\Unicode;
 use Drupal\advagg\Asset\SingleAssetOptimizerBase;
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Psr\Log\LoggerInterface;
 
 /**
  * Optimizes a JavaScript asset.
  */
 class JsMinifier extends SingleAssetOptimizerBase {
+
+  use StringTranslationTrait;
 
   /**
    * Construct the optimizer instance.
@@ -47,7 +50,8 @@ class JsMinifier extends SingleAssetOptimizerBase {
       return $contents;
     }
 
-    call_user_func_array($function, [&$contents, $asset['data']]);
+    $arguments = [&$contents, $asset['data']];
+    call_user_func_array($function, $arguments);
 
     $contents = trim($contents);
 
@@ -96,7 +100,7 @@ class JsMinifier extends SingleAssetOptimizerBase {
    */
   public function clean($contents, array $asset) {
     if ($encoding = Unicode::encodingFromBOM($contents)) {
-      $contents = Unicode::substr(Unicode::convertToUtf8($contents, $encoding), 1);
+      $contents = mb_substr(Unicode::convertToUtf8($contents, $encoding), 1);
     }
 
     // If no BOM is found, check for the charset attribute.
@@ -121,7 +125,7 @@ class JsMinifier extends SingleAssetOptimizerBase {
   public function minifyJsmin(&$contents, $path) {
     // Do not use jsmin() if the function can not be called.
     if (!function_exists('jsmin')) {
-      $this->logger->notice(t('The jsmin function does not exist. Using JSqueeze.'), []);
+      $this->logger->notice($this->t('The jsmin function does not exist. Using JSqueeze.'), []);
       $contents = $this->minifyJsqueeze($contents);
       return;
     }
@@ -154,7 +158,7 @@ class JsMinifier extends SingleAssetOptimizerBase {
     // necessary. The chars unfortunately vary in number and specific chars.
     // Hence this is a poor quality check but often works.
     if (ctype_cntrl(substr(trim($minified), -1)) || strpbrk(substr(trim($minified), -1), ';})') === FALSE) {
-      $this->logger->notice(t('JSMin had a possible error minifying: @file, correcting.', ['@file' => $path]));
+      $this->logger->notice($this->t('JSMin had a possible error minifying: @file, correcting.', ['@file' => $path]));
       if (strrpos(substr($minified, -10), ';')) {
         $contents = substr($minified, 0, strrpos($minified, ';'));
       }
@@ -166,7 +170,7 @@ class JsMinifier extends SingleAssetOptimizerBase {
     if ($semicolons > 2) {
       $start = substr($contents, 0, -5);
       $contents = $start . preg_replace("/([;)}]*)([\w]*)([;)}]*)/", "$1$3", substr($contents, -5));
-      $this->logger->notice(t('JSMin had an error minifying file: @file, attempting to correct.', ['@file' => $path]));
+      $this->logger->notice($this->t('JSMin had an error minifying file: @file, attempting to correct.', ['@file' => $path]));
     }
   }
 
@@ -288,7 +292,7 @@ class JsMinifier extends SingleAssetOptimizerBase {
       $contents = $jz->squeeze(
         $contents,
         TRUE,
-        \Drupal::config('advagg_js_minify.settings')->get('add_license'),
+        $this->config->get('add_license'),
         FALSE
       );
 

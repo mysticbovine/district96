@@ -12,6 +12,7 @@ use Drupal\Core\StringTranslation\Translator\TranslatorInterface;
 use Drupal\Core\Theme\Registry;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Drupal\Core\Messenger\MessengerInterface;
 
 /**
  * View AdvAgg information for this site.
@@ -52,6 +53,13 @@ class InfoForm extends ConfigFormBase {
   protected $cache;
 
   /**
+   * The Messenger service.
+   *
+   * @var \Drupal\Core\Messenger\MessengerInterface
+   */
+  protected $messenger;
+
+  /**
    * Constructs a SettingsForm object.
    *
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
@@ -66,8 +74,10 @@ class InfoForm extends ConfigFormBase {
    *   The string translation service.
    * @param \Drupal\Core\Cache\CacheBackendInterface $cache
    *   The AdvAgg cache.
+   * @param \Drupal\Core\Messenger\MessengerInterface $messenger
+   *   The messenger service.
    */
-  public function __construct(ConfigFactoryInterface $config_factory, Registry $theme_registry, RequestStack $request_stack, DateFormatterInterface $date_formatter, TranslatorInterface $string_translation, CacheBackendInterface $cache) {
+  public function __construct(ConfigFactoryInterface $config_factory, Registry $theme_registry, RequestStack $request_stack, DateFormatterInterface $date_formatter, TranslatorInterface $string_translation, CacheBackendInterface $cache, MessengerInterface $messenger) {
     parent::__construct($config_factory);
 
     $this->themeRegistry = $theme_registry;
@@ -75,6 +85,7 @@ class InfoForm extends ConfigFormBase {
     $this->dateFormatter = $date_formatter;
     $this->translation = $string_translation;
     $this->cache = $cache;
+    $this->messenger = $messenger;
   }
 
   /**
@@ -87,7 +98,8 @@ class InfoForm extends ConfigFormBase {
       $container->get('request_stack'),
       $container->get('date.formatter'),
       $container->get('string_translation'),
-      $container->get('cache.advagg')
+      $container->get('cache.advagg'),
+      $container->get('messenger')
     );
   }
 
@@ -110,7 +122,7 @@ class InfoForm extends ConfigFormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
     $form['tip'] = [
-      '#markup' => '<p>' . t('This page provides debugging information. There are no configuration options here.') . '</p>',
+      '#markup' => '<p>' . $this->t('This page provides debugging information. There are no configuration options here.') . '</p>',
     ];
 
     // Get all hooks and variables.
@@ -121,7 +133,7 @@ class InfoForm extends ConfigFormBase {
     $form['theme_info'] = [
       '#type' => 'details',
       '#open' => TRUE,
-      '#title' => t('Hook Theme Info'),
+      '#title' => $this->t('Hook Theme Info'),
     ];
     $data = implode("\n", $core_hooks['html']['preprocess functions']);
     $form['theme_info']['advagg_theme_info'] = [
@@ -131,7 +143,7 @@ class InfoForm extends ConfigFormBase {
     $form['hooks_implemented'] = [
       '#type' => 'details',
       '#open' => TRUE,
-      '#title' => t('Core asset hooks implemented by modules'),
+      '#title' => $this->t('Core asset hooks implemented by modules'),
     ];
 
     // Output all advagg hooks implemented.
@@ -152,18 +164,18 @@ class InfoForm extends ConfigFormBase {
     $form['get_info_about_agg'] = [
       '#type' => 'details',
       '#open' => TRUE,
-      '#title' => t('Get detailed info about an optimized file'),
+      '#title' => $this->t('Get detailed info about an optimized file'),
     ];
     $form['get_info_about_agg']['filename'] = [
       '#type' => 'textfield',
       '#size' => 170,
       '#maxlength' => 256,
       '#default_value' => '',
-      '#title' => t('Filename'),
+      '#title' => $this->t('Filename'),
     ];
     $form['get_info_about_agg']['submit'] = [
       '#type' => 'submit',
-      '#value' => t('Lookup Details'),
+      '#value' => $this->t('Lookup Details'),
       '#submit' => ['::getFileInfoSubmit'],
       '#validate' => ['::getFileInfoValidate'],
       '#ajax' => [
@@ -174,7 +186,7 @@ class InfoForm extends ConfigFormBase {
     ];
     if ($tip = $this->getRandomFile()) {
       $form['get_info_about_agg']['tip'] = [
-        '#markup' => '<p>' . t('Input an optimized filename like "@css_file".', [
+        '#markup' => '<p>' . $this->t('Input an optimized filename like "@css_file".', [
           '@css_file' => $tip,
         ]) . '</p>',
       ];
@@ -214,7 +226,7 @@ class InfoForm extends ConfigFormBase {
    *   The current state of the form.
    */
   public function getFileInfoSubmit(array &$form, FormStateInterface $form_state) {
-    drupal_set_message($this->getFileInfo($form_state->getValue('filename')));
+    $this->messenger->addMessage($this->getFileInfo($form_state->getValue('filename')));
   }
 
   /**
@@ -240,7 +252,7 @@ class InfoForm extends ConfigFormBase {
    */
   public function getFileInfoValidate(array $form, FormStateInterface $form_state) {
     if (empty($form_state->getValue('filename'))) {
-      $form_state->setErrorByName('filename', t('Please input a valid optimized filename.'));
+      $form_state->setErrorByName('filename', $this->t('Please input a valid optimized filename.'));
     }
   }
 
@@ -261,7 +273,7 @@ class InfoForm extends ConfigFormBase {
         return print_r($cached->data, TRUE);
       }
     }
-    return t('Optimized file information not found, confirm spelling of the path. Alternatively, that could be an outdated file.');
+    return $this->t('Optimized file information not found, confirm spelling of the path. Alternatively, that could be an outdated file.');
   }
 
   /**

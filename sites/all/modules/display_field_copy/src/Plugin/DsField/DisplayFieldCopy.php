@@ -6,7 +6,6 @@ use Drupal\Component\Plugin\PluginManagerInterface;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\ds\Plugin\DsField\DsFieldBase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -18,7 +17,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   deriver = "Drupal\display_field_copy\Plugin\Derivative\DisplayFieldCopy",
  * )
  */
-class DisplayFieldCopy extends DsFieldBase implements ContainerFactoryPluginInterface {
+class DisplayFieldCopy extends DsFieldBase {
 
   /**
    * Field Definition.
@@ -26,13 +25,6 @@ class DisplayFieldCopy extends DsFieldBase implements ContainerFactoryPluginInte
    * @var \Drupal\Core\Field\FieldDefinitionInterface
    */
   protected $fieldDefinition;
-
-  /**
-   * Formatter.
-   *
-   * @var \Drupal\Core\Field\FormatterInterface.
-   */
-  protected $formatter;
 
   /**
    * Formatter Plugin Manager.
@@ -94,6 +86,10 @@ class DisplayFieldCopy extends DsFieldBase implements ContainerFactoryPluginInte
 
     $items = $this->entity()->get($this->getRenderKey());
 
+    $formatter->prepareView([
+      $items->getIterator()->getArrayCopy(),
+    ]);
+
     return $formatter->viewElements($items, $this->entity()->language()->getId());
   }
 
@@ -102,6 +98,24 @@ class DisplayFieldCopy extends DsFieldBase implements ContainerFactoryPluginInte
    */
   public function defaultConfiguration() {
     return $this->getFormatter()->defaultSettings();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function settingsSummary($settings) {
+    $config = $this->getFieldConfiguration();
+
+    // Disabled fields don't store formatter configurations.
+    if (!isset($config['formatter'])) {
+      return [];
+    }
+
+    $formatter = $this->getFormatter([
+      'type' => $config['formatter'],
+    ]);
+
+    return $formatter ? $formatter->settingsSummary() : [];
   }
 
   /**
@@ -168,6 +182,8 @@ class DisplayFieldCopy extends DsFieldBase implements ContainerFactoryPluginInte
 
   /**
    * Return the field formatter.
+   *
+   * @return \Drupal\Core\Field\FormatterInterface
    */
   protected function getFormatter(array $configuration = []) {
     if (!isset($configuration['settings'])) {

@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\taxonomy_menu\Plugin\Derivative\TaxonomyMenuMenuLink.
- */
-
 namespace Drupal\taxonomy_menu\Plugin\Derivative;
 
 use Drupal\Component\Plugin\Derivative\DeriverBase;
@@ -49,13 +44,13 @@ class TaxonomyMenuMenuLink extends DeriverBase implements ContainerDeriverInterf
    * {@inheritdoc}
    */
   public function getDerivativeDefinitions($base_plugin_definition) {
-    $links = array();
-    /** @var $taxonomy_menus \Drupal\taxonomy_menu\TaxonomyMenuInterface[] */
+    $links = [];
+    /* @var $taxonomy_menus \Drupal\taxonomy_menu\TaxonomyMenuInterface[] */
     $taxonomy_menus = $this->taxonomyMenuStorage->loadMultiple();
 
     //MenuLinkContent entity, menulinkcontent table, look for data
     foreach ($taxonomy_menus as $taxonomy_menu) {
-      /** @var $taxonomy_menu \Drupal\taxonomy_menu\TaxonomyMenuInterface */
+      /* @var $taxonomy_menu \Drupal\taxonomy_menu\TaxonomyMenuInterface */
       $taxonomy_menu->getMenu();
       $links = array_merge($links, $taxonomy_menu->getLinks($base_plugin_definition));
     }

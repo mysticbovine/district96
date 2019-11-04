@@ -29,7 +29,7 @@ class AdvaggPathManipulationTest extends AdvaggFunctionalTestBase {
     $this->drupalGet(Url::fromRoute('advagg.settings'));
     $session = $this->assertSession();
     $session->responseContains('src="//cdn.jsdelivr.net/jquery.actual/1.0.18/jquery.actual.min.js');
-    $session->responseContains('src="'. $base_path . 'core/assets/vendor/modernizr/modernizr.min.js');
+    $session->responseContains('src="' . $base_path . 'core/assets/vendor/modernizr/modernizr.min.js');
 
     // Test convert force HTTPS.
     $edit = [];
@@ -42,7 +42,7 @@ class AdvaggPathManipulationTest extends AdvaggFunctionalTestBase {
     $this->assertTrue($config->get('path.convert.force_https'));
     $session = $this->assertSession();
     $session->responseContains('src="https://cdn.jsdelivr.net/jquery.actual/1.0.18/jquery.actual.min.js');
-    $session->responseContains('src="'. $base_path . 'core/assets/vendor/modernizr/modernizr.min.js');
+    $session->responseContains('src="' . $base_path . 'core/assets/vendor/modernizr/modernizr.min.js');
 
     // Test convert force absolute path.
     $edit = [];

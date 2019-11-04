@@ -5,3 +5,6 @@ advagg_css_minify.settings:
     minifier:
       type: integer
       label: 'Which minifier to use. 0 is Disabled.'
+    add_license:
+      type: boolean
+      label: 'Add licensing information to aggregates for individual source files.'

@@ -42,15 +42,9 @@ function advagg_module_implements_alter(&$implementations, $hook) {
  * Implements hook_cron().
  *
  * Deletes outdated file/aggregate data.
- *
- * @param bool $bypass
- *   True to skip time check.
- *
- * @return array
- *   The removed files.
  */
 function advagg_cron($bypass = FALSE) {
-  $time = REQUEST_TIME;
+  $time = \Drupal::time()->getRequestTime();
   $state = \Drupal::state();
 
   // Ensure the htaccess files exist.
@@ -155,6 +149,7 @@ function advagg_form_system_performance_settings_alter(&$form) {
  */
 function advagg_enabled() {
   $init = &drupal_static(__FUNCTION__);
+  $messenger = \Drupal::messenger();
 
   if (!empty($init)) {
     return $init['advagg'];
@@ -191,12 +186,13 @@ function advagg_enabled() {
     if (!isset($msg_set) && $advagg_config->get('show_bypass_cookie_message')) {
       $msg_set = TRUE;
       if (\Drupal::currentUser()->hasPermission('administer site configuration')) {
-        drupal_set_message(t('The AdvAgg bypass cookie is currently enabled. Turn it off by going to the <a href="@advagg_operations">AdvAgg Operations</a> page and clicking the <em>Toggle the "aggregation bypass cookie" for this browser</em> button.', [
+
+        $messenger->addMessage(t('The AdvAgg bypass cookie is currently enabled. Turn it off by going to the <a href="@advagg_operations">AdvAgg Operations</a> page and clicking the <em>Toggle the "aggregation bypass cookie" for this browser</em> button.', [
           '@advagg_operations' => Url::fromRoute('advagg.operations', [], ['fragment' => 'edit-bypass'])->toString(),
         ]));
       }
       else {
-        drupal_set_message(t('The AdvAgg bypass cookie is currently enabled. Turn it off by <a href="@login">logging in</a> with a user with the "administer site configuration" permissions and going to the <a herf="@advagg_operations">AdvAgg Operations page</a> and clicking the <em>Toggle the "aggregation bypass cookie" for this browser</em> button.', [
+        $messenger->addMessage(t('The AdvAgg bypass cookie is currently enabled. Turn it off by <a href="@login">logging in</a> with a user with the "administer site configuration" permissions and going to the <a herf="@advagg_operations">AdvAgg Operations page</a> and clicking the <em>Toggle the "aggregation bypass cookie" for this browser</em> button.', [
           '@login' => '/user/login',
           '@advagg_operations' => Url::fromRoute('advagg.operations')->toString(),
         ]));
@@ -231,6 +227,6 @@ function advagg_hooks_implemented() {
   foreach ($hooks as $hook => $values) {
     $hooks[$hook] = $module_handler->getImplementations($hook);
   }
-  \Drupal::cache('advagg')->set($cid, $hooks, REQUEST_TIME + 600);
+  \Drupal::cache('advagg')->set($cid, $hooks, \Drupal::time()->getRequestTime() + 600);
   return $hooks;
 }

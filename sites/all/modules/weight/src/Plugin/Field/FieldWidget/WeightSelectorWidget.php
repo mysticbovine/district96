@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\weight\Plugin\Field\FieldWidget\WeightSelectorWidget.
- */
-
 namespace Drupal\weight\Plugin\Field\FieldWidget;
 
 use Drupal\Core\Field\FieldItemListInterface;
@@ -31,20 +26,20 @@ class WeightSelectorWidget extends WidgetBase {
     $value = isset($items[$delta]->value) ? $items[$delta]->value : 0;
     $range = $this->getFieldSetting('range');
 
-    $element += array(
+    $element += [
       '#type' => 'select',
-      '#options' => $this->rangeOptions($range),
+      '#options' => WeightSelectorWidget::rangeOptions($range),
       '#default_value' => $value,
-    );
+    ];
 
-    return array('value' => $element);
+    return ['value' => $element];
   }
 
   /**
    * Get weight range options.
    */
-  public function rangeOptions($range) {
-    $options = array();
+  public static function rangeOptions($range) {
+    $options = [];
 
     for ($i = -$range; $i <= $range; $i++) {
       $options[$i] = $i;

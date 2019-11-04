@@ -3,14 +3,14 @@
 namespace Drupal\Tests\ds\FunctionalJavascript;
 
 use Drupal\Core\Entity\Entity\EntityViewDisplay;
-use Drupal\FunctionalJavascriptTests\JavascriptTestBase;
+use Drupal\FunctionalJavascriptTests\WebDriverTestBase;
 
 /**
  * Tests javascript behavior for the admin UI.
  *
  * @group ds
  */
-class JavascriptTest extends JavascriptTestBase {
+class JavascriptTest extends WebDriverTestBase {
 
   /**
    * {@inheritdoc}
@@ -57,6 +57,10 @@ class JavascriptTest extends JavascriptTestBase {
 
   /**
    * Test DS settings.
+   *
+   * @throws \Behat\Mink\Exception\ElementNotFoundException
+   * @throws \Behat\Mink\Exception\ExpectationException
+   * @throws \Behat\Mink\Exception\ResponseTextException
    */
   public function testSettings() {
     // Go to the article manage display page.
@@ -65,7 +69,7 @@ class JavascriptTest extends JavascriptTestBase {
 
     // Change the layout to 2 column layout and wait for it to be changed, see
     // if the new template is displayed.
-    $page->selectFieldOption('layout', 'ds_2col');
+    $page->selectFieldOption('ds_layout', 'ds_2col');
     $this->assertSession()->assertWaitOnAjaxRequest();
     $this->assertSession()->pageTextContains('ds-2col--node.html.twig');
     $page->pressButton('Save');
@@ -80,7 +84,7 @@ class JavascriptTest extends JavascriptTestBase {
     $this->assertSame($settings['id'], 'ds_2col');
 
     // Switch back to not using a layout.
-    $page->selectFieldOption('layout', '');
+    $page->selectFieldOption('ds_layout', '');
     $this->assertSession()->assertWaitOnAjaxRequest();
     $page->pressButton('Save');
 

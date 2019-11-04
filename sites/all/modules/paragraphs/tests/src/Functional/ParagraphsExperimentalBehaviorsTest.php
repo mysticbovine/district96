@@ -2,19 +2,14 @@
 
 namespace Drupal\Tests\paragraphs\Functional;
 
-use Drupal\paragraphs\Tests\Classic\ParagraphsCoreVersionUiTestTrait;
-use Drupal\Tests\BrowserTestBase;
-use Drupal\Tests\paragraphs\FunctionalJavascript\ParagraphsTestBaseTrait;
+use Drupal\Tests\paragraphs\Functional\Experimental\ParagraphsExperimentalTestBase;
 
 /**
  * Tests support for Paragraphs behavior plugins.
  *
  * @group paragraphs
  */
-class ParagraphsExperimentalBehaviorsTest extends BrowserTestBase {
-
-  use ParagraphsCoreVersionUiTestTrait;
-  use ParagraphsTestBaseTrait;
+class ParagraphsExperimentalBehaviorsTest extends ParagraphsExperimentalTestBase {
 
   /**
    * Modules to enable.
@@ -82,6 +77,7 @@ class ParagraphsExperimentalBehaviorsTest extends BrowserTestBase {
     $this->assertTrue(count($bolded_elements), 'Test plugin added a CSS class.');
 
     // Check that non-empty leaves are saved in the behavior settings.
+    \Drupal::entityTypeManager()->getStorage('paragraph')->resetCache();
     $node = $this->getNodeByTitle('Test Node', TRUE);
     /** @var \Drupal\paragraphs\ParagraphInterface $paragraph */
     $paragraph = $node->get('field_paragraphs')->entity;

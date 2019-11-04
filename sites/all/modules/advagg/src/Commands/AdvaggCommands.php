@@ -5,6 +5,7 @@ namespace Drupal\advagg\Commands;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\File\FileSystem;
 use Drush\Commands\DrushCommands;
 
 /**
@@ -17,7 +18,7 @@ class AdvaggCommands extends DrushCommands {
    *
    * @var \Drupal\Core\Config\Config
    */
-  protected $config;
+  protected $advaggConfig;
 
   /**
    * The AdvAgg cache.
@@ -27,16 +28,26 @@ class AdvaggCommands extends DrushCommands {
   protected $cache;
 
   /**
+   * Provides helpers to operate on files and stream wrappers.
+   *
+   * @var \Drupal\Core\File\FileSystem
+   */
+  protected $fileSystem;
+
+  /**
    * Constructs the commands instance.
    *
-   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
-   *   A config factory for retrieving required config objects.
    * @param \Drupal\Core\Cache\CacheBackendInterface $cache
    *   The AdvAgg cache.
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
+   *   A config factory for retrieving required config objects.
+   * @param \Drupal\Core\File\FileSystem $file_system
+   *   Provides helpers to operate on files and stream wrappers.
    */
-  public function __construct(ConfigFactoryInterface $config_factory, CacheBackendInterface $cache) {
-    $this->config = $config_factory->getEditable('advagg.settings');
+  public function __construct(CacheBackendInterface $cache, ConfigFactoryInterface $config_factory, FileSystem $file_system) {
     $this->cache = $cache;
+    $this->advaggConfig = $config_factory->getEditable('advagg.settings');
+    $this->fileSystem = $file_system;
   }
 
   /**
@@ -71,7 +82,7 @@ class AdvaggCommands extends DrushCommands {
    * @aliases advagg-da
    */
   public function disable() {
-    $this->config->set('enabled', 0)->save();
+    $this->advaggConfig->set('enabled', 0)->save();
     $this->logger()->notice(dt('All Advagg functionality is disabled.'));
   }
 
@@ -84,7 +95,7 @@ class AdvaggCommands extends DrushCommands {
    * @aliases advagg-en
    */
   public function enable() {
-    $this->config->set('enabled', 1)->save();
+    $this->advaggConfig->set('enabled', 1)->save();
     $this->logger()->notice(dt('All Advagg functionality is enabled.'));
   }
 
@@ -100,11 +111,14 @@ class AdvaggCommands extends DrushCommands {
     // Clear out the cache.
     Cache::invalidateTags(['library_info']);
     $this->cache->invalidateAll();
-    $pub = \Drupal::service('file_system')->realpath('public://');
+    $pub = $this->fileSystem->realpath('public://');
     $css_count = count(glob($pub . '/css/optimized/*.css'));
     $js_count = count(glob($pub . '/js/optimized/*.js'));
-    file_unmanaged_delete_recursive('public://js/optimized/');
-    file_unmanaged_delete_recursive('public://css/optimized/');
+    foreach (['public://js/optimized', 'public://css/optimized'] as $path) {
+      if (file_exists($path)) {
+        file_unmanaged_delete_recursive($path);
+      }
+    }
 
     // Report back the results.
     $this->logger()->notice(dt('All AdvAgg optimized files have been deleted. %css_count CSS files and %js_count JS files have been removed.', [
@@ -126,8 +140,8 @@ class AdvaggCommands extends DrushCommands {
     $this->clearAllFiles();
 
     // Increment counter.
-    $new_value = $this->config->get('global_counter') + 1;
-    $this->config->set('global_counter', $new_value)->save();
+    $new_value = $this->advaggConfig->get('global_counter') + 1;
+    $this->advaggConfig->set('global_counter', $new_value)->save();
     $this->logger()->notice(dt('Global counter is now set to @new_value', ['@new_value' => $new_value]));
     _drupal_flush_css_js();
   }

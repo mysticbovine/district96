@@ -40,6 +40,12 @@ class FormatDateFilter extends DataFilterBase implements ContainerFactoryPluginI
   /**
    * {@inheritdoc}
    *
+   * @param array $configuration
+   *   A configuration array containing information about the plugin instance.
+   * @param string $plugin_id
+   *   The plugin ID for the plugin instance.
+   * @param mixed $plugin_definition
+   *   The plugin implementation definition.
    * @param \Drupal\Core\Datetime\DateFormatterInterface $date_formatter
    *   The date formatter to use.
    * @param \Drupal\Core\Entity\EntityStorageInterface $date_format_storage
@@ -115,7 +121,7 @@ class FormatDateFilter extends DataFilterBase implements ContainerFactoryPluginI
       $fails[] = $this->t("If 'custom' is given as date type, a custom date formatting string must be provided; e.g., 'Y-m-d H:i:s'.");
     }
     return $fails;
-    // @todo: Should we validate timezones and langcodes also?
+    // @todo Should we validate timezones and langcodes also?
   }
 
 }

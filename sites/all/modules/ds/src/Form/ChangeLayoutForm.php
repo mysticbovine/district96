@@ -67,7 +67,8 @@ class ChangeLayoutForm extends FormBase {
     $all_layouts = Ds::getLayouts();
 
     if (!empty($entity_type) && !empty($bundle) && !empty($display_mode)) {
-      $display = entity_get_display($entity_type, $bundle, $display_mode);
+      /** @var \Drupal\Core\Entity\Display\EntityViewDisplayInterface $display */
+      $display = $this->entityTypeManager->getStorage('entity_view_display')->load($entity_type . '.' . $bundle . '.' . $display_mode);
       $old_layout = $display->getThirdPartySettings('ds');
     }
 
@@ -241,7 +242,7 @@ class ChangeLayoutForm extends FormBase {
     $this->entityFieldManager->clearCachedFieldDefinitions();
 
     // Show message.
-    drupal_set_message(t('The layout change has been saved.'));
+    $this->messenger()->addMessage($this->t('The layout change has been saved.'));
   }
 
 }

@@ -7,7 +7,6 @@ use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Url;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -166,8 +165,8 @@ class SettingsForm extends ConfigFormBase {
       ->set('css.max', $form_state->getValue('max_css'))
       ->set('css.logic', $form_state->getValue('css_logic'))
       ->set('js.max', $form_state->getValue('max_js'))
-      ->set('js.logic', $form_state->getValue('js_logic'))
-      ->save();
+      ->set('js.logic', $form_state->getValue('js_logic'));
+    $config->save();
 
     // Clear Caches.
     Cache::invalidateTags(['library_info']);

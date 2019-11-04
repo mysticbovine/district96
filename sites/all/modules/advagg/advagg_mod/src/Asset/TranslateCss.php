@@ -4,12 +4,15 @@ namespace Drupal\advagg_mod\Asset;
 
 use Drupal\advagg\Asset\SingleAssetOptimizerBase;
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Psr\Log\LoggerInterface;
 
 /**
  * Applies the t() function to strings in CSS assets.
  */
 class TranslateCss extends SingleAssetOptimizerBase {
+
+  use StringTranslationTrait;
 
   /**
    * Construct the optimizer instance.
@@ -72,7 +75,7 @@ class TranslateCss extends SingleAssetOptimizerBase {
     }
 
     // Run t function and put back into string.
-    return str_replace($before, (string) t($before), $matches[0]);
+    return str_replace($before, (string) $this->t('@before', ['@before' => $before]), $matches[0]);
   }
 
 }

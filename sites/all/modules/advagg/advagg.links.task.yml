@@ -2,10 +2,6 @@ advagg.settings:
   title: 'Advanced CSS/JS Aggregation'
   route_name: advagg.settings
   base_route: system.performance_settings
-advagg.performance:
-  title: 'Performance'
-  route_name: system.performance_settings
-  base_route: system.performance_settings
 advagg.settings_tab:
   title: 'Configuration'
   route_name: advagg.settings

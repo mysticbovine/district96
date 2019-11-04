@@ -4,8 +4,8 @@ description: 'The rot13 function for twig'
 # core: 8.x
 package: Twig
 
-# Information added by Drupal.org packaging script on 2018-10-05
-version: '8.x-1.0'
+# Information added by Drupal.org packaging script on 2019-05-23
+version: '8.x-1.1'
 core: '8.x'
 project: 'obfuscate_email'
-datestamp: 1538727192
+datestamp: 1558628588

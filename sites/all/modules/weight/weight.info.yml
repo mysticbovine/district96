@@ -4,10 +4,10 @@ description: 'Allows arbitrary ordering of entities.'
 package: Field types
 # core: 8.x
 dependencies:
-  - field
+  - drupal:field
 
-# Information added by Drupal.org packaging script on 2015-11-28
-version: '8.x-3.0'
+# Information added by Drupal.org packaging script on 2019-02-12
+version: '8.x-3.1'
 core: '8.x'
 project: 'weight'
-datestamp: 1448735640
+datestamp: 1549993084

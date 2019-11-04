@@ -33,6 +33,10 @@ class CssW3Form extends BaseValidatorForm {
   /**
    * {@inheritdoc}
    *
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
+   *   The configuration object factory.
+   * @param \Symfony\Component\HttpFoundation\RequestStack $request_stack
+   *   Request stack that controls the lifecycle of requests.
    * @param \GuzzleHttp\Client $http_client
    *   The Guzzle HTTP Client.
    * @param \Drupal\Core\Render\RendererInterface $renderer
@@ -70,7 +74,7 @@ class CssW3Form extends BaseValidatorForm {
   public function buildForm(array $form, FormStateInterface $form_state) {
     $form = parent::generateForm('css', FALSE);
     $form['notice'] = [
-      '#markup' => '<div>' . t('Notice: The form below will submit files to the <a href="http://jigsaw.w3.org/css-validator/">http://jigsaw.w3.org/css-validator/</a> service if used.') . '</div>',
+      '#markup' => '<div>' . $this->t('Notice: The form below will submit files to the <a href="http://jigsaw.w3.org/css-validator/">http://jigsaw.w3.org/css-validator/</a> service if used.') . '</div>',
       '#weight' => -1,
     ];
     $form = parent::buildForm($form, $form_state);
@@ -99,7 +103,7 @@ class CssW3Form extends BaseValidatorForm {
       '#theme' => 'item_list',
       '#items' => $info,
     ];
-    drupal_set_message($this->renderer->render($output));
+    $this->messenger()->addMessage($this->renderer->render($output));
   }
 
   /**
@@ -137,7 +141,7 @@ class CssW3Form extends BaseValidatorForm {
       '#theme' => 'item_list',
       '#items' => $info,
     ];
-    drupal_set_message($this->renderer->render($output));
+    $this->messenger()->addMessage($this->renderer->render($output));
   }
 
   /**
@@ -178,9 +182,6 @@ class CssW3Form extends BaseValidatorForm {
         }
         unset($value);
       }
-
-      // Save data.
-      $file_info[$filename]['validation']['w3'] = $output[$filename]['jigsaw.w3.org'];
     }
     return $output;
   }
@@ -243,7 +244,7 @@ class CssW3Form extends BaseValidatorForm {
       return $return;
     }
 
-    return ['error' => t('W3C Server did not return a 200 or request data was empty.')];
+    return ['error' => $this->t('W3C Server did not return a 200 or request data was empty.')];
   }
 
   /**

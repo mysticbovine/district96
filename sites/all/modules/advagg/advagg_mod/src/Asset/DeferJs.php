@@ -26,7 +26,7 @@ class DeferJs {
   protected $counter;
 
   /**
-   * The Drupal module handler
+   * The Drupal module handler.
    *
    * @var \Drupal\Core\Extension\ModuleHandlerInterface
    */
@@ -44,7 +44,7 @@ class DeferJs {
    *
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   The config factory.
-   * @param \Drupal\Core\Extension\ModuleHandlerInterface
+   * @param \Drupal\Core\Extension\ModuleHandlerInterface $module_handler
    *   The Drupal module handler.
    */
   public function __construct(ConfigFactoryInterface $config_factory, ModuleHandlerInterface $module_handler) {

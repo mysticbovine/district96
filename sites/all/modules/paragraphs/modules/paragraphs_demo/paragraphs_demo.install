@@ -7,13 +7,16 @@
 use Drupal\node\Entity\Node;
 use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\paragraphs_library\Entity\LibraryItem;
+use Drupal\workflows\Entity\Workflow;
 
 /**
  * Implements hook_install().
  */
 function paragraphs_demo_install() {
-  // Ensure the translation fields are created in the database.
-  \Drupal::service('entity.definition_update_manager')->applyUpdates();
+  if (version_compare(\Drupal::VERSION, '8.6.99', '<=')) {
+    // Ensure the translation fields are created in the database.
+    \Drupal::service('entity.definition_update_manager')->applyUpdates();
+  }
 
   // Create three paragraphs to structure the content.
   $paragraph = Paragraph::create([
@@ -108,4 +111,10 @@ function paragraphs_demo_install() {
   if (\Drupal::getContainer()->has('search_api.post_request_indexing')) {
     \Drupal::service('search_api.post_request_indexing')->destruct();
   }
+
+  if ($workflow = Workflow::load('editorial')) {
+    $workflow->getTypePlugin()->addEntityTypeAndBundle('node', 'paragraphed_content_demo');
+    $workflow->save();
+  }
+
 }

@@ -2,7 +2,6 @@
 
 namespace Drupal\advagg\Asset;
 
-use Drupal\Component\Utility\Unicode;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -77,7 +76,7 @@ abstract class SingleAssetOptimizerBase {
     // Check if there are multi-byte characters: If the UTF-8 encoded string has
     // multibyte chars strlen() will return a byte-count greater than the actual
     // character count, returned by drupal_strlen().
-    if (strlen($string) === Unicode::strlen($string)) {
+    if (strlen($string) === mb_strlen($string)) {
       return FALSE;
     }
 
@@ -121,7 +120,7 @@ abstract class SingleAssetOptimizerBase {
 
     // If set, make sure the minified version doesn't have a suspiciously high
     // ratio or conversely a really low ratio.
-    if (!$max = $this->config->get('ratio_max')) {
+    if (!$this->config->get('ratio_max')) {
       return TRUE;
     }
     $before = strlen($original);

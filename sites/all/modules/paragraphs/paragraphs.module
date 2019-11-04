@@ -15,6 +15,7 @@ use Drupal\migrate_drupal\Plugin\migrate\FieldMigration;
 use Drupal\paragraphs\Entity\ParagraphsType;
 use Drupal\paragraphs\Plugin\migrate\field\FieldCollection;
 use Drupal\Core\Render\Element;
+use Drupal\Core\Entity\EntityTypeInterface;
 
 /**
  * Implements hook_help().
@@ -76,6 +77,10 @@ function paragraphs_theme() {
     'paragraphs_actions' => [
       'render element' => 'element',
       'template' => 'paragraphs-actions',
+    ],
+    'paragraphs_summary' => [
+      'render element' => 'element',
+      'template' => 'paragraphs-summary',
     ],
   );
 }
@@ -239,6 +244,17 @@ function paragraphs_form_language_content_settings_form_alter(&$form, \Drupal\Co
       }
     }
   }
+
+  // Update the description on the hide untranslatable fields checkbox.
+  if (isset($form['settings']['paragraph'])) {
+    $paragraph_untranslatable_hide_description = t('Paragraph types that are used in moderated content requires non-translatable fields to be edited in the original language form and this must be checked.');
+    foreach (Element::children($form['settings']['paragraph']) as $bundle) {
+      if (!empty($form['settings']['paragraph'][$bundle]['settings']['content_translation']['untranslatable_fields_hide'])) {
+        $form['settings']['paragraph'][$bundle]['settings']['content_translation']['untranslatable_fields_hide']['#description'] = $paragraph_untranslatable_hide_description;
+      }
+    }
+  }
+
   $form['settings']['paragraphs_message'] = array(
     '#type' => 'container',
     '#markup' => $message_text,
@@ -344,13 +360,22 @@ function paragraphs_preprocess_field_multiple_value_form(&$variables) {
       ];
       unset($variables['table']['#rows'][0]);
     }
+
+    // Add the paragraph type as a class to every row.
+    if (isset($variables['element']['#paragraphs_widget'])) {
+      foreach ($variables['table']['#rows'] as $key => $row) {
+        if (isset($row['data'][1]['data']['#paragraph_type'])) {
+          $variables['table']['#rows'][$key]['class'][] = 'paragraph-type--' . str_replace('_', '-', $row['data'][1]['data']['#paragraph_type']);
+        }
+      }
+    }
   }
 
   // Remove the drag handler if we are translating, if the field's cardinality
   // is 1 or if there are no paragraphs added. Passing through this will not
   // only remove the drag handler but also the order column that is empty when
   // no paragraphs are added and when the field is single value.
-  if ((isset($variables['element']['#allow_reference_changes']) && !$variables['element']['#allow_reference_changes']) || $variables['element']['#cardinality'] == 1 || count($variables['table']['#rows']) == 0) {
+  if ((isset($variables['element']['#allow_reference_changes']) && !$variables['element']['#allow_reference_changes']) || (isset($variables['element']['#cardinality']) && $variables['element']['#cardinality'] == 1) || (isset($variables['table']['#rows']) && count($variables['table']['#rows']) == 0)) {
     if (isset($variables['table']['#tabledrag'])) {
       // Remove the tabledrag.
       unset($variables['table']['#tabledrag']);
@@ -453,16 +478,16 @@ function paragraphs_library_info_alter(&$libraries, $extension) {
  * https://www.drupal.org/project/drupal/issues/2904765 is resolved
  */
 function paragraphs_migration_plugins_alter(array &$migrations) {
+  /** @var \Drupal\migrate\Plugin\MigrationPluginManager $migration_plugin_manager */
+  $migration_plugin_manager = \Drupal::service('plugin.manager.migration');
+  /** @var \Drupal\migrate\Plugin\MigrateSourcePluginManager $source_plugin_manager */
+  $source_plugin_manager = \Drupal::service('plugin.manager.migrate.source');
+
   foreach ($migrations as $key => &$migration) {
-    /** @var \Drupal\migrate\Plugin\MigrationPluginManager $migration_plugin_manager */
-    $migration_plugin_manager = \Drupal::service('plugin.manager.migration');
-    $migration_stub = $migration_plugin_manager->createStubMigration($migration);
-    /** @var \Drupal\migrate\Plugin\MigrateSourcePluginManager $source_plugin_manager */
-    $source_plugin_manager = \Drupal::service('plugin.manager.migrate.source');
-    $source = NULL;
-    $configuration = $migration['source'];
-    $source = $source_plugin_manager->createInstance($migration['source']['plugin'], $configuration, $migration_stub);
-    if ($source) {
+    if (!empty($migration['source'])) {
+      $configuration = $migration['source'];
+      $migration_stub = $migration_plugin_manager->createStubMigration($migration);
+      $source = $source_plugin_manager->createInstance($migration['source']['plugin'], $configuration, $migration_stub);
       if (is_a($migration['class'], FieldMigration::class, TRUE)) {
 
         // Field storage.
@@ -484,6 +509,26 @@ function paragraphs_migration_plugins_alter(array &$migrations) {
         _paragraphs_migration_entity_type_adjust($migration, 'targetEntityType');
       }
     }
+  }
+}
+
+/**
+ * Implements hook_entity_type_alter().
+ */
+function paragraphs_entity_type_alter(array &$entity_types) {
+  /** @var $entity_types \Drupal\Core\Entity\EntityTypeInterface[] */
+  // Remove the handler class for moderation as it is managed by the host.
+  $entity_types['paragraph']->setHandlerClass('moderation', '');
+}
+
+/**
+ * Implements hook_entity_base_field_info_alter().
+ */
+function paragraphs_entity_base_field_info_alter(&$fields, EntityTypeInterface $entity_type) {
+  // Since the paragraph entity doesn't have uid fields anymore, remove the
+  // content_translation_uid from the field definitions.
+  if ($entity_type->id() == 'paragraph' && isset($fields['content_translation_uid'])) {
+    unset($fields['content_translation_uid']);
   }
 }
 
@@ -548,4 +593,19 @@ function _paragraphs_migration_entity_type_adjust(array &$migration, $destinatio
     'bypass' => TRUE,
   ];
   $migration['process'][$destination] = $entity_type_process;
+}
+
+/**
+ * Prepares variables for.
+ *
+ * Default template: paragraphs-summary.html.twig
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - buttons: An array of buttons to display in the modal form.
+ */
+function template_preprocess_paragraphs_summary(&$variables) {
+  $variables['content'] = $variables['element']['#summary']['content'];
+  $variables['behaviors'] = $variables['element']['#summary']['behaviors'];
+  $variables['expanded'] = !empty($variables['element']['#expanded']);
 }

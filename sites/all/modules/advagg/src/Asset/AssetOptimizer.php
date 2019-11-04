@@ -152,7 +152,12 @@ abstract class AssetOptimizer {
         elseif ($protocol_relative) {
           $asset['data'] = $this->convertPathProtocolRelative($asset['data']);
         }
-        $this->dnsPrefetch[] = parse_url($asset['data'], PHP_URL_HOST);
+
+        $scheme = parse_url($asset['data'], PHP_URL_SCHEME);
+        $host = parse_url($asset['data'], PHP_URL_HOST);
+        $asset_url = isset($scheme) ? "{$scheme}://{$host}" : "//{$host}";
+
+        $this->dnsPrefetch[] = $asset_url;
       }
     }
     if (!isset($GLOBALS['_advagg_prefetch'])) {

@@ -21,7 +21,6 @@ class AdvaggJsCollectionGrouper extends JsCollectionGrouper implements AssetColl
     $this->config = $config_factory->get('advagg_bundler.settings');
   }
 
-
   /**
    * {@inheritdoc}
    */
@@ -64,7 +63,8 @@ class AdvaggJsCollectionGrouper extends JsCollectionGrouper implements AssetColl
           // Group file items if their 'preprocess' flag is TRUE.
           // Help ensure maximum reuse of aggregate files by only grouping
           // together items that share the same 'group' value.
-          $group_keys = $item['preprocess'] ? [$item['type'], $item['group'], $item['browsers']] : FALSE;
+          $arrayItems = [$item['type'], $item['group'], $item['browsers']];
+          $group_keys = $item['preprocess'] ? $arrayItems : FALSE;
           break;
 
         case 'external':
@@ -96,7 +96,7 @@ class AdvaggJsCollectionGrouper extends JsCollectionGrouper implements AssetColl
           }
         }
         else {
-            $current_size += isset($item['size']) ? $item['size'] : 0;
+          $current_size += isset($item['size']) ? $item['size'] : 0;
           if ($current_size >= $split) {
             $current_size = 0;
             $current_group_keys = NULL;

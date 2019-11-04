@@ -3,12 +3,12 @@ description: 'Minify Javascript and/or CSS with a command line minifier.'
 package: 'Advanced CSS/JS Aggregation'
 # core: 8.x
 dependencies:
-  - advagg
+  - advagg:advagg
 type: module
 configure: advagg_ext_minify.settings
 
-# Information added by Drupal.org packaging script on 2018-02-15
-version: '8.x-3.5'
+# Information added by Drupal.org packaging script on 2019-06-10
+version: '8.x-4.0'
 core: '8.x'
 project: 'advagg'
-datestamp: 1518684422
+datestamp: 1560195789

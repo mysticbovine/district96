@@ -50,8 +50,8 @@ class CssMinifier extends SingleAssetOptimizerBase {
       $contents = trim($this->minifyCssMin($contents));
     }
 
-    // Ensure that $data ends with ; or }.
-    if (strpbrk(substr(trim($contents), -1), ';})') === FALSE) {
+    // If the contents are not empty, ensure that $data ends with ; or }.
+    if (trim($contents) !== "" && strpbrk(substr(trim($contents), -1), ';})') === FALSE) {
       $contents .= ';';
     }
 
@@ -75,7 +75,7 @@ class CssMinifier extends SingleAssetOptimizerBase {
    */
   protected function clean($contents, array $asset) {
     if ($encoding = Unicode::encodingFromBOM($contents)) {
-      $contents = Unicode::substr(Unicode::convertToUtf8($contents, $encoding), 1);
+      $contents = mb_substr(Unicode::convertToUtf8($contents, $encoding), 1);
     }
 
     // If no BOM is found, check for the charset attribute.

@@ -2,10 +2,6 @@ advagg_validator.validator:
   title: 'Advanced CSS/JS Aggregation Asset Validation'
   route_name: advagg_validator.csslint
   base_route: system.performance_settings
-advagg.performance:
-  title: 'Performance'
-  route_name: system.performance_settings
-  base_route: system.performance_settings
 advagg_validator.validator_csslint:
   title: 'CSSLint'
   route_name: advagg_validator.csslint

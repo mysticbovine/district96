@@ -73,7 +73,7 @@ class CssOptimizer extends AssetOptimizer {
     // If type is file but it starts with http, https, or // change it to
     // external.
     elseif ($asset['type'] === 'file' && (stripos($path, 'http') === 0 || (stripos($path, '//') === 0))) {
-      $value['type'] = 'external';
+      $asset['type'] = 'external';
     }
 
   }

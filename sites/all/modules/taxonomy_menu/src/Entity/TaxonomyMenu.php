@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains Drupal\taxonomy_menu\Entity\TaxonomyMenu.
- */
-
 namespace Drupal\taxonomy_menu\Entity;
 
 use Drupal\Core\Config\Entity\ConfigEntityBase;
@@ -42,6 +37,7 @@ use Drupal\taxonomy_menu\TaxonomyMenuInterface;
  * )
  */
 class TaxonomyMenu extends ConfigEntityBase implements TaxonomyMenuInterface {
+
   /**
    * The TaxonomyMenu ID.
    *
@@ -65,7 +61,9 @@ class TaxonomyMenu extends ConfigEntityBase implements TaxonomyMenuInterface {
   protected $vocabulary;
 
   /**
-   * @todo
+   * The depth to generate menu items.
+   *
+   * @var int
    */
   protected $depth;
 
@@ -80,14 +78,24 @@ class TaxonomyMenu extends ConfigEntityBase implements TaxonomyMenuInterface {
   /**
    * The expanded mode.
    *
-   * @var boolean
+   * @var bool
    */
   public $expanded;
 
-   /**
-   * @todo
+  /**
+   * The menu parent.
+   *
+   * @var string
    */
   protected $menu_parent;
+
+  /**
+   * The name of the description field.
+   *
+   * @var string
+   *  The machine name of the field to be used as the description.
+   */
+  protected $description_field_name;
 
   /**
    * {@inheritdoc}
@@ -115,6 +123,25 @@ class TaxonomyMenu extends ConfigEntityBase implements TaxonomyMenuInterface {
    */
   public function getMenuParent() {
     return $this->menu_parent;
+  }
+
+  /**
+   * Return if menu items should be ordered by the terms weight.
+   *
+   * Default value is TRUE.
+   *
+   * @return bool
+   *   True or false.
+   */
+  public function useTermWeightOrder() {
+    return isset($this->use_term_weight_order) ? $this->use_term_weight_order : TRUE;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getDescriptionFieldName() {
+    return $this->description_field_name;
   }
 
   /**
@@ -154,7 +181,6 @@ class TaxonomyMenu extends ConfigEntityBase implements TaxonomyMenuInterface {
     parent::delete();
   }
 
-
   /**
    * {@inheritdoc}
    */
@@ -180,7 +206,10 @@ class TaxonomyMenu extends ConfigEntityBase implements TaxonomyMenuInterface {
   }
 
   /**
+   * Get the Menu Link Manager
+   *
    * @return \Drupal\Core\Menu\MenuLinkManagerInterface
+   *   The Menu Link Manager Service
    */
   protected function getMenuLinkManager() {
     return \Drupal::service('plugin.manager.menu.link');
@@ -203,12 +232,13 @@ class TaxonomyMenu extends ConfigEntityBase implements TaxonomyMenuInterface {
    *
    * @param \Drupal\taxonomy\TermInterface $term
    *  The taxonomy term for which to build a menu link render array.
-   * @param $base_plugin_definition
+   * @param array $base_plugin_definition
    *  The base plugin definition to merge the link with.
    *
    * @return array
+   *  The menu link plugin definition.
    */
-  protected function buildMenuDefinition(TermInterface $term, $base_plugin_definition) {
+  protected function buildMenuDefinition(TermInterface $term, array $base_plugin_definition) {
     $term_id = $term->id();
     $term_url = $term->toUrl();
     $taxonomy_menu_id = $this->id();
@@ -217,7 +247,7 @@ class TaxonomyMenu extends ConfigEntityBase implements TaxonomyMenuInterface {
     // Determine parent link.
     // TODO: Evaluate use case of multiple parents (should we make many menu items?)
     $menu_parent_id = NULL;
-    /** @var $termStorage \Drupal\taxonomy\TermStorageInterface */
+    /* @var $termStorage \Drupal\taxonomy\TermStorageInterface */
     $termStorage = $this->entityTypeManager()->getStorage('taxonomy_term');
     $parents = $termStorage->loadParents($term_id);
     $parents = array_values($parents);
@@ -226,36 +256,43 @@ class TaxonomyMenu extends ConfigEntityBase implements TaxonomyMenuInterface {
       $menu_parent_id = $this->buildMenuPluginId($parents[0]);
     }
 
-    // Please note: if menu_parent_id is NULL, it will not update the hierarchy properly.
+    // Note: if menu_parent_id is NULL, it will not update the hierarchy properly.
     if (empty($menu_parent_id)) {
       $menu_parent_id = str_replace($this->getMenu() . ':', '', $this->getMenuParent());
     }
 
     // TODO: Consider implementing a forced weight based on taxonomy tree.
-
     // Generate link.
     $arguments = ['taxonomy_term' => $term_id];
 
     $link = $base_plugin_definition;
 
-    $link += array(
+    $link += [
       'id' => $this->buildMenuPluginId($term),
       'title' => $term->label(),
       'description' => $term->getDescription(),
       'menu_name' => $menu_id,
       'expanded' => $this->expanded,
-      'metadata' => array(
+      'metadata' => [
         'taxonomy_menu_id' => $taxonomy_menu_id,
         'taxonomy_term_id' => $term_id,
-      ),
+      ],
       'route_name' => $term_url->getRouteName(),
       'route_parameters' => $term_url->getRouteParameters(),
       'load arguments'  => $arguments,
       'parent' => $menu_parent_id,
       'provider' => 'taxonomy_menu',
       'class' => 'Drupal\taxonomy_menu\Plugin\Menu\TaxonomyMenuMenuLink',
-    );
+    ];
+
+    // Order by terms weight if configured for this taxonomy_menu.
+    if ($this->useTermWeightOrder()) {
+      $link['weight'] = $term->getWeight();
+    }
+
+    \Drupal::moduleHandler()->alter('taxonomy_menu_link', $link, $term);
 
     return $link;
   }
+
 }

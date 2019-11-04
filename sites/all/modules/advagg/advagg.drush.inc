@@ -135,8 +135,11 @@ function drush_advagg_clear_all_files() {
   $pub = \Drupal::service('file_system')->realpath('public://');
   $css_count = count(glob($pub . '/css/optimized/*.css'));
   $js_count = count(glob($pub . '/js/optimized/*.js'));
-  file_unmanaged_delete_recursive('public://js/optimized/');
-  file_unmanaged_delete_recursive('public://css/optimized/');
+  foreach (['public://js/optimized', 'public://css/optimized'] as $path) {
+    if (file_exists($path)) {
+      file_unmanaged_delete_recursive($path);
+    }
+  }
 
   // Report back the results.
   drush_log(dt('All AdvAgg optimized files have been deleted. %css_count CSS files and %js_count JS files have been removed.', [
