@@ -1,0 +1,24 @@
+<?php
+
+/**
+ * @file
+ * Install, update, and uninstall functions for the Simple FB Connect module.
+ */
+
+/**
+ * Implements hook_requirements().
+ */
+function simple_fb_connect_requirements($phase) {
+  $requirements = array();
+
+  if ($phase == 'install') {
+    if (!class_exists('\Facebook\Facebook')) {
+      $requirements['simple_fb_connect'] = [
+        'description' => t('Simple FB Connect requires Facebook PHP SDK library. Make sure the library is installed via Composer. Check README.txt for installation instructions.'),
+        'severity' => REQUIREMENT_ERROR,
+      ];
+    }
+  }
+
+  return $requirements;
+}

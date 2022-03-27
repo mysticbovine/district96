@@ -1,0 +1,67 @@
+<?php
+
+use Drupal\Core\Url;
+use Drupal\Component\Utility\Unicode;
+
+/*
+ *  Implements hook_theme().
+ */
+
+function better_messages_theme() {
+    return array(
+	'better_messages_default' => array(
+	    'template' => 'default',
+	    'variables' => array(
+		'message_list' => drupal_get_messages(),
+	    )),
+    );
+}
+
+/*
+  Implementation of hook_theme_registry_alter to add better_messages theme function
+ */
+
+function better_messages_theme_registry_alter(&$theme_registry) {
+    if (better_messages_process_settings()) {
+	$theme_registry['status_messages']['function'] = "better_messages_view";
+    }
+}
+
+/*
+  Call to better_messages theme function
+ */
+
+function better_messages_view($variables) {
+    $message = \Drupal::service('better_message_view')->betterMessagesView($variables['message_list']);
+    return \Drupal::service('renderer')->render($message);
+}
+
+/**
+ * Helper function for visibility settings
+ * @return bool
+ */
+function better_messages_process_settings() {
+    $settings = \Drupal::config('better_messages.settings')->get();
+
+    $account = \Drupal::currentUser();
+
+    if ($account->id() == 1 && $settings['extra']['admin'] == 0) {
+	return false;
+    }
+    if ($settings['extra']['pages']) {
+	$current_path = Url::fromRoute('<current>')->toString();
+	$pages = Unicode::strtolower($settings['extra']['pages']);
+
+	$path_alias = Unicode::strtolower(\Drupal::service('path.alias_storage')->lookupPathAlias($current_path, null));
+
+	$page_match = \Drupal::service('path.matcher')->matchPath($path_alias, $pages);
+
+
+	if ($path_alias != $current_path) {
+	    $page_match = $page_match || \Drupal::service('path.matcher')->matchPath($current_path, $pages);
+	}
+	return !($settings['extra']['visibility'] xor $page_match);
+    }
+
+    return true;
+}

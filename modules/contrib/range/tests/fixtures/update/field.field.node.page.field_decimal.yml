@@ -1,0 +1,33 @@
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_decimal
+    - node.type.page
+  module:
+    - range
+id: node.page.field_decimal
+field_name: field_decimal
+entity_type: node
+bundle: page
+label: Decimal
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  from:
+    prefix: ''
+    suffix: ''
+  to:
+    prefix: ''
+    suffix: ''
+  field:
+    prefix: ''
+    suffix: ''
+  combined:
+    prefix: ''
+    suffix: ''
+field_type: range_decimal

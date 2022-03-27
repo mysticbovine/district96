@@ -1,0 +1,39 @@
+# This is the DrupalCI testbot build file for Range module.
+# Learn to make one for your own drupal.org project:
+# https://www.drupal.org/drupalorg/docs/drupal-ci/customizing-drupalci-testing
+# https://www.drupal.org/docs/updating-drupal/how-to-prepare-your-drupal-7-or-8-site-for-drupal-9/deprecation-checking-and#s-drupalorg-testing-support-for-deprecation-checking
+build:
+  assessment:
+    validate_codebase:
+      host_command:
+        commands:
+          # \Drupal\TestTools\PhpUnitCompatibility\PhpUnit8 cannot detect PHPUnit source directory when running PHPStan check. See https://www.drupal.org/project/drupal/issues/3143604
+          - sudo -u www-data curl https://www.drupal.org/files/issues/2020-05-28/3143604-2.patch | sudo -u www-data patch -p1 --verbose
+      phplint:
+      csslint:
+        halt-on-fail: false
+      phpcs:
+        # phpcs will use core's specified version of Coder.
+        sniff-all-files: false
+        halt-on-fail: false
+      phpstan:
+        halt-on-fail: false
+    testing:
+      # run_tests task is executed several times in order of performance speeds.
+      # suppress-deprecations is false in order to be alerted to usages of
+      # deprecated code.
+      run_tests.phpunit:
+        types: 'PHPUnit-Unit'
+        testgroups: '--all'
+        suppress-deprecations: false
+        halt-on-fail: false
+      run_tests.kernel:
+        types: 'PHPUnit-Kernel'
+        testgroups: '--all'
+        suppress-deprecations: false
+        halt-on-fail: false
+      run_tests.functional:
+        types: 'PHPUnit-Functional'
+        testgroups: '--all'
+        suppress-deprecations: false
+        halt-on-fail: false

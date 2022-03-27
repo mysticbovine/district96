@@ -1,0 +1,4 @@
+services:
+  webformautosave.helper:
+    class: \Drupal\webformautosave\AutosaveHelper
+    arguments: ['@webform_submission_log.manager']

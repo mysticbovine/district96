@@ -1,0 +1,56 @@
+{#
+/**
+ * @file
+ * Bootstrap Layouts: "1 Column" template.
+ *
+ * Available layout variables:
+ * - wrapper: Wrapper element for the layout container.
+ * - attributes: Wrapper attributes for the layout container.
+ *
+ * Available region variables:
+ * - main
+ *
+ * Each region variable contains the following properties:
+ * - wrapper: The HTML element to use to wrap this region.
+ * - attributes: The HTML attributes to use on the wrapper for this region.
+ * - content: The content to go inside the wrapper for this region.
+ */
+#}
+<{{ wrapper }}{{ attributes }}>
+  {{ title_suffix.contextual_links }}
+  <{{ main.wrapper }}{{ main.attributes }}>
+  {#  Figure out the date #}
+  {# Assign dod and dob #}
+   {% set dob = main.content.field_birthday.0 %}
+   {% set dod = main.content.field_date_of_passing.0 %}
+
+
+  <div class="row flex-container-center-horizontal-row">
+    <div class="col-sm-4 flex-item">
+    
+      {{main.content.field_member}}
+      {% if main.content.field_birthday.0 %}
+        <h5 class="text-center">{{dob}} - {{dod}}</h5>
+        {% else %}
+          <h5 class="text-center">{{dod}}</h5>
+    {% endif %}
+    </div>
+
+    <div class="col-sm-8 flex-item">
+     {{ main.content.body }}
+      
+    </div>
+  </div>
+    <div class="row">
+    <div class="col-sm-4">
+    
+      
+    </div>
+
+    <div class="col-sm-8">
+      {{ main.content|without('field_birthday', 'field_date_of_passing','field_member','body') }}
+    </div>
+  </div>
+    
+  </{{ main.wrapper }}>
+</{{ wrapper }}>

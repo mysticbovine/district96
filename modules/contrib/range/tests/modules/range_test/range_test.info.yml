@@ -1,0 +1,12 @@
+name: Range Test
+type: module
+description: 'Provides default views for tests.'
+package: Testing
+dependencies:
+  - range:range
+  - drupal:views
+
+# Information added by Drupal.org packaging script on 2020-06-02
+version: '8.x-1.2'
+project: 'range'
+datestamp: 1591131490

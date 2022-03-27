@@ -1,0 +1,67 @@
+<?php
+/**
+ * @file
+ * Bootstrap sub-theme.
+ *
+ * Place your custom PHP code in this file.
+ */ 
+/**
+ * Implements hook_ENTITY_TYPE_update().
+ *
+ * - Here my theory was that if the profile owner was the file owner, there
+ *   wouldn't be a problem. But this alone didn't fix the problem.
+ *
+ * @param \Drupal\Core\Entity\EntityInterface $entity
+ */
+function district96_profile_update(EntityInterface $entity) {
+    /** @var \Drupal\profile\Entity\Profile $entity */
+    foreach ($entity->getFields() as $field) {
+      if ($field instanceof FileFieldItemList) {
+        $field_values = $field->getValue();
+  
+        if (!empty($field_values)) {
+          foreach ($field_values as $file_data) {
+  
+            if (!empty($file_data['target_id'])) {
+              $file = File::load($file_data['target_id']);
+  
+              if ($file->getOwnerId() != $entity->getOwnerId()) {
+                $file->setOwner($entity->getOwner());
+                $file->save();
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  /**
+   * Implements hook_ENTITY_TYPE_insert().
+   *
+   * - Same as epi_profile_profile_update().
+   *
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   */
+  function district96_profile_insert(EntityInterface $entity) {
+    district96_profile_update($entity);
+  }
+  
+  /**
+   * Implements hook_ENTITY_TYPE_access().
+   *
+   * - This fix, along with forcing the file owner to be the same as the profile owner, actually worked.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   * @param $operation
+   * @param \Drupal\Core\Session\AccountInterface $account
+   *
+   * @return \Drupal\Core\Access\AccessResultInterface
+   */
+  function district96_file_access(EntityInterface $entity, $operation, AccountInterface $account) {
+    if ($operation === 'view' && $account->id() === $entity->getOwnerId()) {
+      return AccessResult::allowed();
+    }
+  
+    return AccessResult::neutral();
+  }

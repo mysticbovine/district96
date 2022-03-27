@@ -1,0 +1,3 @@
+services:
+  better_message_view:
+    class: Drupal\better_messages\Controller\BetterMessagesController
