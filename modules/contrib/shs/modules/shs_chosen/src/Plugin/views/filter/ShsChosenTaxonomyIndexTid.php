@@ -4,7 +4,10 @@ namespace Drupal\shs_chosen\Plugin\views\filter;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\shs\Plugin\views\filter\ShsTaxonomyIndexTid;
+use Drupal\taxonomy\VocabularyStorageInterface;
+use Drupal\taxonomy\TermStorageInterface;
 
 /**
  * Filter by term id using "Simple hierarchical select: chosen" widgets.
@@ -14,6 +17,16 @@ use Drupal\shs\Plugin\views\filter\ShsTaxonomyIndexTid;
  * @ViewsFilter("shs_chosen_taxonomy_index_tid")
  */
 class ShsChosenTaxonomyIndexTid extends ShsTaxonomyIndexTid {
+
+  /**
+   * {@inheritdoc}
+   */
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, VocabularyStorageInterface $vocabulary_storage, TermStorageInterface $term_storage, AccountInterface $current_user = NULL) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition, $vocabulary_storage, $term_storage, $current_user);
+
+    // Set translation context.
+    $this->translationContext = 'shs_chosen:taxonomy_index_tid';
+  }
 
   /**
    * {@inheritdoc}
@@ -74,7 +87,7 @@ class ShsChosenTaxonomyIndexTid extends ShsTaxonomyIndexTid {
       '#type' => 'checkbox',
       '#title' => $this->t('Custom chosen settings'),
       '#default_value' => !empty($this->options['expose']['chosen_override']),
-      '#description' => $this->t('Override !settings made for chosen.', ['!settings' => Link::createFromRoute('global settings', 'chosen.admin')->toString()]),
+      '#description' => $this->t('Override @settings made for chosen.', ['@settings' => Link::createFromRoute('global settings', 'chosen.admin')->toString()]),
     ];
 
     $chosen_settings = $this->options['expose'] + $this->defaultChosenSettings();

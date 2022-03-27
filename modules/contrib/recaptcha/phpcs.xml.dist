@@ -7,6 +7,4 @@
   <!-- Include existing standards. -->
   <rule ref="Drupal"/>
   <rule ref="DrupalPractice"/>
-
-  <exclude-pattern>recaptcha-php/*</exclude-pattern>
 </ruleset>

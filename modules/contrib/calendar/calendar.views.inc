@@ -13,7 +13,7 @@ use Drupal\field\FieldStorageConfigInterface;
 function calendar_views_data_alter(array &$data) {
   foreach ($data as $table_name => $table_data) {
     foreach ($table_data as $property_name => $properties) {
-      if (isset($properties['argument']) && $properties['argument']['id'] === 'date') {
+      if (isset($properties['argument']['id']) && $properties['argument']['id'] === 'date') {
         $data[$table_name] += _calendar_create_field_arguments($property_name);
       }
     }
@@ -29,9 +29,9 @@ function calendar_views_data_alter(array &$data) {
 }
 
 /**
- * Create all the granularity arguments for a a field.
+ * Create all the granularity arguments for a field.
  *
- * @param $field_id
+ * @param mixed $field_id
  * @param string $group
  *
  * @return mixed

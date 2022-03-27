@@ -34,7 +34,7 @@ class SystemSendEmailTest extends RulesIntegrationTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
     $this->mailManager = $this->prophesize(MailManagerInterface::class);
     $this->container->set('plugin.manager.mail', $this->mailManager->reveal());

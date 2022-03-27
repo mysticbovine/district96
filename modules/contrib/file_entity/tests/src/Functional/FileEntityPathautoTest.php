@@ -37,7 +37,7 @@ class FileEntityPathautoTest extends FileEntityTestBase {
 
     $file = $this->createFileEntity(['filename' => 'example.png']);
 
-    $this->assertPathAliasExists('/files/examplepng');
+    $this->assertPathAliasExists('/files/examplepng', NULL, NULL, 'file alias exists');
   }
 
 }

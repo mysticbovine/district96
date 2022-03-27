@@ -6,6 +6,7 @@
  */
 
 use Drupal\Core\Database\Database;
+use Drupal\taxonomy\TermInterface;
 
 /**
  * List all javascript classes used to create models and views in the widget.
@@ -48,27 +49,6 @@ function shs_get_class_definitions($field_name, array $context = []) {
   \Drupal::moduleHandler()->alter($hooks, $definitions, $context);
 
   return $definitions;
-}
-
-/**
- * Load parents for default values.
- *
- * @param array $default_values
- *   List of default values of the widget.
- * @param array $settings
- *   Widget settings.
- *
- * @return array
- *   List of parents for each default value.
- *
- * @deprecated since version 8.x-1.0-alpha2+1-dev
- *   This function has been replaced by service 'shs.widget_defaults' and will
- *   be removed in version 8.x-1.1.
- */
-function shs_term_get_parents(array $default_values, array $settings, $target_type) {
-  /** @var Drupal\shs\WidgetDefaultsInterface $widget_defaults */
-  $widget_defaults = \Drupal::service('shs.widget_defaults');
-  return $widget_defaults->getParentDefaults($default_values, $settings['any_value'], $target_type);
 }
 
 /**
@@ -120,17 +100,36 @@ function shs_term_load_all_parents($tid, $target_type = 'taxonomy_term') {
 /**
  * Determine whether a term has children.
  *
- * @param int $tid
+ * @param mixed $tid
  *   Term ID to check existence of children for.
  *
  * @return bool
  *   TRUE if the term has any children, FALSE otherwise.
  */
-function shs_term_has_children($tid) {
+function shs_term_has_children($tid): bool {
+  if (empty($tid)) {
+    return FALSE;
+  }
+
+  $current_user = \Drupal::currentUser();
+
+  /** @var \Drupal\taxonomy\TermInterface $term */
+  $term = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($tid);
+  if (!($term instanceof TermInterface)) {
+    return FALSE;
+  }
+  $access_unpublished = $current_user->hasPermission('administer taxonomy') || $current_user->hasPermission('view unpublished terms in ' . $term->bundle());
+
   $query = Database::getConnection()->select('taxonomy_term_field_data', 't');
   $query->innerJoin('taxonomy_term__parent', 'p', 'p.entity_id = t.tid');
   $query->condition('p.parent_target_id', $tid);
   $query->addTag('term_access');
+
+  if (!$access_unpublished) {
+    // Filter to get published terms only.
+    $query->condition('t.status', 1);
+  }
+
   return ($query->countQuery()->execute()->fetchField() > 0);
 }
 

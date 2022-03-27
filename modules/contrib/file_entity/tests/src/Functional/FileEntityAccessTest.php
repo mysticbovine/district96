@@ -71,7 +71,7 @@ class FileEntityAccessTest extends FileEntityTestBase {
 
     // A user with 'administer files' should not access CRUD operations.
     $web_user = $this->drupalCreateUser(array('administer files'));
-    $this->assertFileEntityAccess(array('view' => FALSE, 'download' => FALSE, 'update' => FALSE, 'delete' => FALSE), $file, $web_user);
+    $this->assertFileEntityAccess(array('view' => FALSE, 'download' => TRUE, 'update' => FALSE, 'delete' => FALSE), $file, $web_user);
 
     // User cannot 'view files'.
     $web_user = $this->drupalCreateUser(array('create files'));
@@ -85,9 +85,10 @@ class FileEntityAccessTest extends FileEntityTestBase {
     $file->setOwner($web_user)->save();
     $this->assertFileEntityAccess(array('view' => TRUE), $file, $web_user);
 
-    // User can download own files but no other files.
+    // Public files can always be downloaded.
+    // @todo Review download permissions.
     $web_user = $this->drupalCreateUser(array('create files', 'download own image files'));
-    $this->assertFileEntityAccess(array('download' => FALSE), $file, $web_user);
+    $this->assertFileEntityAccess(array('download' => TRUE), $file, $web_user);
     $file->setOwner($web_user)->save();
     $this->assertFileEntityAccess(array('download' => TRUE), $file, $web_user);
 
@@ -155,7 +156,7 @@ class FileEntityAccessTest extends FileEntityTestBase {
     $web_user = $this->drupalCreateUser(array());
     $this->drupalLogin($web_user);
     $this->drupalGet($url, array('query' => array('token' => $file->getDownloadToken())));
-    $this->assertResponse(403, 'Users without access can not download the file');
+    $this->assertSession()->statusCodeEquals(200);
     $web_user = $this->drupalCreateUser(array('download any document files'));
     $this->drupalLogin($web_user);
     $this->drupalGet($url, array('query' => array('token' => $file->getDownloadToken())));
@@ -267,6 +268,10 @@ class FileEntityAccessTest extends FileEntityTestBase {
     ]);
     $this->drupalLogin($account);
     $image = current($this->files['image']);
+
+    // Use a private file to check download access.
+    $image = \file_copy($image, 'private://' . $image->getFilename());
+
     $node = Node::create([
       'title' => 'Title',
       'type' => 'article',

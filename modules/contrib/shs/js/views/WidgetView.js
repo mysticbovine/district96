@@ -61,11 +61,18 @@
      */
     render: function () {
       var widget = this;
-      widget.$el.prop('id', widget.container.app.$el.prop('id') + '-shs-' + widget.container.model.get('delta') + '-' + widget.model.get('level'))
+      var elemId = widget.container.app.$el.prop('id') + '-shs-' + widget.container.model.get('delta') + '-' + widget.model.get('level');
+      widget.$el.prop('id', elemId)
+              .attr('aria-labelledby', elemId + '-label')
               .addClass('shs-select')
-              // Add core class to apply default styles to the element.
+              // Add core classes to apply default styles to the element.
               .addClass('form-select')
+              .addClass('form-element')
+              .addClass('form-element--type-select')
               .hide();
+      if (widget.$el.attr('style') && (widget.$el.attr('style') === '')) {
+        widget.$el.removeAttr('style');
+      }
       if (widget.model.get('dataLoaded')) {
         widget.$el.show();
       }
@@ -88,14 +95,20 @@
       // Remove all existing options.
       $('option', widget.$el).remove();
 
-      // Add "any" option.
-      widget.$el.append($('<option>').text(widget.container.app.getSetting('anyLabel')).val(widget.container.app.getSetting('anyValue')));
+      var defaultValue = widget.model.get('defaultValue');
+      var defaultValueExistsOnOptions = false;
 
       // Create options from collection.
       widget.model.itemCollection.each(function (item) {
         if (!item.get('tid')) {
           return;
         }
+
+        // We know that default value exists on options.
+        if (defaultValue == item.get('tid')) {
+          defaultValueExistsOnOptions = true;
+        }
+
         var optionModel = new Drupal.shs.classes[widget.container.app.getConfig('fieldName')].models.widgetItemOption({
           label: item.get('name'),
           value: item.get('tid'),
@@ -107,6 +120,11 @@
         widget.$el.append(option.render().$el);
       });
 
+      // Add "any" option.
+      if (widget.model.itemCollection.length > 1) {
+        widget.$el.append($('<option>').text(widget.container.app.getSetting('anyLabel')).val(widget.container.app.getSetting('anyValue')));
+      }
+
       var $container = $('.shs-widget-container[data-shs-level="' + widget.model.get('level') + '"]', widget.container.$el);
       if (widget.model.itemCollection.length === 0 && !widget.container.app.getSetting('create_new_levels')) {
         // Do not create the widget.
@@ -117,17 +135,36 @@
       // Create label if necessary.
       if ((widget.container.model.get('delta') === 0) || widget.container.app.getConfig('display.labelsOnEveryLevel')) {
         var labels = widget.container.app.getConfig('labels') || [];
-        var label = false;
-        if (labels.hasOwnProperty(widget.model.get('level')) && (label = labels[widget.model.get('level')]) !== false) {
-          $('<label>')
-                  .prop('for', widget.$el.prop('id'))
-                  .text(label)
-                  .appendTo($container);
+        var label = widget.container.app.getConfig('bundleLabel');
+        // Use value of parent on level > 0.
+        if (widget.model.get('level') > 0) {
+          var parentModel = widget.container.collection.models[widget.model.get('level') - 1];
+          var parentValue = parentModel.get('defaultValue');
+          var parentItem = parentModel.findItemModel(parentValue);
+          if (parentItem) {
+            label = parentItem.get('name');
+          }
         }
+        // Allow custom label overrides.
+        if (labels.hasOwnProperty(widget.model.get('level')) && (labels[widget.model.get('level')] !== false)) {
+          label = labels[widget.model.get('level')];
+        }
+        $('<label>')
+                .prop('id', widget.$el.prop('id') + '-label')
+                .addClass('visually-hidden')
+                .text(label)
+                .appendTo($container);
+        widget.$el.prop('aria-labelled-by', widget.$el.prop('id') + '-label');
       }
 
-      // Set default value of widget.
-      widget.$el.val(widget.model.get('defaultValue'));
+      // If the default value is not in the options list and not equals to
+      // "any" value, we force it to be "any" value. Otherwise the list displays
+      // an empty value.
+      if (!defaultValueExistsOnOptions && (defaultValue !== widget.container.app.getSetting('anyValue'))) {
+        defaultValue = widget.container.app.getSetting('anyValue');
+      }
+
+      widget.$el.val(defaultValue);
 
       // Add widget to container.
       if (widget.model.get('dataLoaded')) {

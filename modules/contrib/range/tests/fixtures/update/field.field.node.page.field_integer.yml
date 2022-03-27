@@ -24,10 +24,4 @@ settings:
   to:
     prefix: 'TO PREFIX'
     suffix: 'TO SUFFIX'
-  field:
-    prefix: 'FIELD PREFIX'
-    suffix: 'FIELD SUFFIX'
-  combined:
-    prefix: 'COMBINED PREFIX'
-    suffix: 'COMBINED SUFFIX'
 field_type: range_integer

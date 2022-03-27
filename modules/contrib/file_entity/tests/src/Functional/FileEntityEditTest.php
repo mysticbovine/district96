@@ -94,7 +94,12 @@ class FileEntityEditTest extends FileEntityTestBase {
       'uid[0][target_id]' => 'invalid-name',
     );
     $this->drupalPostForm('file/' . $file->id() . '/edit', $edit, t('Save'));
-    $this->assertText('There are no entities matching "invalid-name".');
+    if (\version_compare(\Drupal::VERSION, '9.2', '<')) {
+      $this->assertSession()->pageTextContains('There are no entities matching "invalid-name".');
+    }
+    else {
+      $this->assertSession()->pageTextContains('There are no users matching "invalid-name".');
+    }
 
     // Change the associated user field to the anonymous user (uid 0).
     $edit = array();

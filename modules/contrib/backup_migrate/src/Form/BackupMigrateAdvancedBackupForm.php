@@ -2,7 +2,7 @@
 
 namespace Drupal\backup_migrate\Form;
 
-use BackupMigrate\Drupal\Config\DrupalConfigHelper;
+use Drupal\backup_migrate\Drupal\Config\DrupalConfigHelper;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 
@@ -22,6 +22,10 @@ class BackupMigrateAdvancedBackupForm extends FormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
+    // Leave a message about the Entire Site backup.
+    // @see https://www.drupal.org/project/backup_migrate/issues/3151290
+    $this->messenger()->addMessage($this->t('It is recommended to not use the "Entire site" backup as it has a tendency of failing on anything but the tiniest of sites. Hopefully this will be fixed in a future release.'));
+
     $form = [];
 
     // Theme the form if we want it inline.
@@ -36,7 +40,7 @@ class BackupMigrateAdvancedBackupForm extends FormBase {
       "#collapsed" => FALSE,
       "#tree" => FALSE,
     ];
-    $form['source']['source_id'] = DrupalConfigHelper::getSourceSelector($bam, t('Backup Source'));
+    $form['source']['source_id'] = DrupalConfigHelper::getSourceSelector($bam, $this->t('Backup Source'));
     $form['source']['source_id']['#default_value'] = \Drupal::config('backup_migrate.settings')->get('backup_migrate_source_id');
 
     $form += DrupalConfigHelper::buildAllPluginsForm($bam->plugins(), 'backup');
@@ -53,8 +57,8 @@ class BackupMigrateAdvancedBackupForm extends FormBase {
     else {
       $filename_token = [
         '#type' => 'markup',
-        '#markup' => 'In order to use tokens for File Name, please install & enable <a href="https://www.drupal.org/project/token" arget="_blank">Token module</a>. <p></p>'
-        ];
+        '#markup' => 'In order to use tokens for File Name, please install & enable <a href="https://www.drupal.org/project/token" arget="_blank">Token module</a>. <p></p>',
+      ];
     }
     array_splice($form['file'], 4, 0, ['filename_token' => $filename_token]);
 
@@ -66,7 +70,7 @@ class BackupMigrateAdvancedBackupForm extends FormBase {
       "#tree" => FALSE,
     ];
 
-    $form['destination']['destination_id'] = DrupalConfigHelper::getDestinationSelector($bam, t('Backup Destination'));
+    $form['destination']['destination_id'] = DrupalConfigHelper::getDestinationSelector($bam, $this->t('Backup Destination'));
     $form['destination']['destination_id']['#default_value'] = \Drupal::config('backup_migrate.settings')->get('backup_migrate_destination_id');
 
     $form['quickbackup']['submit'] = [
@@ -88,7 +92,14 @@ class BackupMigrateAdvancedBackupForm extends FormBase {
 
     // Let the plugins validate their own config data.
     if ($plugin_errors = $bam->plugins()->map('configErrors', ['operation' => 'backup'])) {
+      $has_token_module = \Drupal::moduleHandler()->moduleExists('token');
+
       foreach ($plugin_errors as $plugin_key => $errors) {
+        if ($plugin_key == "namer" && isset($errors[0])) {
+          if ($errors[0]->getFieldKey() == "filename" && $has_token_module) {
+            continue;
+          }
+        }
         foreach ($errors as $error) {
           $form_state->setErrorByName($plugin_key . '][' . $error->getFieldKey(), $this->t($error->getMessage(), $error->getReplacement()));
         }

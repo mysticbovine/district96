@@ -2,8 +2,8 @@
 
 namespace Drupal\range\Plugin\views\filter;
 
-use Drupal\Core\Database\Query\Condition;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\range\D8Compatibility\ViewsSqlQueryGetConnectionTrait;
 use Drupal\views\Plugin\views\filter\FilterPluginBase;
 
 /**
@@ -14,6 +14,8 @@ use Drupal\views\Plugin\views\filter\FilterPluginBase;
  * @ViewsFilter("range")
  */
 class Range extends FilterPluginBase {
+
+  use ViewsSqlQueryGetConnectionTrait;
 
   /**
    * {@inheritdoc}
@@ -98,10 +100,12 @@ class Range extends FilterPluginBase {
     list($op_left, $op_right) = array_slice($operators, $inlude_endpoints ? 2 : 0, 2);
 
     if ($this->operator === 'within') {
-      $this->query->addWhere($this->options['group'], (new Condition('AND'))->condition($field_from, $this->value, $op_left)->condition($field_to, $this->value, $op_right));
+      $condition = $this->getDatabaseConnection($this->query)->condition('AND');
+      $this->query->addWhere($this->options['group'], $condition->condition($field_from, $this->value, $op_left)->condition($field_to, $this->value, $op_right));
     }
     else {
-      $this->query->addWhere($this->options['group'], (new Condition('OR'))->condition($field_from, $this->value, $op_right)->condition($field_to, $this->value, $op_left));
+      $condition = $this->getDatabaseConnection($this->query)->condition('OR');
+      $this->query->addWhere($this->options['group'], $condition->condition($field_from, $this->value, $op_right)->condition($field_to, $this->value, $op_left));
     }
   }
 

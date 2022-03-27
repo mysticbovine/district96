@@ -1,0 +1,8 @@
+status: true
+dependencies:
+  module:
+    - node
+id: node.unformatted_formatter
+label: Unformatted formatter
+targetEntityType: node
+cache: true

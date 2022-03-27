@@ -2,7 +2,6 @@
 
 namespace Drupal\calendar\Plugin\ViewsTemplateBuilder;
 
-
 use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\views_templates\Plugin\ViewsDuplicateBuilderBase;
@@ -21,16 +20,18 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class ViewsFieldTemplate extends ViewsDuplicateBuilderBase {
 
   /**
-   * @var  \Drupal\Core\Entity\EntityFieldManagerInterface
+   * The entity field manager object.
+   *
+   * @var \Drupal\Core\Entity\EntityFieldManagerInterface
    */
-  protected $field_manager;
+  protected $fieldManager;
 
   /**
    * {@inheritdoc}
    */
   public function __construct(array $configuration, $plugin_id, $plugin_definition, ViewsTemplateLoaderInterface $loader, EntityFieldManagerInterface $manager) {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $loader);
-    $this->field_manager = $manager;
+    $this->fieldManager = $manager;
 
   }
 
@@ -61,25 +62,28 @@ class ViewsFieldTemplate extends ViewsDuplicateBuilderBase {
   /**
    * {@inheritdoc}
    */
-  protected function alterViewTemplateAfterCreation(array &$view_template, $options = NULL) {
+  protected function alterViewTemplateAfterCreation(array &$view_template, array $options = NULL) {
     parent::alterViewTemplateAfterCreation($view_template, $options);
-    $field_defs = $this->field_manager->getBaseFieldDefinitions($this->getDefinitionValue('entity_type'));
+    $field_defs = $this->fieldManager->getBaseFieldDefinitions($this->getDefinitionValue('entity_type'));
     if (empty($field_defs['status'])) {
       // If entity doesn't have a base field status remove it from View filter.
       unset($view_template['display']['default']['display_options']['filters']['status']);
     }
-    $this->field_manager->getFieldDefinitions($this->getDefinitionValue('entity_type'), 'event');
-    $this->field_manager->getFieldStorageDefinitions('node');
+    $this->fieldManager->getFieldDefinitions($this->getDefinitionValue('entity_type'), 'event');
+    $this->fieldManager->getFieldStorageDefinitions('node');
   }
 
-  public function buildConfigurationForm($form, FormStateInterface $form_state) {
+  /**
+   * {@inheritDoc}
+   */
+  public function buildConfigurationForm(array $form, FormStateInterface $form_state) {
     $config_form = parent::buildConfigurationForm($form, $form_state);
     $replacements = $this->getDefinitionValue('replacements');
     if (isset($replacements['base_path'])) {
       $config_form['base_path'] = [
         '#type' => 'textfield',
         '#title' => $this->t('Base View Path'),
-        '#description' => $this->t('@todo add description'),
+        '#description' => $this->t('This view will be displayed by visiting this path on your site.'),
         '#default_value' => $replacements['base_path'],
         '#required' => TRUE,
         // @todo add Validation for path element. From Views?
@@ -87,6 +91,5 @@ class ViewsFieldTemplate extends ViewsDuplicateBuilderBase {
     }
     return $config_form;
   }
-
 
 }

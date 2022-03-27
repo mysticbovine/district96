@@ -63,6 +63,12 @@ class FileEntityAccessControlHandler extends FileAccessControlHandler {
       }
     }
 
+    // Public files can always be downloaded, fix for regression after
+    // SA-CORE-2020-011.
+    if ($operation == 'download' && StreamWrapperManager::getScheme($entity->getFileUri()) == 'public') {
+      return AccessResult::allowed();
+    }
+
     // User can perform these operations if they have the "any" permission or if
     // they own it and have the "own" permission.
     if (in_array($operation, array('download', 'update', 'delete'))) {

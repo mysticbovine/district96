@@ -3,11 +3,13 @@
 namespace Drupal\shs\Plugin\Field\FieldWidget;
 
 use Drupal\Component\Utility\Html;
+use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\Plugin\Field\FieldWidget\OptionsSelectWidget;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\shs\StringTranslationTrait;
 use Drupal\shs\WidgetDefaults;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -24,6 +26,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * )
  */
 class OptionsShsWidget extends OptionsSelectWidget implements ContainerFactoryPluginInterface {
+
+  use StringTranslationTrait;
 
   /**
    * The widget defaults SHS service.
@@ -50,7 +54,10 @@ class OptionsShsWidget extends OptionsSelectWidget implements ContainerFactoryPl
    */
   public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, array $third_party_settings, WidgetDefaults $widget_defaults) {
     parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $third_party_settings);
+
     $this->widgetDefaults = $widget_defaults;
+    // Set translation context.
+    $this->translationContext = 'shs:options_widget';
   }
 
   /**
@@ -88,16 +95,16 @@ class OptionsShsWidget extends OptionsSelectWidget implements ContainerFactoryPl
 
     $element['create_new_items'] = [
       '#type' => 'checkbox',
-      '#title' => t('Allow creating new items'),
+      '#title' => $this->t('Allow creating new items'),
       '#default_value' => $this->getSetting('create_new_items'),
-      '#description' => t('Allow users to create new items of the source bundle.'),
+      '#description' => $this->t('Allow users to create new items of the source bundle.'),
       '#disabled' => TRUE,
     ];
     $element['create_new_levels'] = [
       '#type' => 'checkbox',
-      '#title' => t('Allow creating new levels'),
+      '#title' => $this->t('Allow creating new levels'),
       '#default_value' => $this->getSetting('create_new_levels'),
-      '#description' => t('Allow users to create new children for items which do not have any children yet.'),
+      '#description' => $this->t('Allow users to create new children for items which do not have any children yet.'),
       '#states' => [
         'visible' => [
           ':input[name="fields[' . $field_name . '][settings_edit_form][settings][create_new_items]"]' => ['checked' => TRUE],
@@ -107,9 +114,9 @@ class OptionsShsWidget extends OptionsSelectWidget implements ContainerFactoryPl
     ];
     $element['force_deepest'] = [
       '#type' => 'checkbox',
-      '#title' => t('Force selection of deepest level'),
+      '#title' => $this->t('Force selection of deepest level'),
       '#default_value' => $this->getSetting('force_deepest'),
-      '#description' => t('Force users to select terms from the deepest level.'),
+      '#description' => $this->t('Force users to select terms from the deepest level.'),
     ];
 
     return $element;
@@ -122,22 +129,22 @@ class OptionsShsWidget extends OptionsSelectWidget implements ContainerFactoryPl
     $summary = parent::settingsSummary();
 
     if ($this->getSetting('create_new_items')) {
-      $summary[] = t('Allow creation of new items');
+      $summary[] = $this->t('Allow creation of new items');
       if ($this->getSetting('create_new_levels')) {
-        $summary[] = t('Allow creation of new levels');
+        $summary[] = $this->t('Allow creation of new levels');
       }
       else {
-        $summary[] = t('Do not allow creation of new levels');
+        $summary[] = $this->t('Do not allow creation of new levels');
       }
     }
     else {
-      $summary[] = t('Do not allow creation of new items');
+      $summary[] = $this->t('Do not allow creation of new items');
     }
     if ($this->getSetting('force_deepest')) {
-      $summary[] = t('Force selection of deepest level');
+      $summary[] = $this->t('Force selection of deepest level');
     }
     else {
-      $summary[] = t('Do not force selection of deepest level');
+      $summary[] = $this->t('Do not force selection of deepest level');
     }
 
     return $summary;
@@ -153,22 +160,46 @@ class OptionsShsWidget extends OptionsSelectWidget implements ContainerFactoryPl
       return $element;
     }
 
+    // Rewrite element to use a simple textfield.
+    $element['#type'] = 'textfield';
+    unset($element['#options']);
+
+    if (!$element['#default_value']) {
+      $element['#default_value'] = '';
+    }
+
     $field_name = $this->fieldDefinition->getName();
     $default_value = $element['#default_value'] ?: NULL;
     $user_input = $form_state->getUserInput();
-    if (isset($user_input[$field_name])) {
+
+    if (!empty($element['#field_parents'])) {
+      $field_parents = $element['#field_parents'];
+      $field_parents[] = $field_name;
+
+      $value = NestedArray::getValue($user_input, $field_parents);
+      $default_value = $value ?: $default_value;
+    }
+    elseif (isset($user_input[$field_name])) {
       $default_value = $user_input[$field_name];
     }
+    if (is_array($default_value) && (count($default_value) === 1) && empty($default_value[0])) {
+      // Sometimes we get a list of empty default values which equals to no
+      // value at all.
+      $default_value = NULL;
+    }
+
     $target_bundles = $this->getFieldSetting('handler_settings')['target_bundles'];
     $settings_additional = [
       'required' => $this->required,
       'multiple' => $this->multiple,
-      'anyLabel' => $this->getEmptyLabel() ?: t('- None -'),
+      'anyLabel' => $this->getEmptyLabel() ?: $this->t('- None -'),
       'anyValue' => '_none',
-      'addNewLabel' => t('Add another item'),
+      'addNewLabel' => $this->t('Add another item'),
     ];
 
     $bundle = reset($target_bundles);
+    /** @var \Drupal\taxonomy\VocabularyInterface $vocabulary */
+    $vocabulary = \Drupal::entityTypeManager()->getStorage('taxonomy_vocabulary')->load($bundle);
     $cardinality = $this->fieldDefinition->getFieldStorageDefinition()->getCardinality();
 
     // Define default parents for the widget.
@@ -180,6 +211,7 @@ class OptionsShsWidget extends OptionsSelectWidget implements ContainerFactoryPl
     $settings_shs = [
       'settings' => $this->getSettings() + $settings_additional,
       'bundle' => $bundle,
+      'bundleLabel' => $vocabulary->label(),
       'baseUrl' => 'shs-term-data',
       'cardinality' => $cardinality,
       'parents' => $parents,
@@ -248,11 +280,49 @@ class OptionsShsWidget extends OptionsSelectWidget implements ContainerFactoryPl
   }
 
   /**
+   * {@inheritDoc}
+   */
+  protected function getSelectedOptions(FieldItemListInterface $items) {
+    $selected_options = [];
+    foreach ($items as $item) {
+      $selected_options[] = $item->target_id;
+    }
+    return $selected_options;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public function massageFormValues(array $values, array $form, FormStateInterface $form_state) {
+    if (!isset($values[0]['target_id']) || ($values[0]['target_id'] === '')) {
+      // Return original values.
+      return $values;
+    }
+
+    $exploded_values = [];
+
+    if (strpos($values[0]['target_id'], ',') !== FALSE) {
+      $exploded_values = explode(',', $values[0]['target_id']);
+      $values = [];
+    }
+    elseif (strpos($values[0]['target_id'], ' ') !== FALSE) {
+      $exploded_values = explode(' ', $values[0]['target_id']);
+      $values = [];
+    }
+
+    foreach ($exploded_values as $value) {
+      $values[]['target_id'] = $value;
+    }
+
+    return $values;
+  }
+
+  /**
    * {@inheritdoc}
    */
   public static function isApplicable(FieldDefinitionInterface $field_definition) {
     // The widget currently only works for taxonomy terms.
-    if (strpos($field_definition->getSetting('handler'), 'taxonomy_term') === FALSE) {
+    if ($field_definition->getSetting('target_type') !== 'taxonomy_term') {
       return FALSE;
     }
     // The widget only works with fields having one target bundle as source.
@@ -309,8 +379,8 @@ class OptionsShsWidget extends OptionsSelectWidget implements ContainerFactoryPl
    */
   protected function settingToString($key) {
     $options = [
-      FALSE => t('false'),
-      TRUE => t('true'),
+      FALSE => $this->t('false'),
+      TRUE => $this->t('true'),
     ];
     $value = $this->getSetting($key);
     if (!is_bool($value)) {

@@ -19,7 +19,7 @@ class RangeFieldUiTest extends RangeBrowserTestBase {
   /**
    * {@inheritdoc}
    */
-  public static $modules = ['node', 'range', 'field_ui', 'block'];
+  protected static $modules = ['node', 'range', 'field_ui', 'block'];
 
   /**
    * {@inheritdoc}

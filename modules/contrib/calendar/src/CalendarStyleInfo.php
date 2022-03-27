@@ -10,7 +10,7 @@ class CalendarStyleInfo {
   /**
    * Defines whether or not to show this calendar in a popup.
    *
-   * @var boolean
+   * @var bool
    *   TRUE to show the calendar in a popup, FALSE otherwise.
    */
   protected $calendarPopup;
@@ -18,10 +18,18 @@ class CalendarStyleInfo {
   /**
    * Defines whether or not this is a mini calendar.
    *
-   * @var boolean
+   * @var bool
    *   TRUE if the calendar is shown in mini, FALSE otherwise.
    */
   protected $mini;
+
+  /**
+   * The size of the month name.
+   *
+   * @var int
+   *   The size of the month name.
+   */
+  protected $monthNameSize;
 
   /**
    * The size of the calendar name.
@@ -34,7 +42,7 @@ class CalendarStyleInfo {
   /**
    * Defines whether or not to display the title.
    *
-   * @var boolean
+   * @var bool
    *   TRUE to display the title, FALSE otherwise.
    */
   protected $showTitle;
@@ -42,7 +50,7 @@ class CalendarStyleInfo {
   /**
    * Defines whether or not to display the navigation.
    *
-   * @var boolean
+   * @var bool
    *   TRUE to display the navigation, FALSE otherwise.
    */
   protected $showNavigation;
@@ -50,7 +58,7 @@ class CalendarStyleInfo {
   /**
    * Defines whether or not to display the week numbers.
    *
-   * @var boolean
+   * @var bool
    *   TRUE to display the week numbers, FAlSE otherwise.
    */
   protected $showWeekNumbers;
@@ -58,7 +66,7 @@ class CalendarStyleInfo {
   /**
    * Defines whether or not to display empty times.
    *
-   * @var boolean
+   * @var bool
    */
   protected $showEmptyTimes;
 
@@ -121,7 +129,7 @@ class CalendarStyleInfo {
   /**
    * Getter for the calendar popup variable.
    *
-   * @return boolean
+   * @return bool
    *   TRUE to show the calendar in a popup, FALSE otherwise.
    */
   public function isCalendarPopup() {
@@ -131,7 +139,7 @@ class CalendarStyleInfo {
   /**
    * Setter for the calendar popup variable.
    *
-   * @param boolean $calendarPopup
+   * @param bool $calendarPopup
    *   TRUE to show the calendar in a popup, FALSE otherwise.
    */
   public function setCalendarPopup($calendarPopup) {
@@ -141,7 +149,7 @@ class CalendarStyleInfo {
   /**
    * Getter for the mini format variable.
    *
-   * @return boolean
+   * @return bool
    *   TRUE if the calendar is shown in mini, FALSE otherwise.
    */
   public function isMini() {
@@ -151,11 +159,31 @@ class CalendarStyleInfo {
   /**
    * Setter for the mini format variable.
    *
-   * @param boolean $mini
+   * @param bool $mini
    *   TRUE if the calendar is shown in mini, FALSE otherwise.
    */
   public function setMini($mini) {
     $this->mini = $mini;
+  }
+
+  /**
+   * Getter for the month name size.
+   *
+   * @return int
+   *   The month name size.
+   */
+  public function getMonthNameSize() {
+    return $this->monthNameSize;
+  }
+
+  /**
+   * Setter for the month name size.
+   *
+   * @param int $nameSize
+   *   The month name size.
+   */
+  public function setMonthNameSize($nameSize) {
+    $this->monthNameSize = $nameSize;
   }
 
   /**
@@ -181,7 +209,7 @@ class CalendarStyleInfo {
   /**
    * Getter for the show title variable.
    *
-   * @return boolean
+   * @return bool
    *   TRUE to display the title, FALSE otherwise.
    */
   public function isShowTitle() {
@@ -191,7 +219,7 @@ class CalendarStyleInfo {
   /**
    * Setter for the show title variable.
    *
-   * @param boolean $showTitle
+   * @param bool $showTitle
    *   TRUE to display the title, FALSE otherwise.
    */
   public function setShowTitle($showTitle) {
@@ -201,7 +229,7 @@ class CalendarStyleInfo {
   /**
    * Getter for the show navigation variable.
    *
-   * @return boolean
+   * @return bool
    *   TRUE to show the navigation, FALSE otherwise.
    */
   public function isShowNavigation() {
@@ -211,7 +239,7 @@ class CalendarStyleInfo {
   /**
    * Setter for the show navigation variable.
    *
-   * @param boolean $showNavigation
+   * @param bool $showNavigation
    *   TRUE to show the navigation, FALSE otherwise.
    */
   public function setShowNavigation($showNavigation) {
@@ -221,7 +249,7 @@ class CalendarStyleInfo {
   /**
    * Getter for the show week numbers variable.
    *
-   * @return boolean
+   * @return bool
    *   TRUE to display the week numbers, FAlSE otherwise.
    */
   public function isShowWeekNumbers() {
@@ -231,7 +259,7 @@ class CalendarStyleInfo {
   /**
    * Setter for the show week numbers variable.
    *
-   * @param boolean $showWeekNumbers
+   * @param bool $showWeekNumbers
    *   TRUE to display the week numbers, FAlSE otherwise.
    */
   public function setShowWeekNumbers($showWeekNumbers) {
@@ -241,7 +269,7 @@ class CalendarStyleInfo {
   /**
    * Getter for the show empty times variable.
    *
-   * @return boolean
+   * @return bool
    *   TRUE to show empty times, FALSE otherwise.
    */
   public function isShowEmptyTimes() {
@@ -251,7 +279,7 @@ class CalendarStyleInfo {
   /**
    * Setter for the show empty times variable.
    *
-   * @param boolean $showEmptyTimes
+   * @param bool $showEmptyTimes
    *   TRUE to show empty times, FALSE otherwise.
    */
   public function setShowEmptyTimes($showEmptyTimes) {
@@ -397,4 +425,5 @@ class CalendarStyleInfo {
   public function setThemeStyle($themeStyle) {
     $this->themeStyle = $themeStyle;
   }
+
 }

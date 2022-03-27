@@ -5,6 +5,7 @@ namespace Drupal\calendar\Plugin\views\argument_validator;
 use Drupal\calendar\DateArgumentWrapper;
 use Drupal\Core\Datetime\DateFormatterInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Plugin\Context\ContextDefinition;
 use Drupal\views\Plugin\views\argument\ArgumentPluginBase;
 use Drupal\views\Plugin\views\argument\Date;
 use Drupal\views\Plugin\views\argument_validator\ArgumentValidatorPluginBase;
@@ -21,12 +22,16 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class CalendarValidator extends ArgumentValidatorPluginBase {
 
   /**
-   * @var DateArgumentWrapper
+   * The date argument wrapper object.
+   *
+   * @var \Drupal\calendar\DateArgumentWrapper
    */
-  protected $argument_wrapper;
+  protected $argumentWrapper;
 
   /**
    * The dateformatter service.
+   *
+   * @var \Drupal\Core\Datetime\DateFormatterInterface
    */
   protected $dateFormatter;
 
@@ -50,11 +55,18 @@ class CalendarValidator extends ArgumentValidatorPluginBase {
    * {@inheritdoc}
    */
   public function validateArgument($arg) {
-    if (isset($this->argument_wrapper) && $this->argument_wrapper->validateValue($arg)) {
-      $date = $this->argument_wrapper->createDateTime();
-      $time = strtotime($date->format($this->options['replacement_format']));
+    if (isset($this->argumentWrapper) && $this->argumentWrapper->validateValue($arg)) {
+      $date = $this->argumentWrapper->createDateTime();
+      // Adds 'January' to year to get correct header on Year calendars
+      // to avoid problem defined on third note at
+      // http://www.php.net/manual/en/datetime.formats.date.php
+      $january = '';
+      if ($this->options['replacement_format'] === 'Y') {
+        $january = 'January';
+      }
+      $time = strtotime($january . $date->format($this->options['replacement_format']));
 
-      // Override title for substitutions
+      // Override title for substitutions.
       // @see \Drupal\views\Plugin\views\argument\ArgumentPluginBase::getTitle
       $this->argument->validated_title = $this->dateFormatter->format($time, 'custom', $this->options['replacement_format']);
       return TRUE;
@@ -68,7 +80,7 @@ class CalendarValidator extends ArgumentValidatorPluginBase {
   public function setArgument(ArgumentPluginBase $argument) {
     parent::setArgument($argument);
     if ($argument instanceof Date) {
-      $this->argument_wrapper = new DateArgumentWrapper($argument);
+      $this->argumentWrapper = new DateArgumentWrapper($argument);
     }
   }
 
@@ -88,15 +100,19 @@ class CalendarValidator extends ArgumentValidatorPluginBase {
    */
   protected function getDefaultReplacementFormat() {
 
-    switch ($this->argument_wrapper->getGranularity()) {
+    switch ($this->argumentWrapper->getGranularity()) {
       case 'month':
         return 'F Y';
+
       case 'year':
         return 'Y';
+
       case 'week':
         return 'F j, Y';
+
       case 'day':
         return 'l, F j, Y';
+
       default:
         // @todo Load format used for medium here
         return 'F j, Y';
@@ -108,7 +124,7 @@ class CalendarValidator extends ArgumentValidatorPluginBase {
    */
   public function buildOptionsForm(&$form, FormStateInterface $form_state) {
     parent::buildOptionsForm($form, $form_state);
-    if (!isset($this->argument_wrapper)) {
+    if (!isset($this->argumentWrapper)) {
       return;
     }
     // We can't set default in defineOptions because argument is not set yet.
@@ -127,5 +143,11 @@ class CalendarValidator extends ArgumentValidatorPluginBase {
     ];
   }
 
+  /**
+   * {@inheritdoc}.
+   */
+  public function getContextDefinition() {
+    return new ContextDefinition('string', $this->argument->adminLabel(), FALSE);
+  }
 
 }

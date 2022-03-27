@@ -20,7 +20,7 @@ class DataListItemAddTest extends RulesIntegrationTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
 
     $this->action = $this->actionManager->createInstance('rules_list_item_add');
@@ -51,7 +51,7 @@ class DataListItemAddTest extends RulesIntegrationTestBase {
     $this->action->execute();
 
     // The list should contain four items, with the new item at the end.
-    $this->assertArrayEquals([
+    $this->assertEquals([
       'One',
       'Two',
       'Three',
@@ -71,12 +71,12 @@ class DataListItemAddTest extends RulesIntegrationTestBase {
     $this->action
       ->setContextValue('list', $list)
       ->setContextValue('item', 'Four')
-      ->setContextValue('pos', 'end');
+      ->setContextValue('position', 'end');
 
     $this->action->execute();
 
     // The list should contain four items, with the new item added at the end.
-    $this->assertArrayEquals([
+    $this->assertEquals([
       'One',
       'Two',
       'Three',
@@ -96,12 +96,12 @@ class DataListItemAddTest extends RulesIntegrationTestBase {
     $this->action
       ->setContextValue('list', $list)
       ->setContextValue('item', 'Zero')
-      ->setContextValue('pos', 'start');
+      ->setContextValue('position', 'start');
 
     $this->action->execute();
 
     // The list should contain four items, with the new item added at the start.
-    $this->assertArrayEquals([
+    $this->assertEquals([
       'Zero',
       'One',
       'Two',
@@ -126,7 +126,7 @@ class DataListItemAddTest extends RulesIntegrationTestBase {
     $this->action->execute();
 
     // The list should remain the same.
-    $this->assertArrayEquals([
+    $this->assertEquals([
       'One',
       'Two',
       'Three',
@@ -147,12 +147,12 @@ class DataListItemAddTest extends RulesIntegrationTestBase {
       ->setContextValue('list', $list)
       ->setContextValue('item', 'Four')
       ->setContextValue('unique', FALSE)
-      ->setContextValue('pos', 'end');
+      ->setContextValue('position', 'end');
 
     $this->action->execute();
 
     // The list should contain five items, with the new item added at the end.
-    $this->assertArrayEquals(['One', 'Two', 'Three', 'Four', 'Four'], $this->action->getContextValue('list'));
+    $this->assertEquals(['One', 'Two', 'Three', 'Four', 'Four'], $this->action->getContextValue('list'));
   }
 
 }

@@ -18,8 +18,10 @@ $configs = [
   'field.field.node.page.field_decimal',
   'field.field.node.page.field_float',
   'field.field.node.page.field_integer',
-  'core.entity_view_mode.node.test',
-  'core.entity_view_display.node.page.test',
+  'core.entity_view_mode.node.default_formatter',
+  'core.entity_view_display.node.page.default_formatter',
+  'core.entity_view_mode.node.unformatted_formatter',
+  'core.entity_view_display.node.page.unformatted_formatter',
 ];
 
 foreach ($configs as $config) {
@@ -37,6 +39,37 @@ foreach ($configs as $config) {
     ])
     ->execute();
 }
+
+// Update default form display.
+$data = unserialize($connection->select('config')
+  ->fields('config', ['data'])
+  ->condition('name', 'core.entity_form_display.node.page.default')
+  ->execute()
+  ->fetchField());
+
+// Enable range fields.
+$data['dependencies']['config'][] = 'field.field.node.page.field_decimal';
+$data['dependencies']['config'][] = 'field.field.node.page.field_float';
+$data['dependencies']['config'][] = 'field.field.node.page.field_integer';
+
+$data['dependencies']['module'][] = 'range';
+
+$data['content']['field_decimal'] =
+$data['content']['field_float'] =
+$data['content']['field_integer'] = [
+  'type' => 'range',
+  'weight' => 100,
+  'region' => 'content',
+  'settings' => [],
+  'third_party_settings' => [],
+];
+
+$connection->update('config')
+  ->fields([
+    'data' => serialize($data),
+  ])
+  ->condition('name', 'core.entity_form_display.node.page.default')
+  ->execute();
 
 // Ensure that fields have correct schema.
 $connection->insert('key_value')

@@ -21,7 +21,7 @@ abstract class RangeViewsTestBase extends ViewTestBase {
   /**
    * {@inheritdoc}
    */
-  public static $modules = ['range_test', 'node', 'range'];
+  protected static $modules = ['range_test', 'node', 'range'];
 
   /**
    * Entity type ID we are testing against.

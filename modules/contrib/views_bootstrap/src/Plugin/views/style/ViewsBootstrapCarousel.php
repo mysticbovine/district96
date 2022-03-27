@@ -45,7 +45,10 @@ class ViewsBootstrapCarousel extends StylePluginBase {
     $options['indicators'] = ['default' => TRUE];
     $options['pause'] = ['default' => TRUE];
     $options['wrap'] = ['default' => TRUE];
+    $options['columns'] = ['default' => 1];
+    $options['breakpoints'] = ['default' => 'md'];
 
+    $options['display'] = ['default' => 'fields'];
     $options['image'] = ['default' => ''];
     $options['title'] = ['default' => ''];
     $options['description'] = ['default' => ''];
@@ -100,12 +103,53 @@ class ViewsBootstrapCarousel extends StylePluginBase {
       '#default_value' => $this->options['wrap'],
     ];
 
+    $form['columns'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Columns'),
+      '#description' => $this->t('The number of columns to include in the carousel.'),
+      '#options' => [
+        1 => 1,
+        2 => 2,
+        3 => 3,
+        4 => 4,
+      ],
+      '#default_value' => $this->options['columns'],
+    ];
+
+    $form['breakpoints'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Breakpoints'),
+      '#description' => $this->t('The min-width breakpoint of the multicolumn carousel.'),
+      '#options' => [
+        'xs' => $this->t('Extra Small'),
+        'sm' => $this->t('Small'),
+        'md' => $this->t('Medium'),
+        'lg' => $this->t('Large'),
+      ],
+      '#default_value' => $this->options['breakpoints'],
+    ];
+
     if ($this->usesFields()) {
+      $form['display'] = [
+        '#type' => 'radios',
+        '#title' => $this->t('Display'),
+        '#options' => [
+          'fields' => $this->t('Select by fields'),
+          'content' => $this->t('Display fields as row content'),
+        ],
+        '#description' => $this->t('Displaying fields as row content will output the field rows as unformatted values within each carousel item.'),
+        '#default_value' => $this->options['display'],
+      ];
       $form['image'] = [
         '#type' => 'select',
         '#title' => $this->t('Image'),
         '#options' => $fields,
         '#default_value' => $this->options['image'],
+        '#states' => [
+          'visible' => [
+            ':input[name="style_options[display]"]' => ['value' => 'fields'],
+          ],
+        ],
       ];
 
       $form['title'] = [
@@ -113,6 +157,11 @@ class ViewsBootstrapCarousel extends StylePluginBase {
         '#title' => $this->t('Title'),
         '#options' => $fields,
         '#default_value' => $this->options['title'],
+        '#states' => [
+          'visible' => [
+            ':input[name="style_options[display]"]' => ['value' => 'fields'],
+          ],
+        ],
       ];
 
       $form['description'] = [
@@ -120,6 +169,11 @@ class ViewsBootstrapCarousel extends StylePluginBase {
         '#title' => $this->t('Description'),
         '#options' => $fields,
         '#default_value' => $this->options['description'],
+        '#states' => [
+          'visible' => [
+            ':input[name="style_options[display]"]' => ['value' => 'fields'],
+          ],
+        ],
       ];
     }
 

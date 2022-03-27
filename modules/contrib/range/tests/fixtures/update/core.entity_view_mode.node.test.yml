@@ -1,8 +1,0 @@
-status: true
-dependencies:
-  module:
-    - node
-id: node.test
-label: Test
-targetEntityType: node
-cache: true

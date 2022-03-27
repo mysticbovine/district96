@@ -5,6 +5,7 @@ namespace Drupal\shs\Plugin\views\filter;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Database\Query\Condition;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\taxonomy\TermStorageInterface;
 use Drupal\taxonomy\VocabularyStorageInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -20,6 +21,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * @ViewsFilter("shs_taxonomy_index_tid_depth")
  */
 class ShsTaxonomyIndexTidDepth extends ShsTaxonomyIndexTid {
+
   /**
    * The variable to store database connection object.
    *
@@ -31,19 +33,26 @@ class ShsTaxonomyIndexTidDepth extends ShsTaxonomyIndexTid {
    * Constructor for the class.
    *
    * @param array $configuration
-   *   The configuration array
+   *   The configuration array.
    * @param string $plugin_id
    *   The Plugin id.
    * @param mixed $plugin_definition
    *   The Plugin definition.
    * @param \Drupal\taxonomy\VocabularyStorageInterface $vocabulary_storage
+   *   The vocabulary storage.
    * @param \Drupal\taxonomy\TermStorageInterface $term_storage
+   *   The term storage.
    * @param \Drupal\Core\Database\Connection $database
-   *   A JSON response containing autocomplete suggestions.
+   *   The database connection.
+   * @param \Drupal\Core\Session\AccountInterface $current_user
+   *   The current user.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, VocabularyStorageInterface $vocabulary_storage, TermStorageInterface $term_storage, Connection $database) {
-    parent::__construct($configuration, $plugin_id, $plugin_definition, $vocabulary_storage, $term_storage);
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, VocabularyStorageInterface $vocabulary_storage, TermStorageInterface $term_storage, Connection $database, AccountInterface $current_user = NULL) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition, $vocabulary_storage, $term_storage, $current_user);
+
     $this->database = $database;
+    // Set translation context.
+    $this->translationContext = 'shs:taxonomy_index_tid_depth';
   }
 
   /**
@@ -56,7 +65,8 @@ class ShsTaxonomyIndexTidDepth extends ShsTaxonomyIndexTid {
       $plugin_definition,
       $container->get('entity_type.manager')->getStorage('taxonomy_vocabulary'),
       $container->get('entity_type.manager')->getStorage('taxonomy_term'),
-      $container->get('database')
+      $container->get('database'),
+      $container->get('current_user')
     );
   }
 

@@ -14,7 +14,7 @@ class ShsTermCacheDependency implements CacheableDependencyInterface {
    * {@inheritdoc}
    */
   public function __construct($tags = []) {
-    $this->contexts = ['languages:language_interface'];
+    $this->contexts = ['languages:language_interface', 'user.roles'];
     $this->tags = Cache::mergeTags(['taxonomy_term_values'], $tags);
     $this->maxAge = Cache::PERMANENT;
   }

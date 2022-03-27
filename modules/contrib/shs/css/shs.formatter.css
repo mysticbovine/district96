@@ -3,7 +3,7 @@
 * Styles for formatted output of shs module.
 */
 
-.item-list ul.shs {
+ul.shs {
   display: inline-block;
   list-style: none;
   margin: 0;
@@ -24,4 +24,11 @@ ul.shs li:last-of-type {
 ul.shs li:last-of-type:after {
   content: '';
   margin: 0;
+}
+
+[dir="ltr"] ul.shs {
+  margin-left: 0;
+}
+[dir="rtl"] ul.shs {
+  margin-right: 0;
 }

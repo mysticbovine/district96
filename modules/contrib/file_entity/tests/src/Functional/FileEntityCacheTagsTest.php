@@ -101,7 +101,10 @@ class FileEntityCacheTagsTest extends FileEntityTestBase {
     $node3->save();
 
     // Check cache tags.
-    $contexts = ['languages:language_interface', 'user.permissions', 'theme', 'timezone', 'url.query_args:_wrapper_format', 'user.roles:anonymous', 'url.site'];
+    $contexts = ['languages:language_interface', 'user.permissions', 'theme', 'timezone', 'url.query_args:_wrapper_format', 'url.site'];
+    if (\version_compare(\Drupal::VERSION, '9.3', '<')) {
+      $contexts[] = 'user.roles:anonymous';
+    }
     $this->assertPageCacheContextsAndTags($node1->toUrl(), $contexts, [
       'node:' . $node1->id(),
       'node_view',

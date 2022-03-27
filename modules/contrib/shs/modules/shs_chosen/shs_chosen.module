@@ -60,7 +60,7 @@ function shs_chosen_shs_js_settings_alter(array &$settings_shs, $bundle, $field_
 function shs_chosen_views_plugins_filter_alter(array &$plugins) {
   foreach (['taxonomy_index_tid', 'taxonomy_index_tid_depth'] as $plugin) {
     if (isset($plugins[$plugin])) {
-      $plugins['shs_' . $plugin]['class'] = $plugins['shs_chosen_' . $plugin]['class'];;
+      $plugins['shs_' . $plugin]['class'] = $plugins['shs_chosen_' . $plugin]['class'];
       $plugins[$plugin]['class'] = $plugins['shs_' . $plugin]['class'];
     }
   }

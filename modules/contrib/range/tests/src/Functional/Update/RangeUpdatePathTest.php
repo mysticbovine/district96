@@ -53,7 +53,7 @@ class RangeUpdatePathTest extends UpdatePathTestBase {
    */
   public function testUpdateHook8101() {
     // Ensure that 'range_combine' settings is not available.
-    foreach (EntityViewDisplay::load('node.page.test')->getComponents() as $component) {
+    foreach (EntityViewDisplay::load('node.page.unformatted_formatter')->getComponents() as $component) {
       if (!empty($component['type']) && $component['type'] === 'range_unformatted') {
         $this->assertArrayNotHasKey('range_combine', $component['settings']);
       }
@@ -63,9 +63,79 @@ class RangeUpdatePathTest extends UpdatePathTestBase {
     $this->runUpdates();
 
     // Ensure that 'range_combine' settings is set to FALSE.
-    foreach (EntityViewDisplay::load('node.page.test')->getComponents() as $component) {
+    foreach (EntityViewDisplay::load('node.page.unformatted_formatter')->getComponents() as $component) {
       if (!empty($component['type']) && $component['type'] === 'range_unformatted') {
         $this->assertFalse($component['settings']['range_combine']);
+      }
+    }
+  }
+
+  /**
+   * Tests that base features are not broken.
+   *
+   * This test does not check everything. It is more a smoke test. Note that
+   * configuration forms are not being submitted so nothing is being changed
+   * so each feature can be tested with as little interference as possible.
+   *
+   * For the future it worth to test each feature in the own test method.
+   *
+   * @link https://www.drupal.org/node/3150297
+   */
+  public function testNoRegressionsAfterUpdates() {
+
+    // Run the updates.
+    $this->runUpdates();
+
+    $this->drupalLogin($this->drupalCreateUser([
+        'administer node display',
+        'administer node form display',
+        'create page content',
+    ]));
+
+    // Ensure no regressions while editing content.
+    $range_fields = [
+      'field_decimal',
+      'field_float',
+      'field_integer',
+    ];
+
+    $this->drupalGet('node/add/page');
+    foreach ($range_fields as $field_name) {
+      $edit = [
+        $field_name . '[0][from]' => 0,
+        $field_name . '[0][to]' => 5,
+      ];
+      $this->submitForm($edit, 'Save');
+    }
+
+    // Ensure no regressions while editing range fields configuration.
+    foreach ($range_fields as $field_name) {
+      $this->drupalGet('admin/structure/types/manage/page/fields');
+      $this->drupalGet('admin/structure/types/manage/page/fields/node.page.' . $field_name);
+      $this->drupalGet('admin/structure/types/manage/page/fields/node.page.' . $field_name);
+      $this->drupalGet('admin/structure/types/manage/page/fields/node.page.' . $field_name . '/storage');
+    }
+
+    // Ensure no regressions while editing range fields display.
+    $view_modes = [
+      'default_formatter',
+      'unformatted_formatter',
+    ];
+    foreach ($view_modes as $view_mode) {
+      $this->drupalGet('admin/structure/types/manage/page/display/' . $view_mode);
+      foreach ($range_fields as $field_name) {
+        $this->submitForm([], $field_name . '_settings_edit');
+        $this->submitForm([], 'Cancel');
+      }
+    }
+
+    // Ensure no regressions while editing range fields form display.
+    $form_modes = ['default'];
+    foreach ($form_modes as $form_mode) {
+      $this->drupalGet('admin/structure/types/manage/page/form-display/' . $form_mode);
+      foreach ($range_fields as $field_name) {
+        $this->submitForm([], $field_name . '_settings_edit');
+        $this->submitForm([], 'Cancel');
       }
     }
   }

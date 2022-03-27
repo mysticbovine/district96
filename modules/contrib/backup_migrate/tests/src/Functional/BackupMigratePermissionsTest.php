@@ -2,6 +2,7 @@
 
 namespace Drupal\Tests\backup_migrate\Functional;
 
+use Drupal\Core\File\FileSystemInterface;
 use Drupal\Tests\BrowserTestBase;
 
 /**
@@ -22,7 +23,14 @@ class BackupMigratePermissionsTest extends BrowserTestBase {
   protected $strictConfigSchema = FALSE;
 
   /**
+   * {@inheritdoc}
+   */
+  protected $defaultTheme = 'stark';
+
+  /**
    * All of the paths that are being tested.
+   *
+   * @var array
    */
   protected $allPaths = [
     'admin/config/development/backup_migrate',
@@ -43,12 +51,12 @@ class BackupMigratePermissionsTest extends BrowserTestBase {
   /**
    * {@inheritdoc}
    */
-  public function setUp() {
+  public function setUp(): void {
     parent::setUp();
 
     // Ensure the backup_migrate folder exists.
     $path = 'private://backup_migrate/';
-    file_prepare_directory($path, FILE_CREATE_DIRECTORY);
+    \Drupal::service('file_system')->prepareDirectory($path, FileSystemInterface::CREATE_DIRECTORY);
   }
 
   /**

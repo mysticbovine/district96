@@ -9,8 +9,8 @@ use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Field\WidgetBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
+use Drupal\inline_entity_form\Element\InlineEntityForm;
 use Drupal\inline_entity_form\TranslationHelper;
-use Drupal\Component\Utility\Crypt;
 
 /**
  * Simple inline widget.
@@ -34,8 +34,13 @@ class InlineEntityFormSimple extends InlineEntityFormBase {
     // Trick inline_entity_form_form_alter() into attaching the handlers,
     // WidgetSubmit will be needed once extractFormValues fills the $form_state.
     $parents = array_merge($element['#field_parents'], [$items->getName()]);
-    $ief_id = Crypt::hashBase64(implode('-', $parents));
-    $form_state->set(['inline_entity_form', $ief_id], []);
+    $ief_id = $this->makeIefId($parents);
+
+    // Get state from storage.
+    $widget_state = $form_state->get(['inline_entity_form', $ief_id]);
+    if (!$widget_state) {
+      $form_state->set(['inline_entity_form', $ief_id], []);
+    }
 
     $element = [
       '#type' => $this->getSetting('collapsible') ? 'details' : 'fieldset',
@@ -45,7 +50,8 @@ class InlineEntityFormSimple extends InlineEntityFormBase {
       ],
     ] + $element;
     if ($element['#type'] == 'details') {
-      $element['#open'] = !$this->getSetting('collapsed');
+      // If there's user input, keep the details open. Otherwise, use settings.
+      $element['#open'] = $form_state->getUserInput() ?: !$this->getSetting('collapsed');
     }
 
     $item = $items->get($delta);
@@ -53,7 +59,14 @@ class InlineEntityFormSimple extends InlineEntityFormBase {
       $element['warning']['#markup'] = $this->t('Unable to load the referenced entity.');
       return $element;
     }
+
+    /** @var \Drupal\Core\Entity\EntityInterface $entity */
     $entity = $item->entity;
+
+    if (isset($widget_state['entities'][$delta]['entity'])) {
+      $entity = $widget_state['entities'][$delta]['entity'];
+    }
+
     $op = $entity ? 'edit' : 'add';
     $langcode = $items->getEntity()->language()->getId();
     $parents = array_merge($element['#field_parents'], [
@@ -135,8 +148,11 @@ class InlineEntityFormSimple extends InlineEntityFormBase {
     $values = [];
     foreach ($items as $delta => $value) {
       $element = NestedArray::getValue($form, [$field_name, 'widget', $delta]);
+      $inline_form_handler = InlineEntityForm::getInlineFormHandler($element['inline_entity_form']['#entity_type']);
       /** @var \Drupal\Core\Entity\EntityInterface $entity */
       $entity = $element['inline_entity_form']['#entity'];
+      $inline_form_handler->buildEntity($element['inline_entity_form'], $entity, $form_state);
+
       $weight = isset($submitted_values[$delta]['_weight']) ? $submitted_values[$delta]['_weight'] : 0;
       $values[$weight] = ['entity' => $entity];
     }
@@ -154,7 +170,7 @@ class InlineEntityFormSimple extends InlineEntityFormBase {
 
     // Populate the IEF form state with $items so that WidgetSubmit can
     // perform the necessary saves.
-    $ief_id = Crypt::hashBase64(implode('-', $parents));
+    $ief_id = $this->makeIefId($parents);
     $widget_state = [
       'instance' => $this->fieldDefinition,
       'delete' => [],

@@ -1,11 +1,11 @@
 name: Calendar Datetime
 type: module
 description: Provides a calendar specific date time.
-# core: 8.x
+core: 8.x
+core_version_requirement: ^8 || ^9
 package: Date/Time
 
-# Information added by Drupal.org packaging script on 2018-01-04
-version: '8.x-1.x-dev'
-core: '8.x'
+# Information added by Drupal.org packaging script on 2021-05-25
+version: '8.x-1.0-alpha4'
 project: 'calendar'
-datestamp: 1515077889
+datestamp: 1621960846

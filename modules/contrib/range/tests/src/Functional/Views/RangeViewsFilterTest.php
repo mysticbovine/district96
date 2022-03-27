@@ -20,7 +20,7 @@ class RangeViewsFilterTest extends RangeViewsTestBase {
    * {@inheritdoc}
    */
   protected function setUp($import_test_views = TRUE): void {
-    parent::setUp();
+    parent::setUp($import_test_views);
 
     // Add some basic test nodes.
     $ranges = [

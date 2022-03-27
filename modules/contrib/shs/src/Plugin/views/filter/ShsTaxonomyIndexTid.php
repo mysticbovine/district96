@@ -4,7 +4,11 @@ namespace Drupal\shs\Plugin\views\filter;
 
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Session\AccountInterface;
+use Drupal\shs\StringTranslationTrait;
 use Drupal\taxonomy\Plugin\views\filter\TaxonomyIndexTid;
+use Drupal\taxonomy\VocabularyStorageInterface;
+use Drupal\taxonomy\TermStorageInterface;
 
 /**
  * Filter by term id using Simple hierarchical select widgets.
@@ -14,6 +18,18 @@ use Drupal\taxonomy\Plugin\views\filter\TaxonomyIndexTid;
  * @ViewsFilter("shs_taxonomy_index_tid")
  */
 class ShsTaxonomyIndexTid extends TaxonomyIndexTid {
+
+  use StringTranslationTrait;
+
+  /**
+   * {@inheritdoc}
+   */
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, VocabularyStorageInterface $vocabulary_storage, TermStorageInterface $term_storage, AccountInterface $current_user = NULL) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition, $vocabulary_storage, $term_storage, $current_user);
+
+    // Set translation context.
+    $this->translationContext = 'shs:taxonomy_index_tid';
+  }
 
   /**
    * {@inheritdoc}
@@ -39,7 +55,7 @@ class ShsTaxonomyIndexTid extends TaxonomyIndexTid {
     // Let the parent class generate the base form.
     parent::valueForm($form, $form_state);
 
-    if ('shs' !== $this->options['type'] || !$form_state->get('exposed')) {
+    if (($this->options['type'] !== 'shs') || !$form_state->get('exposed')) {
       // Stop further processing if the filter should not be rendered as exposed
       // filter or as Simple hierarchical select widget.
       return;
@@ -48,9 +64,9 @@ class ShsTaxonomyIndexTid extends TaxonomyIndexTid {
     $settings_additional = [
       'required' => $this->options['expose']['required'],
       'multiple' => $this->options['expose']['multiple'],
-      'anyLabel' => t('- Any -'),
+      'anyLabel' => $this->t('- Any -'),
       'anyValue' => 'All',
-      'addNewLabel' => t('Add another item'),
+      'addNewLabel' => $this->t('Add another item'),
     ];
 
     $bundle = $vocabulary->id();
@@ -104,7 +120,7 @@ class ShsTaxonomyIndexTid extends TaxonomyIndexTid {
       $widget_defaults = \Drupal::service('shs.widget_defaults');
       $parents = $widget_defaults->getParentDefaults($default_value, $settings_additional, 'taxonomy_term');
     }
-    // @todo: allow individual settings per filter.
+    // @todo Allow individual settings per filter.
     $settings_shs = [
       'settings' => $settings_additional,
       'bundle' => $bundle,

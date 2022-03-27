@@ -5,17 +5,11 @@
  * Verifies if user is a human without necessity to solve a CAPTCHA.
  */
 
-use ReCaptcha\RequestMethod\Drupal8Post;
 use ReCaptcha\ReCaptcha;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
-
-require_once dirname(__FILE__) . '/recaptcha-php/src/ReCaptcha/ReCaptcha.php';
-require_once dirname(__FILE__) . '/recaptcha-php/src/ReCaptcha/RequestMethod.php';
-require_once dirname(__FILE__) . '/recaptcha-php/src/ReCaptcha/RequestParameters.php';
-require_once dirname(__FILE__) . '/recaptcha-php/src/ReCaptcha/Response.php';
-require_once dirname(__FILE__) . '/src/ReCaptcha/RequestMethod/Drupal8Post.php';
+use Drupal\recaptcha\ReCaptcha\RequestMethod\Drupal8Post;
 
 /**
  * Implements hook_help().

@@ -7,7 +7,8 @@ use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\Plugin\Field\FieldFormatter\EntityReferenceLabelFormatter;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Entity\EntityInterface;
+use Drupal\shs\StringTranslationTrait;
+use Drupal\taxonomy\TermStorageInterface;
 
 /**
  * Plugin implementation of the 'entity reference taxonomy term SHS' formatter.
@@ -23,6 +24,18 @@ use Drupal\Core\Entity\EntityInterface;
  */
 class EntityReferenceShsFormatter extends EntityReferenceLabelFormatter {
 
+  use StringTranslationTrait;
+
+  /**
+   * {@inheritdoc}
+   */
+  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, $label, $view_mode, array $third_party_settings) {
+    parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $label, $view_mode, $third_party_settings);
+
+    // Set translation context.
+    $this->translationContext = 'shs:entity_reference_formatter';
+  }
+
   /**
    * {@inheritdoc}
    */
@@ -32,7 +45,7 @@ class EntityReferenceShsFormatter extends EntityReferenceLabelFormatter {
       return $elements;
     }
     // Override title of setting.
-    $elements['link']['#title'] = t('Link item labels to the referenced entities');
+    $elements['link']['#title'] = $this->t('Link item labels to the referenced entities');
 
     return $elements;
   }
@@ -42,7 +55,7 @@ class EntityReferenceShsFormatter extends EntityReferenceLabelFormatter {
    */
   public function settingsSummary() {
     $summary = [];
-    $summary[] = $this->getSetting('link') ? t('Link item labels to the referenced entities') : t('Do not create links');
+    $summary[] = $this->getSetting('link') ? $this->t('Link item labels to the referenced entities') : $this->t('Do not create links');
     return $summary;
   }
 
@@ -70,7 +83,11 @@ class EntityReferenceShsFormatter extends EntityReferenceLabelFormatter {
       }
 
       try {
+        /** @var \Drupal\taxonomy\TermStorageInterface $storage */
         $storage = \Drupal::entityTypeManager()->getStorage($entity->getEntityTypeId());
+        if ((!$storage instanceof TermStorageInterface)) {
+          throw new Exception('Expected TermStorageInterface for storage, got ' . get_class($storage));
+        }
         $parents = $storage->loadAllParents($entity->id());
       }
       catch (Exception $ex) {
@@ -80,12 +97,13 @@ class EntityReferenceShsFormatter extends EntityReferenceLabelFormatter {
       $list_items = [];
 
       // Create hierarchy from parent items.
+      /** @var \Drupal\taxonomy\TermInterface $entity_parent */
       foreach (array_reverse($parents) as $entity_parent) {
         if ($entity_parent->hasTranslation($langcode)) {
           $entity_parent = $entity_parent->getTranslation($langcode);
         }
         if ($output_as_link) {
-          $uri_parent = $entity_parent->urlInfo();
+          $uri_parent = $entity_parent->toUrl();
           $list_items[] = [
             '#type' => 'link',
             '#title' => $entity_parent->label(),
@@ -102,7 +120,10 @@ class EntityReferenceShsFormatter extends EntityReferenceLabelFormatter {
         '#theme' => 'item_list',
         '#items' => $list_items,
         '#attributes' => [
-          'class' => ['shs'],
+          'class' => [
+            'shs',
+            'clearfix',
+          ],
         ],
         '#attached' => [
           'library' => ['shs/shs.formatter'],

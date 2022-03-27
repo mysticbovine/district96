@@ -13,7 +13,7 @@ configure: file_entity.settings
 test_dependencies:
   - pathauto:pathauto
 
-# Information added by Drupal.org packaging script on 2020-10-23
-version: '8.x-2.0-beta8'
+# Information added by Drupal.org packaging script on 2021-07-08
+version: '8.x-2.0-beta9'
 project: 'file_entity'
-datestamp: 1603450107
+datestamp: 1625735672

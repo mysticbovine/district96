@@ -20,7 +20,7 @@ class MigrateRangeFieldTest extends MigrateDrupal6TestBase {
   /**
    * {@inheritdoc}
    */
-  public static $modules = [
+  protected static $modules = [
     'node',
     'range',
     'text',

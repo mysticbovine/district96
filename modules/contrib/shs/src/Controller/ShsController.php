@@ -3,6 +3,7 @@
 namespace Drupal\shs\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\Core\Entity\TranslatableInterface;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\shs\Cache\ShsCacheableJsonResponse;
 use Drupal\shs\Cache\ShsTermCacheDependency;
@@ -60,6 +61,7 @@ class ShsController extends ControllerBase {
     $result = [];
 
     $langcode_current = $this->languageManager()->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)->getId();
+    /** @var \Drupal\taxonomy\TermStorageInterface $storage */
     $storage = $this->entityTypeManager()->getStorage('taxonomy_term');
 
     $translation_enabled = FALSE;
@@ -70,11 +72,16 @@ class ShsController extends ControllerBase {
       // term objects to get the translation for the current language.
       $translation_enabled = $translation_manager->isEnabled('taxonomy_term', $bundle);
     }
+
+    $access_unpublished = $this->currentUser()->hasPermission('administer taxonomy') || $this->currentUser()->hasPermission('view unpublished terms in ' . $bundle);
+    $cache_tags[] = 'access_unpublished:' . $access_unpublished;
+
+    /** @var \Drupal\taxonomy\TermInterface[] $terms */
     $terms = $storage->loadTree($bundle, $entity_id, 1, $translation_enabled);
 
     foreach ($terms as $term) {
       $langcode = $langcode_current;
-      if ($translation_enabled && $term->hasTranslation($langcode)) {
+      if ($translation_enabled && ($term instanceof TranslatableInterface) && $term->hasTranslation($langcode)) {
         $term = $term->getTranslation($langcode);
       }
       else {
@@ -82,6 +89,12 @@ class ShsController extends ControllerBase {
       }
 
       $tid = $translation_enabled ? $term->id() : $term->tid;
+      $published = $translation_enabled ? $term->isPublished() : $term->status;
+
+      if (!$published && !$access_unpublished) {
+        continue;
+      }
+
       $result[] = (object) [
         'tid' => $tid,
         'name' => $translation_enabled ? $term->getName() : $term->name,

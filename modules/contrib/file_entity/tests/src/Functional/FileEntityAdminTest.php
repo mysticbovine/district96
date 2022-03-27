@@ -154,15 +154,17 @@ class FileEntityAdminTest extends FileEntityTestBase {
       $this->assertFieldByName("bulk_form[$i]", NULL, 'Bulk form checkbox found.');
     }
 
-    // Verify no operation links are displayed for regular users.
+    // Verify no operation links beside download are displayed for regular
+    // users.
     $this->drupalLogout();
     $this->drupalLogin($this->userBasic);
     $this->drupalGet('admin/content/files');
     $this->assertResponse(200);
     $this->assertLinkByHref('file/' . $files['public_image']->id());
     $this->assertLinkByHref('file/' . $files['public_document']->id());
-    $this->assertNoLinkByHref('file/' . $files['public_document']->id() . '/download');
-    $this->assertNoLinkByHref('file/' . $files['public_document']->id() . '/download');
+    // Download access of public files is always allowed.
+    $this->assertLinkByHref('file/' . $files['public_document']->id() . '/download');
+    $this->assertLinkByHref('file/' . $files['public_document']->id() . '/download');
     $this->assertNoLinkByHref('file/' . $files['public_image']->id() . '/edit');
     $this->assertNoLinkByHref('file/' . $files['public_image']->id() . '/delete');
     $this->assertNoLinkByHref('file/' . $files['public_document']->id() . '/edit');

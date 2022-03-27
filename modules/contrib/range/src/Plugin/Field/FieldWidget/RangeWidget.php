@@ -148,8 +148,8 @@ class RangeWidget extends WidgetBase {
     $this->formElementSubElementPrefixSuffix($element, 'to');
 
     // Add FIELD prefix and suffix.
-    $element['from']['#field_prefix'] = FieldFilteredMarkup::create($this->getFieldSetting('field')['prefix']) . $element['from']['#field_prefix'];
-    $element['to']['#field_suffix'] .= FieldFilteredMarkup::create($this->getFieldSetting('field')['suffix']);
+    $element['from']['#field_prefix'] = FieldFilteredMarkup::create($this->getFieldSetting('field')['prefix'] ?? '') . $element['from']['#field_prefix'];
+    $element['to']['#field_suffix'] .= FieldFilteredMarkup::create($this->getFieldSetting('field')['suffix'] ?? '');
 
     $element['#attached']['library'][] = 'range/range.field-widget';
 

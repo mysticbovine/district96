@@ -12,7 +12,7 @@ class RangeFieldValidationTest extends RangeBrowserTestBase {
   /**
    * {@inheritdoc}
    */
-  public static $modules = ['node', 'range', 'field_ui'];
+  protected static $modules = ['node', 'range', 'field_ui'];
 
   /**
    * {@inheritdoc}
@@ -61,7 +61,8 @@ class RangeFieldValidationTest extends RangeBrowserTestBase {
       ],
     ];
     foreach ($items as $item) {
-      $this->drupalPostForm($path, $item['edit'], t('Save'));
+      $this->drupalGet($path);
+      $this->submitForm($item['edit'], 'Save');
       $this->assertSession()->pageTextContains($item['error']);
     }
 
@@ -70,7 +71,8 @@ class RangeFieldValidationTest extends RangeBrowserTestBase {
       "{$field_name}[0][to]" => 10,
     ];
 
-    $this->drupalPostForm($path, $valid_edit, t('Save'));
+    $this->drupalGet($path);
+    $this->submitForm($valid_edit, 'Save');
     $this->assertSession()->pageTextNotContains($validation_error_1);
     $this->assertSession()->pageTextNotContains($validation_error_2);
   }

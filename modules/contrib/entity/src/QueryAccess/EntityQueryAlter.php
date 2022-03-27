@@ -2,6 +2,7 @@
 
 namespace Drupal\entity\QueryAccess;
 
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Database\Query\SelectInterface;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
@@ -151,7 +152,7 @@ class EntityQueryAlter implements ContainerInjectionInterface {
           '=' => 'LIKE',
           '<>' => 'NOT LIKE',
         ];
-        if (!$case_sensitive && isset($operator_map[$operator])) {
+        if ($case_sensitive === FALSE && isset($operator_map[$operator])) {
           $operator = $operator_map[$operator];
           $value = $query->escapeLike($value);
         }
@@ -171,11 +172,28 @@ class EntityQueryAlter implements ContainerInjectionInterface {
    */
   protected function applyCacheability(CacheableMetadata $cacheable_metadata) {
     $request = $this->requestStack->getCurrentRequest();
-    if ($request->isMethodCacheable() && $this->renderer->hasRenderContext()) {
+    if ($request->isMethodCacheable() && $this->renderer->hasRenderContext() && $this->hasCacheableMetadata($cacheable_metadata)) {
       $build = [];
       $cacheable_metadata->applyTo($build);
       $this->renderer->render($build);
     }
+  }
+
+  /**
+   * Check if the cacheable metadata is not empty.
+   *
+   * An empty cacheable metadata object has no context, tags, and is permanent.
+   *
+   * @param \Drupal\Core\Cache\CacheableMetadata $cacheable_metadata
+   *   The cacheable metadata.
+   *
+   * @return bool
+   *   TRUE if there is cacheability metadata, otherwise FALSE.
+   */
+  protected function hasCacheableMetadata(CacheableMetadata $cacheable_metadata) {
+    return $cacheable_metadata->getCacheMaxAge() !== Cache::PERMANENT
+      || count($cacheable_metadata->getCacheContexts()) > 0
+      || count($cacheable_metadata->getCacheTags()) > 0;
   }
 
 }

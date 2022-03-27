@@ -3,8 +3,9 @@ description: "Provides a widget for inline management (creation, modification, r
 type: module
 package: Fields
 core_version_requirement: ^8.8 || ^9
+php: 7.1
 
-# Information added by Drupal.org packaging script on 2020-10-08
-version: '8.x-1.0-rc8'
+# Information added by Drupal.org packaging script on 2022-03-03
+version: '8.x-1.0-rc10'
 project: 'inline_entity_form'
-datestamp: 1602172718
+datestamp: 1646314909

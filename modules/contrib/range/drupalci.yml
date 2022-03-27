@@ -7,8 +7,13 @@ build:
     validate_codebase:
       host_command:
         commands:
-          # \Drupal\TestTools\PhpUnitCompatibility\PhpUnit8 cannot detect PHPUnit source directory when running PHPStan check. See https://www.drupal.org/project/drupal/issues/3143604
-          - sudo -u www-data curl https://www.drupal.org/files/issues/2020-05-28/3143604-2.patch | sudo -u www-data patch -p1 --verbose
+          # Make every $modules property protected on classes extending BrowserTestBase and KernelTestBase. See https://www.drupal.org/project/drupal/issues/3179960
+          - |
+            cd ${SOURCE_DIR}
+            DRUPAL_CORE_BRANCH=`git rev-parse --abbrev-ref HEAD`
+            if [ "$DRUPAL_CORE_BRANCH" = "8.9.x" ]; then
+              sudo -u www-data curl https://www.drupal.org/files/issues/2020-10-31/drupal-3179960-3.patch | sudo -u www-data patch -p1 --verbose
+            fi
       phplint:
       csslint:
         halt-on-fail: false

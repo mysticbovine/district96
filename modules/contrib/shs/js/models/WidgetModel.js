@@ -59,6 +59,19 @@
     initialize: function (options) {
       // Set internal id.
       this.set('id', options.id);
+    },
+
+    /**
+     * Find a specific WidgetItemModel within the item collection.
+     *
+     * @param {integer} id
+     *   The id of the item model.
+     *
+     * @returns {Drupal.shs.WidgetItemModel}
+     *   The found WidgetItemModel or null.
+     */
+    findItemModel: function (id) {
+      return this.itemCollection.findWhere({id: id});
     }
   });
 
