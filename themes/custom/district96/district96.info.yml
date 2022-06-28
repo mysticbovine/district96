@@ -1,6 +1,7 @@
 core: 8.x
 type: theme
 base theme: bootstrap
+core_version_requirement: ^8 || ^9
 
 name: 'Disrtict96'
 description: 'Uses the Bootstrap framework LESS source files and must be compiled (not for beginners).'
