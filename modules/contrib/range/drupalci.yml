@@ -5,14 +5,19 @@
 build:
   assessment:
     validate_codebase:
-      host_command:
+      container_command:
         commands:
-          # Make every $modules property protected on classes extending BrowserTestBase and KernelTestBase. See https://www.drupal.org/project/drupal/issues/3179960
           - |
             cd ${SOURCE_DIR}
-            DRUPAL_CORE_BRANCH=`git rev-parse --abbrev-ref HEAD`
-            if [ "$DRUPAL_CORE_BRANCH" = "8.9.x" ]; then
+            DRUPAL_CORE_MAJOR_VERSION=`git rev-parse --abbrev-ref HEAD | awk -F'.' '{print $1}'`
+            if [ "$DRUPAL_CORE_MAJOR_VERSION" = "8" ]; then
+              # Make every $modules property protected on classes extending BrowserTestBase and KernelTestBase. See https://www.drupal.org/project/drupal/issues/3179960
               sudo -u www-data curl https://www.drupal.org/files/issues/2020-10-31/drupal-3179960-3.patch | sudo -u www-data patch -p1 --verbose
+              # Make tests pass with Drupal 8.9.x
+              sudo -u www-data patch -p1 --verbose -d ${PROJECT_DIR} < ${PROJECT_DIR}/tests/fixtures/drupal8.9.x-test-compatibility.patch
+            elif [ "$DRUPAL_CORE_MAJOR_VERSION" = "9" ]; then
+              # Make tests pass with Drupal 9.x
+              sudo -u www-data patch -p1 --verbose -d ${PROJECT_DIR} < ${PROJECT_DIR}/tests/fixtures/drupal9.x-test-compatibility.patch
             fi
       phplint:
       csslint:

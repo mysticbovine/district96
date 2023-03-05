@@ -107,12 +107,20 @@
         var option_hours = freq.querySelector("option[value = 'HOURLY']");
         var is_checked = element.checked;
         if (is_checked) {
-          option_minutes.disabled = true;
-          option_hours.disabled = true;
+          if (option_minutes) {
+            option_minutes.disabled = true;
+          }
+          if (option_hours) {
+            option_hours.disabled = true;
+          }
         }
         else {
-          option_minutes.disabled = false;
-          option_hours.disabled = false;
+          if (option_minutes) {
+            option_minutes.disabled = false;
+          }
+          if (option_hours) {
+            option_hours.disabled = false;
+          }
         }
       }
 
@@ -132,19 +140,23 @@
         // Store the new value for future comparisons.
         element.dataset.repeat = element.value;
         let option = element.querySelector('option[value=""]');
+        let new_labels = false;
         if (!past_repeat && element.value) {
-          // Recurring enabled, update labels.
-          Object.entries(selected_labels).forEach(entry => {
+          // Recurring enabled, use selected labels.
+          new_labels = selected_labels;
+        }
+        else if (past_repeat && !element.value) {
+          // Recurring disabled, use empty labels.
+          new_labels = repeat_labels;
+        }
+        if (new_labels) {
+          // Labels set, update appropriately.
+          Object.entries(new_labels).forEach(entry => {
             const [value, label] = entry;
             option = element.querySelector('option[value="' + value + '"]');
-            option.text = label;
-          });
-        } else if (past_repeat && !element.value) {
-          // Recurring disabled, update labels.
-          Object.entries(repeat_labels).forEach(entry => {
-            const [value, label] = entry;
-            option = element.querySelector('option[value="' + value + '"]');
-            option.text = label;
+            if (option) {
+              option.text = label;
+            }
           });
         }
       }

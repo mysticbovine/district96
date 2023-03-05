@@ -1,0 +1,160 @@
+// main: "district96_b5.less", compress: true, sourceMap: true
+// Sub-theme variables.
+@import 'variables';
+
+body {
+	font-family: 'Montserrat', sans-serif;
+}
+
+.page-header {
+	font-family: "LubalinGraphEF", "Helvetica Neue", Helvetica, Arial, sans-serif; 
+} 
+.h1, .h2, .h3, .h4, h1, h2, h3, h4, h5, .h5{
+	font-family: "LubalinGraphEF", "Helvetica Neue", Helvetica, Arial, sans-serif; 
+}
+// Header //
+.block-system-branding-block{
+    min-width: 300px;  
+}
+
+
+// body.user-logged-in  {
+    // margin-top: 50px; 
+    // .fixed-top{
+    //     top: 39px;
+    // }
+    // main {
+    //     margin-top: 48px;
+    // }
+    // &.toolbar-tray-open.toolbar-vertical{
+    //     margin-top: 50px; 
+    //     .fixed-top{
+    //         top: 39px;          
+    //         z-index: 500;
+    //     }
+    //     main {
+    //         margin-top: 48px;
+    //     }
+    // }
+   
+    
+    // &.toolbar-tray-open {
+    //     margin-top: 120px; 
+    //     .fixed-top{
+    //         top: 79px;
+    //     }
+    //     main {
+    //         margin-top: 0;
+    //     }
+    // }
+    // .contextual-region {
+    //     position: relative;
+    //     z-index: -1;
+    // }
+// } 
+// Badges 
+.featureImage{
+    position: relative;
+    .badge{
+        border-radius: 0;
+        font-size: 15px;
+        line-height: 31px;
+        position: absolute;
+        left: 0;
+        top: 0;
+        text-transform: uppercase;
+        padding: 0 11px 0 8px;
+        background-color: @black;
+        color: #fff;
+        text-transform: uppercase;
+    } 
+ 
+}
+.MaybeLater {
+    .cat-1 {
+        //District
+        background-color: @district;
+        }
+        .cat-2 {
+        //TI
+        background-color: @ti;
+        }
+        .cat-3 {
+        //Club
+        background-color: @club;
+        }
+        .cat-4 {
+        //Member
+        background-color: @member;
+        }
+        .cat-5 {
+        //General
+        background-color: @general;
+        }
+        .cat-6 {
+        //Tips
+        background-color: @tips;
+        }
+        .cat-7 {
+        //Officer
+        background-color: @officer;
+        }
+        .cat-8 {
+        //Contests
+        background-color: @contests;
+        }
+        .cat-112 {
+        //Division
+        background-color: @division;
+        }
+        .cat-113 {
+        //Area
+        background-color: @area;
+        }
+        .cat-564 {
+        //Pathways
+        background-color: @pathways;
+        }
+        .cat-904 {
+        //Workshop Series
+        background-color: @workshop;
+        }
+}
+// Recent News/Blogs
+.view-recent-news-and-posts {
+    &.view-display-id-block_1{
+      
+        .description {
+            .body{
+                display: none;
+            }
+        }
+        .first{
+            .description {
+                padding-left: 15px;
+                .body{
+                    display: block;
+                }
+            }
+        }
+        legend {
+            display: none;
+        }
+        fieldset.form-item{
+            border: 0;
+        }
+    }
+}
+
+
+// SIMPLE TEXT
+
+.block-inline-blocktext-block{
+    position: relative;
+}
+.background-w-image{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    z-index: -1;
+}

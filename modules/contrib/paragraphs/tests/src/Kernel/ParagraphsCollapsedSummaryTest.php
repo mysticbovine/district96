@@ -27,12 +27,11 @@ class ParagraphsCollapsedSummaryTest extends KernelTestBase {
    *
    * @var array
    */
-  public static $modules = [
+  protected static $modules = [
     'paragraphs',
     'user',
     'system',
     'field',
-    'entity_reference',
     'entity_reference_revisions',
     'paragraphs_test',
     'file',

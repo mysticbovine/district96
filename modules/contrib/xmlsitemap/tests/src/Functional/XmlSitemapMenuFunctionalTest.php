@@ -15,7 +15,7 @@ class XmlSitemapMenuFunctionalTest extends XmlSitemapTestBase {
   /**
    * {@inheritdoc}
    */
-  public static $modules = ['menu_link_content', 'menu_ui'];
+  protected static $modules = ['menu_link_content', 'menu_ui'];
 
   /**
    * Entity type bundle info service.

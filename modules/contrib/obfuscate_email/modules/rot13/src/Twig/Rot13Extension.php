@@ -2,8 +2,8 @@
 
 namespace Drupal\rot13\Twig;
 
-use Twig_Extension;
-use Twig_SimpleFilter;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
 
 /**
  * A class providing Drupal Twig extensions.
@@ -12,14 +12,14 @@ use Twig_SimpleFilter;
  *
  * @see \Drupal\Core\CoreServiceProvider
  */
-class Rot13Extension extends Twig_Extension {
+class Rot13Extension extends AbstractExtension {
 
   /**
    * {@inheritdoc}
    */
   public function getFilters() {
     return array(
-      new Twig_SimpleFilter('rot13', 'str_rot13'),
+      new TwigFilter('rot13', 'str_rot13'),
     );
   }
 

@@ -28,6 +28,9 @@ class SmartDateDurationFormatter extends SmartDateDefaultFormatter {
   public static function defaultSettings() {
     return [
       'duration_separator' => ' - ',
+      'unit' => '',
+      'decimals' => 2,
+      'suffix' => 'h',
     ] + parent::defaultSettings();
   }
 
@@ -40,10 +43,48 @@ class SmartDateDurationFormatter extends SmartDateDefaultFormatter {
     $form = parent::settingsForm($form, $form_state);
 
     $form['duration_separator'] = [
-      '#type' => 'text',
+      '#type' => 'textfield',
       '#title' => $this->t('Duration Separator'),
       '#description' => $this->t('Specify what characters should be used to separate the duration from the time.'),
       '#default_value' => $this->getSetting('duration_separator'),
+    ];
+
+    $form['unit'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Units'),
+      '#description' => $this->t('Specify what units will be used to show the duration. Auto will use a combination of units, up to 2 (e.g. hours and minutes).'),
+      '#options' => [
+        '' => $this->t('Auto (Drupal default)'),
+        'h' => $this->t('Hours'),
+        'm' => $this->t('Minutes'),
+      ],
+      '#default_value' => $this->getSetting('unit'),
+    ];
+
+    $form['decimals'] = [
+      '#type' => 'number',
+      '#title' => $this->t('Decimals'),
+      '#description' => $this->t('Maximum number of decimals to show.'),
+      '#default_value' => $this->getSetting('decimals'),
+      '#states' => [
+        // Show this option only if the units will be hours.
+        'visible' => [
+          [':input[name$="[settings_edit_form][settings][unit]"]' => ['value' => 'h']],
+        ],
+      ],
+    ];
+
+    $form['suffix'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Suffix'),
+      '#description' => $this->t('Characters to show after the calculated number.'),
+      '#default_value' => $this->getSetting('suffix'),
+      '#states' => [
+        // Show this option only if at least one upcoming value will be shown.
+        'invisible' => [
+          [':input[name$="[settings_edit_form][settings][unit]"]' => ['value' => '']],
+        ],
+      ],
     ];
 
     // Adjust the time_wrapper description.
@@ -76,7 +117,7 @@ class SmartDateDurationFormatter extends SmartDateDefaultFormatter {
   /**
    * {@inheritdoc}
    */
-  public function viewElements(FieldItemListInterface $items, $langcode) {
+  public function viewElements(FieldItemListInterface $items, $langcode, $format = '') {
     $field_type = $this->fieldDefinition->getType();
     $elements = [];
     // @todo intelligent switching between retrieval methods.
@@ -140,7 +181,26 @@ class SmartDateDurationFormatter extends SmartDateDefaultFormatter {
         unset($elements[$delta]['start']['join']);
       }
       else {
-        $duration_output = \Drupal::service('date.formatter')->formatDiff($start_ts, $end_ts);
+        if ($unit = $this->getSetting('unit')) {
+          // Nonstadard duration formatting configured, make our own diff obj.
+          $suffix = $this->getSetting('suffix');
+          $date_time_from = new \DateTime();
+          $date_time_from->setTimestamp($start_ts);
+          $date_time_to = new \DateTime();
+          $date_time_to->setTimestamp($end_ts);
+          $interval = $date_time_to->diff($date_time_from);
+          if ($unit == 'h') {
+            $decimals = $this->getSetting('decimals');
+            $duration_output = ($interval->h + round($interval->i / 60, $decimals));
+          }
+          else {
+            $duration_output = ($interval->h * 60) + $interval->i;
+          }
+          $duration_output .= $suffix;
+        }
+        else {
+          $duration_output = \Drupal::service('date.formatter')->formatDiff($start_ts, $end_ts);
+        }
       }
 
       $elements[$delta]['duration'] = ['#markup' => $duration_output];

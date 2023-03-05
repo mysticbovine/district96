@@ -7,7 +7,7 @@ use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
 
 /**
- * Extended class for writing XML sitemap files.
+ * Extended class for writing XML Sitemap files.
  */
 class XmlSitemapWriter extends \XMLWriter {
 
@@ -50,7 +50,7 @@ class XmlSitemapWriter extends \XMLWriter {
    * Constructors and XmlSitemapWriter object.
    *
    * @param \Drupal\xmlsitemap\XmlSitemapInterface $sitemap
-   *   The XML sitemap.
+   *   The XML Sitemap.
    * @param int|string $page
    *   The current page of the sitemap being generated.
    *
@@ -61,7 +61,7 @@ class XmlSitemapWriter extends \XMLWriter {
    */
   public function __construct(XmlSitemapInterface $sitemap, $page) {
     if ($page !== 'index' && !filter_var($page, FILTER_VALIDATE_INT)) {
-      throw new \InvalidArgumentException("Invalid XML sitemap page $page.");
+      throw new \InvalidArgumentException("Invalid XML Sitemap page $page.");
     }
 
     $this->sitemap = $sitemap;
@@ -185,7 +185,7 @@ class XmlSitemapWriter extends \XMLWriter {
   }
 
   /**
-   * Writes an full XML sitemap element tag.
+   * Writes an full XML Sitemap element tag.
    *
    * @param string $name
    *   The element name.

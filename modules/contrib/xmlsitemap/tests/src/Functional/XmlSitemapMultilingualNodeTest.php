@@ -16,7 +16,7 @@ class XmlSitemapMultilingualNodeTest extends XmlSitemapMultilingualTestBase {
   /**
    * {@inheritdoc}
    */
-  public static $modules = ['config_translation'];
+  protected static $modules = ['config_translation'];
 
   /**
    * {@inheritdoc}

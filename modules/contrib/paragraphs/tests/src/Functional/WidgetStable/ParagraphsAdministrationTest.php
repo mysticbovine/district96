@@ -19,7 +19,7 @@ class ParagraphsAdministrationTest extends ParagraphsTestBase {
    *
    * @var array
    */
-  public static $modules = array(
+  protected static $modules = array(
     'image',
     'file',
     'views'
@@ -219,7 +219,7 @@ class ParagraphsAdministrationTest extends ParagraphsTestBase {
 
     // Check if the setting is stored.
     $this->drupalGet('admin/structure/types/manage/article/form-display');
-    $this->assertSession()->pageTextContains('Add mode: Buttons', 'Checking the settings value.');
+    $this->assertSession()->pageTextContains('Add mode: Buttons');
 
     $this->submitForm(array(), $field_name . "_settings_edit");
     // Assert the 'Buttons' option is selected.
@@ -246,22 +246,16 @@ class ParagraphsAdministrationTest extends ParagraphsTestBase {
     $this->assertSession()->pageTextContains('article Test article has been created.');
 
     $node = $this->drupalGetNodeByTitle('Test article');
-    if (floatval(\Drupal::VERSION) >= 9.3) {
-      $img1_url = \Drupal::service('file_url_generator')->generateString(\Drupal::token()->replace('public://[date:custom:Y]-[date:custom:m]/' . $files[0]->filename));
-      $img2_url = \Drupal::service('file_url_generator')->generateString(\Drupal::token()->replace('public://[date:custom:Y]-[date:custom:m]/' . $files[1]->filename));
-    }
-    else {
-      $img1_url = file_create_url(\Drupal::token()->replace('public://[date:custom:Y]-[date:custom:m]/' . $files[0]->filename));
-      $img2_url = file_create_url(\Drupal::token()->replace('public://[date:custom:Y]-[date:custom:m]/' . $files[1]->filename));
-    }
-    $img1_mime = \Drupal::service('file.mime_type.guesser')->guess($files[0]->uri);
-    $img2_mime = \Drupal::service('file.mime_type.guesser')->guess($files[1]->uri);
+    $img1_url = \Drupal::service('file_url_generator')->generateString(\Drupal::token()->replace('public://[date:custom:Y]-[date:custom:m]/' . $files[0]->filename));
+    $img2_url = \Drupal::service('file_url_generator')->generateString(\Drupal::token()->replace('public://[date:custom:Y]-[date:custom:m]/' . $files[1]->filename));
+    $img1_mime = \Drupal::service('file.mime_type.guesser')->guessMimeType($files[0]->uri);
+    $img2_mime = \Drupal::service('file.mime_type.guesser')->guessMimeType($files[1]->uri);
 
     // Check the text and image after publish.
     $this->assertSession()->pageTextContains('Test text 1');
-    $this->assertSession()->responseContains('<img src="' . file_url_transform_relative($img1_url));
+    $this->assertSession()->elementExists('css', 'img[src="' . $img1_url . '"]');
     $this->assertSession()->pageTextContains('Test text 2');
-    $this->assertSession()->responseContains('<img src="' . file_url_transform_relative($img2_url));
+    $this->assertSession()->elementExists('css', 'img[src="' . $img2_url . '"]');
 
     // Tests for "Edit mode" settings.
     // Test for closed setting.
@@ -272,7 +266,7 @@ class ParagraphsAdministrationTest extends ParagraphsTestBase {
     $edit = array('fields[field_paragraphs][settings_edit_form][settings][edit_mode]' => 'closed');
     $this->submitForm($edit, 'Save');
     // Check if the setting is stored.
-    $this->assertSession()->pageTextContains('Edit mode: Closed', 'Checking the settings value.');
+    $this->assertSession()->pageTextContains('Edit mode: Closed');
     $this->submitForm(array(), "field_paragraphs_settings_edit");
     // Assert the 'Closed' option is selected.
     $edit_mode_option = $this->assertSession()->optionExists('edit-fields-field-paragraphs-settings-edit-form-settings-edit-mode', 'closed');
@@ -292,8 +286,8 @@ class ParagraphsAdministrationTest extends ParagraphsTestBase {
       'fields[field_paragraphs][settings_edit_form][settings][closed_mode]' => 'preview',
     ];
     $this->submitForm($edit, 'Save');
-    $this->assertSession()->pageTextContains('Edit mode: Closed', 'Checking the "Edit mode" setting value.');
-    $this->assertSession()->pageTextContains('Closed mode: Preview', 'Checking the "Closed mode" settings value.');
+    $this->assertSession()->pageTextContains('Edit mode: Closed');
+    $this->assertSession()->pageTextContains('Closed mode: Preview');
     $this->drupalGet('node/1/edit');
     // The texts in the paragraphs should be visible.
     $this->assertSession()->responseNotContains('field_paragraphs[0][subform][field_text][0][value]');
@@ -563,10 +557,27 @@ class ParagraphsAdministrationTest extends ParagraphsTestBase {
    * Helper function for revision counting.
    */
   private function countRevisions($node, $paragraph1, $paragraph2, $revisions_count) {
-    $node_revisions_count = \Drupal::entityQuery('node')->condition('nid', $node->id())->allRevisions()->count()->execute();
-    $this->assertEquals($node_revisions_count, $revisions_count);
-    $this->assertEquals(\Drupal::entityQuery('paragraph')->condition('id', $paragraph1)->allRevisions()->count()->execute(), $revisions_count);
-    $this->assertEquals(\Drupal::entityQuery('paragraph')->condition('id', $paragraph2)->allRevisions()->count()->execute(), $revisions_count);
+    $node_revisions_count = \Drupal::entityQuery('node')
+      ->condition('nid', $node->id())
+      ->accessCheck(TRUE)
+      ->allRevisions()
+      ->count()
+      ->execute();
+    $this->assertEquals($revisions_count, $node_revisions_count);
+    $paragraph1_revisions_count = \Drupal::entityQuery('paragraph')
+      ->condition('id', $paragraph1)
+      ->accessCheck(TRUE)
+      ->allRevisions()
+      ->count()
+      ->execute();
+    $this->assertEquals($revisions_count, $paragraph1_revisions_count);
+    $paragraph2_revisions_count =\Drupal::entityQuery('paragraph')
+      ->condition('id', $paragraph2)
+      ->accessCheck(TRUE)
+      ->allRevisions()
+      ->count()
+      ->execute();
+    $this->assertEquals($revisions_count, $paragraph2_revisions_count);
   }
 
 }

@@ -89,7 +89,6 @@ class DatabaseProfilerStorage implements ProfilerStorageInterface {
     if (isset($record->data)) {
       return $this->createProfileFromData($token, $record);
     }
-    return NULL;
   }
 
   /**

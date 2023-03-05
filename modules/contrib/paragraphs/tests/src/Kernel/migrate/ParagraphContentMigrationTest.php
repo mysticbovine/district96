@@ -19,7 +19,7 @@ class ParagraphContentMigrationTest extends ParagraphsMigrationTestBase {
   /**
    * {@inheritdoc}
    */
-  public static $modules = [
+  protected static $modules = [
     'comment',
     'datetime',
     'datetime_range',
@@ -36,8 +36,7 @@ class ParagraphContentMigrationTest extends ParagraphsMigrationTestBase {
     'text',
     'user',
     'content_translation',
-    'language',
-    'migrate_drupal_multilingual',
+    'language'
   ];
 
   /**

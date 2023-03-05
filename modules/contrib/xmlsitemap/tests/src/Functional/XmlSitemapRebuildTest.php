@@ -15,7 +15,7 @@ class XmlSitemapRebuildTest extends XmlSitemapTestBase {
   /**
    * {@inheritdoc}
    */
-  public static $modules = ['path', 'help', 'block'];
+  protected static $modules = ['path', 'help', 'block'];
 
   /**
    * {@inheritdoc}
@@ -42,7 +42,7 @@ class XmlSitemapRebuildTest extends XmlSitemapTestBase {
     $this->drupalLogin($this->admin_user);
     $this->drupalGet('admin/config/search/xmlsitemap/rebuild');
     $this->assertSession()->statusCodeEquals(200);
-    $this->assertSession()->pageTextContains("This action rebuilds your site's XML sitemap and regenerates the cached files, and may be a lengthy process. If you just installed XML sitemap, this can be helpful to import all your site's content into the sitemap. Otherwise, this should only be used in emergencies.");
+    $this->assertSession()->pageTextContains("This action rebuilds your site's XML Sitemap and regenerates the cached files, and may be a lengthy process. If you just installed XML Sitemap, this can be helpful to import all your site's content into the sitemap. Otherwise, this should only be used in emergencies.");
 
     $this->drupalPostForm(NULL, [], 'Save configuration');
     $this->assertSession()->pageTextContains('The sitemap links were rebuilt.');

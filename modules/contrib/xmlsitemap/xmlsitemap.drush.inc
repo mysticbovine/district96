@@ -12,17 +12,17 @@
  */
 function xmlsitemap_drush_command() {
   $items['xmlsitemap-regenerate'] = [
-    'description' => 'Regenerate the XML sitemap files.',
+    'description' => 'Regenerate the XML Sitemap files.',
     'callback' => 'drush_xmlsitemap_regenerate',
     'drupal dependencies' => ['xmlsitemap'],
   ];
   $items['xmlsitemap-rebuild'] = [
-    'description' => 'Dump and re-process all possible XML sitemap data, and then regenerate the files.',
+    'description' => 'Dump and re-process all possible XML Sitemap data, and then regenerate the files.',
     'callback' => 'drush_xmlsitemap_rebuild',
     'drupal dependencies' => ['xmlsitemap'],
   ];
   $items['xmlsitemap-index'] = [
-    'description' => 'Process un-indexed XML sitemap links.',
+    'description' => 'Process un-indexed XML Sitemap links.',
     'callback' => 'drush_xmlsitemap_index',
     'drupal dependencies' => ['xmlsitemap'],
     'options' => [
@@ -57,7 +57,7 @@ function drush_xmlsitemap_rebuild() {
 }
 
 /**
- * Process un-indexed XML sitemap links.
+ * Process un-indexed XML Sitemap links.
  */
 function drush_xmlsitemap_index() {
   $limit = (int) drush_get_option('limit', \Drupal::config('xmlsitemap.settings')->get('batch_limit'));
@@ -68,9 +68,9 @@ function drush_xmlsitemap_index() {
   $count_after = \Drupal::database()->select('xmlsitemap', 'x')->countQuery()->execute()->fetchField();
 
   if ($count_after == $count_before) {
-    drush_print(dt('No new XML sitemap links to index.'));
+    drush_print(dt('No new XML Sitemap links to index.'));
   }
   else {
-    drush_print(dt('Indexed @count new XML sitemap links.', ['@count' => $count_after - $count_before]));
+    drush_print(dt('Indexed @count new XML Sitemap links.', ['@count' => $count_after - $count_before]));
   }
 }

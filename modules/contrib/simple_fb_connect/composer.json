@@ -1,6 +1,0 @@
-{
-  "name": "drupal/simple_fb_connect",
-  "require" : {
-    "facebook/graph-sdk" : "~5.0"
-  }
-}

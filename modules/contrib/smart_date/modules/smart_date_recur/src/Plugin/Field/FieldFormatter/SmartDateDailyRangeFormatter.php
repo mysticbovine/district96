@@ -50,7 +50,7 @@ class SmartDateDailyRangeFormatter extends SmartDateDefaultFormatter {
   /**
    * {@inheritdoc}
    */
-  public function viewElements(FieldItemListInterface $items, $langcode) {
+  public function viewElements(FieldItemListInterface $items, $langcode, $format = '') {
     $elements = [];
     // @todo intellident switching between retrieval methods
     // Look for a defined format and use it if specified.

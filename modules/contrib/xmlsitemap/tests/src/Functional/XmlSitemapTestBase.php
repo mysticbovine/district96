@@ -25,7 +25,7 @@ abstract class XmlSitemapTestBase extends BrowserTestBase {
    *
    * @var array
    */
-  public static $modules = ['node', 'system', 'user', 'xmlsitemap'];
+  protected static $modules = ['node', 'system', 'user', 'xmlsitemap'];
 
   /**
    * The admin user account.
@@ -159,10 +159,10 @@ abstract class XmlSitemapTestBase extends BrowserTestBase {
   }
 
   /**
-   * Retrieves an XML sitemap.
+   * Retrieves an XML Sitemap.
    *
    * @param array $context
-   *   An optional array of the XML sitemap's context.
+   *   An optional array of the XML Sitemap's context.
    * @param array $options
    *   Options to be forwarded to Url::fromUri(). These values will be merged
    *   with, but always override $sitemap->uri['options'].
@@ -189,7 +189,7 @@ abstract class XmlSitemapTestBase extends BrowserTestBase {
     $this->state->set('xmlsitemap_regenerate_needed', TRUE);
     $this->state->set('xmlsitemap_generated_last', 0);
     $this->cronRun();
-    $this->assertTrue($this->state->get('xmlsitemap_generated_last') && !$this->state->get('xmlsitemap_regenerate_needed'), t('XML sitemaps regenerated and flag cleared.'));
+    $this->assertTrue($this->state->get('xmlsitemap_generated_last') && !$this->state->get('xmlsitemap_regenerate_needed'), t('XML Sitemaps regenerated and flag cleared.'));
   }
 
   /**
@@ -371,7 +371,7 @@ abstract class XmlSitemapTestBase extends BrowserTestBase {
   protected function assertXMLSitemapProblems($problem_text = FALSE) {
     // @codingStandardsIgnoreEnd
     $this->drupalGet('admin/config/search/xmlsitemap');
-    $this->assertSession()->pageTextContains('One or more problems were detected with your XML sitemap configuration');
+    $this->assertSession()->pageTextContains('One or more problems were detected with your XML Sitemap configuration');
     if ($problem_text) {
       $this->clickLink('status report');
       $this->assertSession()->pageTextContains($problem_text);
@@ -386,7 +386,7 @@ abstract class XmlSitemapTestBase extends BrowserTestBase {
   protected function assertNoXMLSitemapProblems() {
     // @codingStandardsIgnoreEnd
     $this->drupalGet('admin/config/search/xmlsitemap');
-    $this->assertSession()->pageTextNotContains('One or more problems were detected with your XML sitemap configuration');
+    $this->assertSession()->pageTextNotContains('One or more problems were detected with your XML Sitemap configuration');
   }
 
   /**

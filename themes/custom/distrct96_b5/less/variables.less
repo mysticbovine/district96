@@ -1,0 +1,147 @@
+// main: "district96_b5.less", compress: true, sourceMap: true
+
+/**
+ * Theme variables.
+ *
+ */
+
+// Set the proper directory for the Bootstrap Glyphicon font.
+@icon-font-path: '../fonts/';
+
+// Colors
+@grey: 		#A9b2B1;
+@yellow: 	#F2DF74;
+@blue:		#004165;
+@red:		#CD202C;
+@burgundy:	#772432;
+@green:		#00B233;
+@black:     #000;
+@text: #333;
+// Faded
+
+
+@ti: @burgundy;
+@district: @burgundy;
+@division: @yellow;
+@area: @red;
+@club: @green;
+@general: @grey;
+
+@program-quality:  @yellow;
+@contests: @program-quality;
+@pathways: @program-quality;
+@workshop: @program-quality;
+
+@club_growth: @green;
+@public_relations: @red;
+
+@district: @burgundy;
+@officer: @district;
+@ti:  @district;
+@member: @district;
+
+@general: @black; 
+@tips: @general;
+//  font-family:Montserrat, "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+// Bbackground @color, @contrast, @text:#fff, @buttontext: #fff
+.bg-blue {
+    .background-color(@blue, @yellow, @text);
+    .btn-default{
+        .button-variant(@yellow, @text);
+    }
+    
+}
+.bg-burgundy {
+    .background-color(@burgundy, @yellow, @text);
+    .btn-default{
+        .button-variant(@yellow, @text);
+    }
+}
+.bg-grey{
+    .background-color(@grey, @burgundy, #fff);
+    .btn-default{
+        .button-variant(@burgundy);
+    }
+}
+.bg-red{
+    .background-color(@red, @yellow, @text);
+    .btn-default{
+        .button-variant(@yellow, @text);
+    }
+}
+.bg-yellow{
+    .background-color(@yellow, @blue, #fff);
+    .btn-default{
+        .button-variant(@blue);
+    }
+}
+
+// Buttons
+.btn-primary {
+    .button-variant(@blue)
+}
+.btn-secorndary {
+    .button-variant(@burgundy)
+}
+.btn-blue {
+    .button-variant(@blue);
+}
+.btn-burgundy {
+    .button-variant(@burgundy);
+}
+.btn-grey {
+    .button-variant(@grey);
+}
+.btn-red {
+    .button-variant(@red);
+}
+.btn-yellow {
+    .button-variant(@yellow, @text);
+}
+// Mixins
+.background-color(@color, @btn, @text){
+
+    background-color: @color !important;
+    &.faded{
+        background-color: fade(@color, 70%) !important;
+    }
+    &.light{
+        color: #fff;
+        a {
+            color: darken(#fff, 20%);
+            &:hover{
+                color: darken(#fff, 40%);
+            }
+        }
+    }
+    &.dark{
+        color: #000;
+        a {
+            color: darken(@text, 40%);
+            &:hover{
+                color: darken(@text, 60%);
+            }
+        }
+    }
+ 
+}
+
+.button-variant(@color, @text:#fff){
+    background-color: @color;
+    border-color: @color;
+    color: @text !important;
+    &:hover {
+        background-color: darken(@color, 20%); 
+        border-color: darken(@color, 20%); 
+        color: #fff;
+    }
+    a{
+        color: @text;
+        text-decoration: none;
+        &:hover {
+            color: @text;
+            text-decoration: none;
+        }
+    }
+}

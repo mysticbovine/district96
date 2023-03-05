@@ -20,6 +20,8 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
  */
 class Instances extends ControllerBase {
 
+  use SmartDateTrait;
+
   /**
    * The rrule object whose instances are being listed.
    *
@@ -201,7 +203,7 @@ class Instances extends ControllerBase {
     $settings = $format->getOptions();
 
     // Format range for this instance.
-    $row['label']['data'] = SmartDateTrait::formatSmartDate($instance['value'], $instance['end_value'], $settings);
+    $row['label']['data'] = $this->formatSmartDate($instance['value'], $instance['end_value'], $settings);
 
     if (isset($instance['class'])) {
       $row['label']['class'][] = 'smart-date-instance--' . $instance['class'];

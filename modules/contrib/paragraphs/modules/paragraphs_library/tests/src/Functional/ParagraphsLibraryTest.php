@@ -17,7 +17,7 @@ class ParagraphsLibraryTest extends ParagraphsTestBase {
    *
    * @var array
    */
-  public static $modules = [
+  protected static $modules = [
     'views',
     'paragraphs_library',
   ];
@@ -57,7 +57,11 @@ class ParagraphsLibraryTest extends ParagraphsTestBase {
     $this->assertSession()->responseContains('bartik/css/base/elements.css');
     $this->clickLink('Edit');
     $this->assertSession()->responseNotContains('class="messages messages--warning"');
-    $items = \Drupal::entityQuery('paragraphs_library_item')->sort('id', 'DESC')->range(0, 1)->execute();
+    $items = \Drupal::entityQuery('paragraphs_library_item')
+      ->accessCheck(TRUE)
+      ->sort('id', 'DESC')
+      ->range(0, 1)
+      ->execute();
     $library_item_id = reset($items);
 
     // Assert local tasks and URLs.
@@ -160,7 +164,7 @@ class ParagraphsLibraryTest extends ParagraphsTestBase {
     $alternative_display->save();
 
     $this->drupalGet('node/' . $node_one->id());
-    $this->assertText('re_usable_text');
+    $this->assertSession()->pageTextContains('re_usable_text');
 
     /** @var \Drupal\Core\Entity\Entity\EntityViewDisplay $from_library_view_display */
     $from_library_view_display = $display_storage->load('paragraph.from_library.default');
@@ -170,7 +174,7 @@ class ParagraphsLibraryTest extends ParagraphsTestBase {
     $from_library_view_display->save();
 
     $this->drupalGet('node/' . $node_one->id());
-    $this->assertNoText('re_usable_text');
+    $this->assertSession()->pageTextNotContains('re_usable_text');
 
     $from_library_view_display = $display_storage->load('paragraph.from_library.default');
     $field_reusable_paragraph_component = $from_library_view_display->getComponent('field_reusable_paragraph');

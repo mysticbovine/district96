@@ -5,6 +5,7 @@ namespace Drupal\smart_date;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\smart_date\Entity\SmartDateFormatInterface;
+use DateTimeZone;
 
 /**
  * Provides friendly methods for smart date range.
@@ -28,12 +29,15 @@ trait SmartDateTrait {
   /**
    * {@inheritdoc}
    */
-  public function viewElements(FieldItemListInterface $items, $langcode) {
-    $field_type = $this->fieldDefinition->getType();
+  public function viewElements(FieldItemListInterface $items, $langcode, $format = '') {
+    $field_type = 'smartdate';
+    if (property_exists($this, 'fieldDefinition') && $this->fieldDefinition) {
+      $field_type = $this->fieldDefinition->getType();
+    }
     $elements = [];
     // @todo intelligent switching between retrieval methods.
     // Look for a defined format and use it if specified.
-    $format_label = $this->getSetting('format');
+    $format_label = $format ?: $this->getSetting('format');
     if ($format_label) {
       $entity_storage_manager = \Drupal::entityTypeManager()
         ->getStorage('smart_date_format');
@@ -689,6 +693,10 @@ trait SmartDateTrait {
    */
   public static function isAllDay($start_ts, $end_ts, $timezone = NULL) {
     if ($timezone) {
+      if ($timezone instanceof DateTimeZone) {
+        // If provided as an object, convert to a string.
+        $timezone = $timezone->getName();
+      }
       // Apply a specific timezone provided.
       $default_tz = date_default_timezone_get();
       date_default_timezone_set($timezone);
@@ -726,7 +734,8 @@ trait SmartDateTrait {
     if ($keys) {
       $augmenters = [];
       foreach ($keys as $key) {
-        $augmenters[$key] = $dateAugmenterManager->getActivePlugins($config[$key]);
+        $key_config = $config[$key] ?? NULL;
+        $augmenters[$key] = $dateAugmenterManager->getActivePlugins($key_config);
       }
     }
     else {

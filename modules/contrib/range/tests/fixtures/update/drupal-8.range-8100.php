@@ -124,3 +124,407 @@ $connection->insert('key_value')
     'value' => 'i:8100;',
   ])
   ->execute();
+
+// Create tables for the fields themselves.
+$connection->schema()->createTable('node__field_decimal', [
+  'fields' => [
+    'bundle' => [
+      'type' => 'varchar_ascii',
+      'not null' => TRUE,
+      'length' => '128',
+      'default' => '',
+    ],
+    'deleted' => [
+      'type' => 'int',
+      'not null' => TRUE,
+      'size' => 'tiny',
+      'default' => '0',
+    ],
+    'entity_id' => [
+      'type' => 'int',
+      'not null' => TRUE,
+      'size' => 'normal',
+      'unsigned' => TRUE,
+    ],
+    'revision_id' => [
+      'type' => 'int',
+      'not null' => TRUE,
+      'size' => 'normal',
+      'unsigned' => TRUE,
+    ],
+    'langcode' => [
+      'type' => 'varchar_ascii',
+      'not null' => TRUE,
+      'length' => '32',
+      'default' => '',
+    ],
+    'delta' => [
+      'type' => 'int',
+      'not null' => TRUE,
+      'size' => 'normal',
+      'unsigned' => TRUE,
+    ],
+    'field_decimal_from' => [
+      'type' => 'numeric',
+      'not null' => TRUE,
+      'precision' => '10',
+      'scale' => '2',
+    ],
+    'field_decimal_to' => [
+      'type' => 'numeric',
+      'not null' => TRUE,
+      'precision' => '10',
+      'scale' => '2',
+    ],
+  ],
+  'primary key' => [
+    'entity_id',
+    'deleted',
+    'delta',
+    'langcode',
+  ],
+  'indexes' => [
+    'bundle' => [
+      'bundle',
+    ],
+    'revision_id' => [
+      'revision_id',
+    ],
+  ],
+  'mysql_character_set' => 'utf8mb4',
+]);
+
+$connection->schema()->createTable('node__field_float', [
+  'fields' => [
+    'bundle' => [
+      'type' => 'varchar_ascii',
+      'not null' => TRUE,
+      'length' => '128',
+      'default' => '',
+    ],
+    'deleted' => [
+      'type' => 'int',
+      'not null' => TRUE,
+      'size' => 'tiny',
+      'default' => '0',
+    ],
+    'entity_id' => [
+      'type' => 'int',
+      'not null' => TRUE,
+      'size' => 'normal',
+      'unsigned' => TRUE,
+    ],
+    'revision_id' => [
+      'type' => 'int',
+      'not null' => TRUE,
+      'size' => 'normal',
+      'unsigned' => TRUE,
+    ],
+    'langcode' => [
+      'type' => 'varchar_ascii',
+      'not null' => TRUE,
+      'length' => '32',
+      'default' => '',
+    ],
+    'delta' => [
+      'type' => 'int',
+      'not null' => TRUE,
+      'size' => 'normal',
+      'unsigned' => TRUE,
+    ],
+    'field_float_from' => [
+      'type' => 'float',
+      'not null' => TRUE,
+      'size' => 'normal',
+    ],
+    'field_float_to' => [
+      'type' => 'float',
+      'not null' => TRUE,
+      'size' => 'normal',
+    ],
+  ],
+  'primary key' => [
+    'entity_id',
+    'deleted',
+    'delta',
+    'langcode',
+  ],
+  'indexes' => [
+    'bundle' => [
+      'bundle',
+    ],
+    'revision_id' => [
+      'revision_id',
+    ],
+  ],
+  'mysql_character_set' => 'utf8mb4',
+]);
+
+$connection->schema()->createTable('node__field_integer', [
+  'fields' => [
+    'bundle' => [
+      'type' => 'varchar_ascii',
+      'not null' => TRUE,
+      'length' => '128',
+      'default' => '',
+    ],
+    'deleted' => [
+      'type' => 'int',
+      'not null' => TRUE,
+      'size' => 'tiny',
+      'default' => '0',
+    ],
+    'entity_id' => [
+      'type' => 'int',
+      'not null' => TRUE,
+      'size' => 'normal',
+      'unsigned' => TRUE,
+    ],
+    'revision_id' => [
+      'type' => 'int',
+      'not null' => TRUE,
+      'size' => 'normal',
+      'unsigned' => TRUE,
+    ],
+    'langcode' => [
+      'type' => 'varchar_ascii',
+      'not null' => TRUE,
+      'length' => '32',
+      'default' => '',
+    ],
+    'delta' => [
+      'type' => 'int',
+      'not null' => TRUE,
+      'size' => 'normal',
+      'unsigned' => TRUE,
+    ],
+    'field_integer_from' => [
+      'type' => 'int',
+      'not null' => TRUE,
+      'size' => 'normal',
+    ],
+    'field_integer_to' => [
+      'type' => 'int',
+      'not null' => TRUE,
+      'size' => 'normal',
+    ],
+  ],
+  'primary key' => [
+    'entity_id',
+    'deleted',
+    'delta',
+    'langcode',
+  ],
+  'indexes' => [
+    'bundle' => [
+      'bundle',
+    ],
+    'revision_id' => [
+      'revision_id',
+    ],
+  ],
+  'mysql_character_set' => 'utf8mb4',
+]);
+
+$connection->schema()->createTable('node_revision__field_decimal', [
+  'fields' => [
+    'bundle' => [
+      'type' => 'varchar_ascii',
+      'not null' => TRUE,
+      'length' => '128',
+      'default' => '',
+    ],
+    'deleted' => [
+      'type' => 'int',
+      'not null' => TRUE,
+      'size' => 'tiny',
+      'default' => '0',
+    ],
+    'entity_id' => [
+      'type' => 'int',
+      'not null' => TRUE,
+      'size' => 'normal',
+      'unsigned' => TRUE,
+    ],
+    'revision_id' => [
+      'type' => 'int',
+      'not null' => TRUE,
+      'size' => 'normal',
+      'unsigned' => TRUE,
+    ],
+    'langcode' => [
+      'type' => 'varchar_ascii',
+      'not null' => TRUE,
+      'length' => '32',
+      'default' => '',
+    ],
+    'delta' => [
+      'type' => 'int',
+      'not null' => TRUE,
+      'size' => 'normal',
+      'unsigned' => TRUE,
+    ],
+    'field_decimal_from' => [
+      'type' => 'numeric',
+      'not null' => TRUE,
+      'precision' => '10',
+      'scale' => '2',
+    ],
+    'field_decimal_to' => [
+      'type' => 'numeric',
+      'not null' => TRUE,
+      'precision' => '10',
+      'scale' => '2',
+    ],
+  ],
+  'primary key' => [
+    'entity_id',
+    'revision_id',
+    'deleted',
+    'delta',
+    'langcode',
+  ],
+  'indexes' => [
+    'bundle' => [
+      'bundle',
+    ],
+    'revision_id' => [
+      'revision_id',
+    ],
+  ],
+  'mysql_character_set' => 'utf8mb4',
+]);
+
+$connection->schema()->createTable('node_revision__field_float', [
+  'fields' => [
+    'bundle' => [
+      'type' => 'varchar_ascii',
+      'not null' => TRUE,
+      'length' => '128',
+      'default' => '',
+    ],
+    'deleted' => [
+      'type' => 'int',
+      'not null' => TRUE,
+      'size' => 'tiny',
+      'default' => '0',
+    ],
+    'entity_id' => [
+      'type' => 'int',
+      'not null' => TRUE,
+      'size' => 'normal',
+      'unsigned' => TRUE,
+    ],
+    'revision_id' => [
+      'type' => 'int',
+      'not null' => TRUE,
+      'size' => 'normal',
+      'unsigned' => TRUE,
+    ],
+    'langcode' => [
+      'type' => 'varchar_ascii',
+      'not null' => TRUE,
+      'length' => '32',
+      'default' => '',
+    ],
+    'delta' => [
+      'type' => 'int',
+      'not null' => TRUE,
+      'size' => 'normal',
+      'unsigned' => TRUE,
+    ],
+    'field_float_from' => [
+      'type' => 'float',
+      'not null' => TRUE,
+      'size' => 'normal',
+    ],
+    'field_float_to' => [
+      'type' => 'float',
+      'not null' => TRUE,
+      'size' => 'normal',
+    ],
+  ],
+  'primary key' => [
+    'entity_id',
+    'revision_id',
+    'deleted',
+    'delta',
+    'langcode',
+  ],
+  'indexes' => [
+    'bundle' => [
+      'bundle',
+    ],
+    'revision_id' => [
+      'revision_id',
+    ],
+  ],
+  'mysql_character_set' => 'utf8mb4',
+]);
+
+$connection->schema()->createTable('node_revision__field_integer', [
+  'fields' => [
+    'bundle' => [
+      'type' => 'varchar_ascii',
+      'not null' => TRUE,
+      'length' => '128',
+      'default' => '',
+    ],
+    'deleted' => [
+      'type' => 'int',
+      'not null' => TRUE,
+      'size' => 'tiny',
+      'default' => '0',
+    ],
+    'entity_id' => [
+      'type' => 'int',
+      'not null' => TRUE,
+      'size' => 'normal',
+      'unsigned' => TRUE,
+    ],
+    'revision_id' => [
+      'type' => 'int',
+      'not null' => TRUE,
+      'size' => 'normal',
+      'unsigned' => TRUE,
+    ],
+    'langcode' => [
+      'type' => 'varchar_ascii',
+      'not null' => TRUE,
+      'length' => '32',
+      'default' => '',
+    ],
+    'delta' => [
+      'type' => 'int',
+      'not null' => TRUE,
+      'size' => 'normal',
+      'unsigned' => TRUE,
+    ],
+    'field_integer_from' => [
+      'type' => 'int',
+      'not null' => TRUE,
+      'size' => 'normal',
+    ],
+    'field_integer_to' => [
+      'type' => 'int',
+      'not null' => TRUE,
+      'size' => 'normal',
+    ],
+  ],
+  'primary key' => [
+    'entity_id',
+    'revision_id',
+    'deleted',
+    'delta',
+    'langcode',
+  ],
+  'indexes' => [
+    'bundle' => [
+      'bundle',
+    ],
+    'revision_id' => [
+      'revision_id',
+    ],
+  ],
+  'mysql_character_set' => 'utf8mb4',
+]);

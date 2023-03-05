@@ -1,0 +1,43 @@
+// main: "district96_b5.less", compress: true, sourceMap: true
+//https://codepen.io/choogoor/pen/NGJVMb
+@import 'variables';
+
+// Menu //
+
+.navbar-expand-lg {
+    z-index: 100;
+}
+// .nav-link{
+//     &.bi-search{
+//         text-indent: -999px;
+//     }
+// }
+.region-nav-main{
+    width: 100%;
+    li{
+        ul.dropdown-menu.show{
+            // margin-top: -3px;
+            // border: 2px solid @yellow; 
+        }
+        a.nav-item {
+            color: darken(#fff, 20%);
+            border-bottom: 2px solid @blue;
+            // font-size: 20px;
+            &:hover, &.active {
+                color: #fff;
+                border-bottom: 2px solid @yellow;
+            }
+            &.is-active.show{
+                border: none;
+            }
+           
+        }
+    }
+   
+}
+.menu--account{
+    a.nav-link{
+        color: #fff;
+        // font-size: 20px;
+    }
+}

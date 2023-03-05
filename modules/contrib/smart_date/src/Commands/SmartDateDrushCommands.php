@@ -38,19 +38,12 @@ class SmartDateDrushCommands extends DrushCommands {
    * @option langcode
    *   Language code to store.
    */
-  public function migrate($bundle, $dest, $source_start, $source_end = NULL, $source_all_day = NULL, array $options = NULL) {
-    if (!$options) {
-      $options = [
-        'clear' => FALSE,
-        'entity' => 'node',
-        'default_duration' => 0,
-        'langcode' => NULL,
-      ];
-    }
+  public function migrate($bundle, $dest, $source_start, $source_end = NULL, $source_all_day = NULL, $options = ['clear' => FALSE, 'entity' => 'node', 'default_duration' => 0, 'langcode' => NULL]) {
     // @todo Sanitize provide input.
     $entity = $options['entity'];
     $dest_table = $entity . '__' . $dest;
     $def_duration = (int) $options['default_duration'];
+    $site_tz_name = \Drupal::config('system.date')->get('timezone.default');
 
     $connection = \Drupal::service('database');
     if ($options['clear']) {
@@ -59,9 +52,12 @@ class SmartDateDrushCommands extends DrushCommands {
     }
     $this->output()->writeln('Starting date migration.');
 
+    $definition = \Drupal::service('entity_type.manager')->getDefinition($options['entity']);
+    $bundle_key = $definition->getKey('bundle');
+
     // Get all events.
     $events = \Drupal::entityTypeManager()->getStorage($entity)
-      ->loadByProperties(['type' => $bundle]);
+      ->loadByProperties([$bundle_key => $bundle]);
 
     $utc = new \DateTimeZone('UTC');
 
@@ -83,21 +79,57 @@ class SmartDateDrushCommands extends DrushCommands {
       $langcode = $options['langcode'] ?? $fallback_langcode;
       foreach ($dates as $delta => $date) {
         $start_date = $date['value'];
+        // Only store the timezone for all day events.
+        $timezone = NULL;
         // If a field was provided to check for all day, check it.
         if ($all_day_set) {
           $all_day = $all_day_set[$delta]['value'];
+        }
+        elseif (strlen($start_date) == 10) {
+          $all_day = TRUE;
         }
         else {
           $all_day = FALSE;
         }
 
+        $end_date = NULL;
+
+        if ($end_dates_set && isset($end_dates_set[$delta]['value'])) {
+          $end_date = $end_dates_set[$delta]['value'];
+        }
+        else {
+          // Assume a datetime range, so look for the end_value.
+          if (!empty($date['end_value'])) {
+            $end_date = $date['end_value'];
+          }
+        }
+
         if (!empty($all_day)) {
-          $date = new \DateTime(substr($start_date, 0, -8) . '00:00:00', $utc);
+          // Store the timezone for all day events.
+          $timezone = $site_tz_name;
+          $tz_obj = new \DateTimeZone($site_tz_name);
+          $date = new \DateTime(substr($start_date, 0, 10) . ' 00:00:00', $tz_obj);
           $date = $date->format('U');
 
           $start_date = $date;
-          $end_date = $date + 86340;
-          $duration = 1439;
+          if (!empty($end_date)) {
+            $end_date = new \DateTime(substr($end_date, 0, 10) . ' 11:59:00', $tz_obj);
+            $end_date = $end_date->format('U');
+
+            // If valid end date, set duration. Otherwise make a new end date.
+            if ($start_date < $end_date) {
+              $duration = round(($end_date - $start_date) / 60);
+            }
+            else {
+              $end_date = NULL;
+            }
+          }
+
+          if (!$end_date) {
+            // If the end date is bogus, make all day for the day it starts.
+            $end_date = $date + 86340;
+            $duration = 1439;
+          }
         }
         else {
           $start_date = new \DateTime($start_date, $utc);
@@ -105,18 +137,6 @@ class SmartDateDrushCommands extends DrushCommands {
 
           // Remove any seconds from the incoming value.
           $start_date -= $start_date % 60;
-
-          $end_date = NULL;
-
-          if ($end_dates_set && isset($end_dates_set[$delta]['value'])) {
-            $end_date = $end_dates_set[$delta]['value'];
-          }
-          else {
-            // Assume a datetime range, so look for the end_value.
-            if (!empty($date['end_value'])) {
-              $end_date = $date['end_value'];
-            }
-          }
 
           if (!empty($end_date)) {
             $end_date = new \DateTime($end_date, $utc);
@@ -139,25 +159,25 @@ class SmartDateDrushCommands extends DrushCommands {
             $end_date = $start_date + ($def_duration * 60);
             $duration = $def_duration;
           }
-
-          // Insert the resulting data.
-          $result = $connection->insert($dest_table)
-            ->fields([
-              'bundle' => $bundle,
-              'deleted' => 0,
-              'entity_id' => $event->id(),
-              'revision_id' => $event->getRevisionId(),
-              'langcode' => $langcode,
-              'delta' => $delta,
-              $dest . '_value' => $start_date,
-              $dest . '_end_value' => $end_date,
-              $dest . '_duration' => $duration,
-              $dest . '_rrule' => NULL,
-              $dest . '_rrule_index' => NULL,
-              $dest . '_timezone' => '',
-            ])
-            ->execute();
         }
+
+        // Insert the resulting data.
+        $result = $connection->insert($dest_table)
+          ->fields([
+            'bundle' => $bundle,
+            'deleted' => 0,
+            'entity_id' => $event->id(),
+            'revision_id' => $event->getRevisionId() ?? $event->id(),
+            'langcode' => $langcode,
+            'delta' => $delta,
+            $dest . '_value' => $start_date,
+            $dest . '_end_value' => $end_date,
+            $dest . '_duration' => $duration,
+            $dest . '_rrule' => NULL,
+            $dest . '_rrule_index' => NULL,
+            $dest . '_timezone' => $timezone,
+          ])
+          ->execute();
       }
     }
 

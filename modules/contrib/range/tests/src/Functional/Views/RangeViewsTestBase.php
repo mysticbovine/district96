@@ -6,7 +6,6 @@ use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\node\Entity\NodeType;
 use Drupal\Tests\views\Functional\ViewTestBase;
-use Drupal\views\Tests\ViewTestData;
 
 /**
  * Base class for testing range handlers.
@@ -56,8 +55,8 @@ abstract class RangeViewsTestBase extends ViewTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp($import_test_views = TRUE): void {
-    parent::setUp();
+  protected function setUp($import_test_views = TRUE, $modules = ['range_test']): void {
+    parent::setUp($import_test_views, $modules);
 
     // Add a date field to page nodes.
     $node_type = NodeType::create([
@@ -85,9 +84,6 @@ abstract class RangeViewsTestBase extends ViewTestBase {
     $this->map = [
       'nid' => 'nid',
     ];
-
-    // Load test views.
-    ViewTestData::createTestViews(get_class($this), ['range_test']);
   }
 
 }

@@ -23,6 +23,8 @@ use Drupal\smart_date_recur\Entity\SmartDateRule;
  */
 class SmartDateWidgetBase extends DateTimeWidgetBase {
 
+  use SmartDateTrait;
+
   /**
    * {@inheritdoc}
    */
@@ -114,8 +116,8 @@ class SmartDateWidgetBase extends DateTimeWidgetBase {
       }
       $defaults = $this->fieldDefinition->getDefaultValueLiteral()[0];
       $timezone = isset($items[$delta]->timezone) ? $items[$delta]->timezone : date_default_timezone_get();
-      $values['start'] = isset($items[$delta]->value) ? DrupalDateTime::createFromTimestamp($items[$delta]->value, $timezone) : '';
-      $values['end'] = isset($items[$delta]->end_value) ? DrupalDateTime::createFromTimestamp($items[$delta]->end_value, $timezone) : '';
+      $values['start'] = !empty($items[$delta]->value) ? DrupalDateTime::createFromTimestamp($items[$delta]->value, $timezone) : '';
+      $values['end'] = !empty($items[$delta]->end_value) ? DrupalDateTime::createFromTimestamp($items[$delta]->end_value, $timezone) : '';
       $values['duration'] = isset($items[$delta]->duration) ? $items[$delta]->duration : $defaults['default_duration'];
       $values['timezone'] = isset($items[$delta]->timezone) ? $items[$delta]->timezone : '';
     }
@@ -282,7 +284,7 @@ class SmartDateWidgetBase extends DateTimeWidgetBase {
         if (!$timezone) {
           $value_tz = $item['value']->getTimezone();
           $value_tz_name = $value_tz->getName();
-          if (SmartDateTrait::isAllDay(
+          if ($this->isAllDay(
             $item['value']->getTimestamp(),
             $item['end_value']->getTimestamp(),
             $value_tz_name
@@ -499,7 +501,7 @@ class SmartDateWidgetBase extends DateTimeWidgetBase {
             '#weight' => 100,
           ];
         }
-        $elements[] = $element;
+        $elements[$delta] = $element;
       }
     }
     if ($elements) {

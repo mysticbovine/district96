@@ -64,17 +64,17 @@ CONFIGURATION
  * In the settings, you have the option to specify:
    - a default date and time, either a fixed value (such as the start of a
      conference) or a relative date (such as '+1 Saturday').
-   - Duration increments: These are the values that will be made available to
-     editors creating content of this type. For example, if a conference will
-     have only 30 and 60 minutes sessions, you can restrict authors to only use
-     these values by making them the only ones listed. If your durations include
-     the lower case word 'custom' then it will also be possible to define a
-     custom duration by specifying the end time. If not, the end date and time
-     fields will be read only. Note that the increments must be provided as a
-     comma-separated string. Also note that to allow for the use of the "All
-     day" functionality for editors, it is necessary to allow either a custom
-     increment, or a value of 1439, which Smart Date uses for all day events,
-     but which will only allow for single-day events.
+   - Duration increments: These are the values (in minutes) that will be made
+     available to editors creating content of this type. For example, if a
+     conference will have only 30 and 60 minutes sessions, you can restrict
+     authors to only use these values by making them the only ones listed. If
+     your durations include the lower case word 'custom' then it will also be
+     possible to define a custom duration by specifying the end time. If not,
+     the end date and time fields will be read only. Note that the increments
+     must be provided as a comma-separated string. Also note that to allow for
+     the use of the "All day" functionality for editors, it is necessary to
+     allow either a custom increment, or a value of 1439, which Smart Date uses
+     for all day events, but which will only allow for single-day events.
    - Default duration: Define which of the provided duration increments should
      be used by default, so that the end date and time can be automatically
      defined as the start values are populated.

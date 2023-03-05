@@ -21,9 +21,8 @@ abstract class MigrateUiParagraphsTestBase extends MigrateUpgradeTestBase {
   /**
    * {@inheritdoc}
    */
-  public static $modules = [
+  protected static $modules = [
     'content_translation',
-    'migrate_drupal_multilingual',
     'migrate_drupal_ui',
     'paragraphs',
     'telephone',
@@ -33,14 +32,14 @@ abstract class MigrateUiParagraphsTestBase extends MigrateUpgradeTestBase {
    * {@inheritdoc}
    */
   protected function getSourceBasePath() {
-    return drupal_get_path('module', 'paragraphs') . '/tests/fixtures';
+    return \Drupal::service('extension.list.module')->getPath('paragraphs') . '/tests/fixtures';
   }
 
   /**
    * {@inheritdoc}
    */
   protected function getSourcePrivateFilesPath() {
-    return drupal_get_path('module', 'paragraphs') . '/tests/fixtures';
+    return \Drupal::service('extension.list.module')->getPath('paragraphs') . '/tests/fixtures';
   }
 
   /**
@@ -393,7 +392,7 @@ abstract class MigrateUiParagraphsTestBase extends MigrateUpgradeTestBase {
   protected function setUp(): void {
     parent::setUp();
 
-    $this->loadFixture(drupal_get_path('module', 'paragraphs') . '/tests/fixtures/drupal7.php');
+    $this->loadFixture(\Drupal::service('extension.list.module')->getPath('paragraphs') . '/tests/fixtures/drupal7.php');
   }
 
   /**

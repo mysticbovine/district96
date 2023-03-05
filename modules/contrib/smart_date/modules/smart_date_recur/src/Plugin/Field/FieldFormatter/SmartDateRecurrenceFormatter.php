@@ -131,7 +131,7 @@ class SmartDateRecurrenceFormatter extends SmartDateDefaultFormatter {
   /**
    * {@inheritdoc}
    */
-  public function viewElements(FieldItemListInterface $items, $langcode) {
+  public function viewElements(FieldItemListInterface $items, $langcode, $format = '') {
     $elements = [];
     // @todo intellident switching between retrieval methods
     // Look for a defined format and use it if specified.
@@ -160,6 +160,15 @@ class SmartDateRecurrenceFormatter extends SmartDateDefaultFormatter {
     $settings['upcoming_display'] = $this->getSetting('upcoming_display');
     $settings['show_next'] = $this->getSetting('show_next');
     $settings['current_upcoming'] = $this->getSetting('current_upcoming');
+
+    // If an exposed filter is set for the field, use that as the minimum date.
+    $filter = \Drupal::request()->query->get($items->getName());
+    if (is_array($filter) && isset($filter['min']) && strtotime($filter['min']) > 0) {
+      $settings['min_date'] = strtotime($filter['min']);
+    }
+    elseif (is_string($filter) && strtotime($filter) > 0) {
+      $settings['min_date'] = strtotime($filter);
+    }
 
     // Retrieve any available augmenters.
     $augmenter_sets = ['instances', 'rule'];
@@ -256,6 +265,14 @@ class SmartDateRecurrenceFormatter extends SmartDateDefaultFormatter {
         $ends = $instances[array_key_last($instances)]->getValue()['end_value'];
         $this->augmentOutput($rrule_output['#rule_text'], $augmenters['rule'], $start['value'], $start['end_value'], $start['timezone'], $delta, 'rule', $repeats, $ends);
       }
+
+      if ($next_index == -1) {
+        $next_instance = array_pop($instances)->getValue();
+      }
+      else {
+        $next_instance = $instances[$next_index]->getValue();
+      }
+      $rrule_output['#cache']['max-age'] = $next_instance['value'] - \Drupal::time()->getRequestTime();
 
       $elements[$delta] = $rrule_output;
     }
@@ -373,7 +390,7 @@ class SmartDateRecurrenceFormatter extends SmartDateDefaultFormatter {
    */
   protected function findNextInstance(array $instances) {
     $next_index = -1;
-    $time = time();
+    $time = $this->settings['min_date'] ?? time();
     foreach ($instances as $index => $instance) {
       $date_compare = ($this->settings['current_upcoming']) ? $instance->end_value : $instance->value;
       if ($date_compare > $time) {

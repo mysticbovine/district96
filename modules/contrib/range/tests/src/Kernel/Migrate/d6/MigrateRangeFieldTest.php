@@ -176,8 +176,8 @@ class MigrateRangeFieldTest extends MigrateDrupal6TestBase {
         'field_decimal',
         'range',
         [
-          'placeholder' => ['from' => '', 'to' => ''],
           'label' => ['from' => 'From', 'to' => 'to'],
+          'placeholder' => ['from' => '', 'to' => ''],
         ],
       ],
       'range_float' => [
@@ -185,8 +185,8 @@ class MigrateRangeFieldTest extends MigrateDrupal6TestBase {
         'field_float',
         'range',
         [
-          'placeholder' => ['from' => '', 'to' => ''],
           'label' => ['from' => 'From', 'to' => 'to'],
+          'placeholder' => ['from' => '', 'to' => ''],
         ],
       ],
       'range_integer' => [
@@ -194,8 +194,8 @@ class MigrateRangeFieldTest extends MigrateDrupal6TestBase {
         'field_integer',
         'range',
         [
-          'placeholder' => ['from' => '', 'to' => ''],
           'label' => ['from' => 'From', 'to' => 'to'],
+          'placeholder' => ['from' => '', 'to' => ''],
         ],
       ],
     ];
@@ -224,9 +224,9 @@ class MigrateRangeFieldTest extends MigrateDrupal6TestBase {
         'field_decimal',
         'range_unformatted',
         [
-          'field_prefix_suffix' => TRUE,
           'range_separator' => '-',
           'range_combine' => TRUE,
+          'field_prefix_suffix' => TRUE,
           'from_prefix_suffix' => FALSE,
           'to_prefix_suffix' => FALSE,
           'combined_prefix_suffix' => FALSE,
@@ -237,12 +237,12 @@ class MigrateRangeFieldTest extends MigrateDrupal6TestBase {
         'field_decimal',
         'range_decimal',
         [
-          'field_prefix_suffix' => TRUE,
+          'range_separator' => '-',
+          'thousand_separator' => '',
           'decimal_separator' => '.',
           'scale' => 2,
-          'thousand_separator' => '',
-          'range_separator' => '-',
           'range_combine' => TRUE,
+          'field_prefix_suffix' => TRUE,
           'from_prefix_suffix' => FALSE,
           'to_prefix_suffix' => FALSE,
           'combined_prefix_suffix' => FALSE,
@@ -253,12 +253,12 @@ class MigrateRangeFieldTest extends MigrateDrupal6TestBase {
         'field_decimal',
         'range_decimal',
         [
-          'scale' => 2,
-          'decimal_separator' => '.',
-          'thousand_separator' => ',',
-          'field_prefix_suffix' => TRUE,
           'range_separator' => '-',
+          'thousand_separator' => ',',
+          'decimal_separator' => '.',
+          'scale' => 2,
           'range_combine' => TRUE,
+          'field_prefix_suffix' => TRUE,
           'from_prefix_suffix' => FALSE,
           'to_prefix_suffix' => FALSE,
           'combined_prefix_suffix' => FALSE,
@@ -270,9 +270,9 @@ class MigrateRangeFieldTest extends MigrateDrupal6TestBase {
         'field_float',
         'range_unformatted',
         [
-          'field_prefix_suffix' => TRUE,
           'range_separator' => '-',
           'range_combine' => TRUE,
+          'field_prefix_suffix' => TRUE,
           'from_prefix_suffix' => FALSE,
           'to_prefix_suffix' => FALSE,
           'combined_prefix_suffix' => FALSE,
@@ -283,12 +283,12 @@ class MigrateRangeFieldTest extends MigrateDrupal6TestBase {
         'field_float',
         'range_decimal',
         [
-          'field_prefix_suffix' => TRUE,
+          'range_separator' => '-',
+          'thousand_separator' => '',
           'decimal_separator' => '.',
           'scale' => 2,
-          'thousand_separator' => '',
-          'range_separator' => '-',
           'range_combine' => TRUE,
+          'field_prefix_suffix' => TRUE,
           'from_prefix_suffix' => FALSE,
           'to_prefix_suffix' => FALSE,
           'combined_prefix_suffix' => FALSE,
@@ -299,12 +299,12 @@ class MigrateRangeFieldTest extends MigrateDrupal6TestBase {
         'field_float',
         'range_decimal',
         [
-          'scale' => 1,
-          'decimal_separator' => ',',
-          'thousand_separator' => '.',
-          'field_prefix_suffix' => TRUE,
           'range_separator' => '-',
+          'thousand_separator' => '.',
+          'decimal_separator' => ',',
+          'scale' => 1,
           'range_combine' => TRUE,
+          'field_prefix_suffix' => TRUE,
           'from_prefix_suffix' => FALSE,
           'to_prefix_suffix' => FALSE,
           'combined_prefix_suffix' => FALSE,
@@ -316,9 +316,9 @@ class MigrateRangeFieldTest extends MigrateDrupal6TestBase {
         'field_integer',
         'range_unformatted',
         [
-          'field_prefix_suffix' => TRUE,
           'range_separator' => '-',
           'range_combine' => TRUE,
+          'field_prefix_suffix' => TRUE,
           'from_prefix_suffix' => FALSE,
           'to_prefix_suffix' => FALSE,
           'combined_prefix_suffix' => FALSE,
@@ -329,10 +329,10 @@ class MigrateRangeFieldTest extends MigrateDrupal6TestBase {
         'field_integer',
         'range_integer',
         [
-          'field_prefix_suffix' => TRUE,
-          'thousand_separator' => '',
           'range_separator' => '-',
+          'thousand_separator' => '',
           'range_combine' => TRUE,
+          'field_prefix_suffix' => TRUE,
           'from_prefix_suffix' => FALSE,
           'to_prefix_suffix' => FALSE,
           'combined_prefix_suffix' => FALSE,
@@ -343,10 +343,10 @@ class MigrateRangeFieldTest extends MigrateDrupal6TestBase {
         'field_integer',
         'range_integer',
         [
-          'thousand_separator' => ' ',
-          'field_prefix_suffix' => TRUE,
           'range_separator' => '-',
+          'thousand_separator' => ' ',
           'range_combine' => TRUE,
+          'field_prefix_suffix' => TRUE,
           'from_prefix_suffix' => FALSE,
           'to_prefix_suffix' => FALSE,
           'combined_prefix_suffix' => FALSE,
@@ -360,9 +360,17 @@ class MigrateRangeFieldTest extends MigrateDrupal6TestBase {
    *
    * @dataProvider fieldDataMigrationDataProvider
    */
-  public function testFieldDataMigration($field_name, $expected) {
+  public function testFieldDataMigration($field_name, $data) {
+
     $node = Node::load(1);
-    $this->assertSame($expected, $node->{$field_name}->getValue());
+    foreach ($data as $i => $expected) {
+      // Normalize data presentation, as this test is about data value, and is
+      // not about amount of zeros in the end (there is a difference between
+      // database drivers).
+      $format = $field_name === 'field_integer' ? '%d' : '%.1f';
+      $this->assertSame($expected['from'], sprintf($format, $node->{$field_name}->get($i)->from));
+      $this->assertSame($expected['to'], sprintf($format, $node->{$field_name}->get($i)->to));
+    }
   }
 
   /**

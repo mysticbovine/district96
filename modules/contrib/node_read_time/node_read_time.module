@@ -1,0 +1,135 @@
+<?php
+
+/**
+ * @file
+ * Reading time module.
+ */
+
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\node_read_time\Plugin\Field\NodeReadTime;
+
+/**
+ * Implements hook_help().
+ */
+function node_read_time_help($route_name, RouteMatchInterface $route_match) {
+  if ($route_name === 'help.page.node_read_time') {
+    $readme_content = file_get_contents(dirname(__FILE__) . '/README.md');
+    if (\Drupal::moduleHandler()->moduleExists('markdown')) {
+      // Use the Markdown filter to render the README.
+      $filter_manager = \Drupal::service('plugin.manager.filter');
+      $markdown_config = \Drupal::configFactory()->get('markdown.settings')->getRawData();
+      $markdown_settings = ['settings' => $markdown_config];
+      $filter = $filter_manager->createInstance('markdown', $markdown_settings);
+      $readme_content = $filter->process($readme_content, 'en');
+    }
+    else {
+      $readme_content = '<pre>' . $readme_content . '</pre>';
+    }
+    return $readme_content;
+  }
+}
+
+/**
+ * Implements hook_entity_extra_field_info().
+ */
+function node_read_time_entity_extra_field_info() {
+
+  $config = \Drupal::config('node_read_time.settings');
+  $bundles = $config->get('reading_time')['container'];
+  $extra = NULL;
+
+  if ($bundles) {
+    foreach ($bundles as $machine_name => $bundle) {
+      if ($bundle['is_activated']) {
+        $extra['node'][$machine_name]['display']['reading_time'] = [
+          'label' => t('Reading time'),
+          'description' => t('This field is used to display the reading time of a node.'),
+          'weight' => 100,
+          'visible' => TRUE,
+        ];
+      }
+    }
+  }
+
+  return $extra;
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view().
+ */
+function node_read_time_node_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
+  if ($display->getComponent('reading_time')) {
+    $config = \Drupal::config('node_read_time.settings')
+      ->get('reading_time')['container'];
+
+    if ($config[$entity->getType()]['is_activated']) {
+      // If words per minute is not set, give an average of 225.
+      $words_per_minute = \Drupal::config('node_read_time.settings')->get('reading_time')['words_per_minute'] ?: 225;
+      $reading_time_service = \Drupal::service('node_read_time.reading_time');
+      $reading_time = $reading_time_service
+        ->setWordsPerMinute($words_per_minute)
+        ->collectWords($entity)
+        ->calculateReadingTime()
+        ->getReadingTime();
+
+      // Clear the words variable.
+      $reading_time_service->setWords(0);
+
+      $build['reading_time'] = [
+        '#theme' => 'reading_time',
+        '#reading_time' => $reading_time,
+      ];
+    }
+
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function node_read_time_theme() {
+  return [
+    'reading_time' => [
+      'variables' => [
+        'reading_time' => NULL,
+        'template' => 'reading-time',
+      ],
+    ],
+  ];
+}
+
+/**
+ * Implements hook_views_data_alter().
+ */
+function node_read_time_views_data_alter(array &$data) {
+  $data['node_field_data']['node_read_time'] = [
+    'title' => t('Node read time'),
+    'field' => [
+      'title' => t('Node read time'),
+      'help' => t('Node read time, if it is enabled for the node type.'),
+      'id' => 'node_read_time',
+    ],
+  ];
+}
+
+/**
+ * @implement hook_entity_base_field_info_alter().
+ */
+function node_read_time_entity_base_field_info_alter(&$fields, EntityTypeInterface $entity_type)
+{
+  if ($entity_type->id() == 'node') {
+    $fields['node_read_time'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Node read time'))
+      ->setName('node_read_time')
+      ->setTargetEntityTypeId($entity_type->id())
+      ->setDescription(t('Node read time.'))
+      ->setComputed(TRUE)
+      ->setClass(NodeReadTime::class)
+      ->setProvider('node_read_time')
+      ->setDisplayConfigurable('view', TRUE);
+  }
+}

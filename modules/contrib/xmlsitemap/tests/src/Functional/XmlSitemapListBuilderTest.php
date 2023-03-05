@@ -16,7 +16,7 @@ class XmlSitemapListBuilderTest extends XmlSitemapTestBase {
   /**
    * {@inheritdoc}
    */
-  public static $modules = ['language', 'locale', 'content_translation'];
+  protected static $modules = ['language', 'locale', 'content_translation'];
 
   /**
    * Entity type manager service.

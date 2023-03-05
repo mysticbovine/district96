@@ -54,6 +54,7 @@ use Recurr\Transformer\Constraint\BetweenConstraint;
 class SmartDateRule extends ContentEntityBase {
 
   use EntityChangedTrait;
+  use SmartDateTrait;
   use StringTranslationTrait;
 
   /**
@@ -114,6 +115,16 @@ class SmartDateRule extends ContentEntityBase {
   }
 
   /**
+   * Set the timezone for the rrule.
+   *
+   * @param string $timezone
+   *   The timezone to set.
+   */
+  public function setTimezone(string $timezone) {
+    $this->timezone = $timezone;
+  }
+
+  /**
    * {@inheritdoc}
    */
   private function makeRuleFromParts() {
@@ -146,6 +157,8 @@ class SmartDateRule extends ContentEntityBase {
    */
   public function getRuleOverrides() {
     $result = \Drupal::entityQuery('smart_date_override')
+      // No need to check the access to the parent entity.
+      ->accessCheck(FALSE)
       ->condition('rrule', $this->id())
       ->execute();
     $overrides = [];
@@ -265,14 +278,23 @@ class SmartDateRule extends ContentEntityBase {
     $entity_type = $this->entity_type->getString();
 
     $field_name = $this->field_name->getString();
+
     $result = \Drupal::entityQuery($entity_type)
+      ->accessCheck(FALSE)
       ->condition($field_name . '.rrule', $rid)
       ->execute();
 
+    // If there are no parents return FALSE.
+    if (empty($result)) {
+      return FALSE;
+    }
+
+    // If the $id_only param is set, return a parent id.
     $id = array_pop($result);
     if ($id_only) {
       return $id;
     }
+
     $entity_manager = \Drupal::entityTypeManager($entity_type);
     $entity_storage = $entity_manager
       ->getStorage($entity_type);
@@ -293,7 +315,7 @@ class SmartDateRule extends ContentEntityBase {
     }
 
     // Use the date timezone, or the user/site time as a fallback.
-    $tz_string = $this->getTimeZone() ?? date_default_timezone_get();
+    $tz_string = $this->getTimeZone() ?: date_default_timezone_get();
     $timezone = new \DateTimeZone($tz_string);
 
     $start = new \DateTime('@' . $this->get('start')->getString(), $timezone);
@@ -382,7 +404,7 @@ class SmartDateRule extends ContentEntityBase {
         else {
           $range_end_ts = $range_start_ts;
         }
-        $range_text[] = SmartDateTrait::formatSmartDate($range_start_ts, $range_end_ts, $format->getOptions(), $tz_string, 'string');
+        $range_text[] = $this->formatSmartDate($range_start_ts, $range_end_ts, $format->getOptions(), $tz_string, 'string');
       }
       $repeat .= ' ' . $this->t('within') . ' ' . implode(', ', $range_text);
       $time_set = TRUE;
@@ -410,27 +432,27 @@ class SmartDateRule extends ContentEntityBase {
     if ($params['which']) {
       switch ($params['which']) {
         case '1':
-          $params['which'] = $this->t('first');
+          $params['which'] = $this->t('first', [], ['context' => 'date_ordinal']);
           break;
 
         case '2':
-          $params['which'] = $this->t('second');
+          $params['which'] = $this->t('second', [], ['context' => 'date_ordinal']);
           break;
 
         case '3':
-          $params['which'] = $this->t('third');
+          $params['which'] = $this->t('third', [], ['context' => 'date_ordinal']);
           break;
 
         case '4':
-          $params['which'] = $this->t('fourth');
+          $params['which'] = $this->t('fourth', [], ['context' => 'date_ordinal']);
           break;
 
         case '5':
-          $params['which'] = $this->t('fifth');
+          $params['which'] = $this->t('fifth', [], ['context' => 'date_ordinal']);
           break;
 
         case '-1':
-          $params['which'] = $this->t('last');
+          $params['which'] = $this->t('last', [], ['context' => 'date_ordinal']);
           break;
 
       }
@@ -462,6 +484,8 @@ class SmartDateRule extends ContentEntityBase {
 
       }
     }
+
+    $day = '';
 
     // Format the day output.
     if (in_array($freq, ['MINUTELY', 'HOURLY', 'DAILY', 'WEEKLY'])) {
@@ -519,11 +543,11 @@ class SmartDateRule extends ContentEntityBase {
       // Format the time display.
       // Use the "Time Only" Smart Date Format to allow better formatting.
       $end_ts = $this->end->getValue()[0]['value'];
-      if (SmartDateTrait::isAllDay($start_ts, $end_ts, $tz_string)) {
-        $time = SmartDateTrait::formatSmartDate($start_ts, $end_ts, $format->getOptions(), $tz_string, 'string');
+      if ($this->isAllDay($start_ts, $end_ts, $tz_string)) {
+        $time = $this->formatSmartDate($start_ts, $end_ts, $format->getOptions(), $tz_string, 'string');
       }
       else {
-        $time_string = SmartDateTrait::formatSmartDate($start_ts, $start_ts, $format->getOptions(), $tz_string, 'string');
+        $time_string = $this->formatSmartDate($start_ts, $start_ts, $format->getOptions(), $tz_string, 'string');
         $time = $this->t('at :time', [':time' => ''], ['context' => 'Rule text']) . $time_string;
       }
     }
@@ -536,7 +560,7 @@ class SmartDateRule extends ContentEntityBase {
         case 'UNTIL':
           $limit_ts = strtotime($limit_val);
           $format = SmartDateFormat::load('date_only');
-          $date_string = SmartDateTrait::formatSmartDate($limit_ts, $limit_ts, $format->getOptions(), $tz_string, 'string');
+          $date_string = $this->formatSmartDate($limit_ts, $limit_ts, $format->getOptions(), $tz_string, 'string');
           $limit = ' ' . $this->t('until :date', [':date' => $date_string]);
           break;
 
@@ -882,8 +906,8 @@ class SmartDateRule extends ContentEntityBase {
    *   The complete form structure.
    */
   public static function validateRecurring(array &$element, FormStateInterface $form_state, array &$complete_form) {
-    // Check that the value is set to recur.
-    if (empty($element['repeat']['#value'])) {
+    // Check that the value is set to recur and has a value.
+    if (empty($element['repeat']['#value']) || empty($element['value'])) {
       return;
     }
     // Only known issues are with DAILY recurring events and BYDAY values set.
@@ -939,12 +963,15 @@ class SmartDateRule extends ContentEntityBase {
   }
 
   /**
-   * Retrieve the timezone from the parent entity value.
+   * Retrieve the timezone from the current rrule, or parent entity value.
    *
    * @return string|null
-   *   The timezone of the parent entity value, if set.
+   *   The timezone of the rrule or parent entity value, if set.
    */
   public function getTimeZone() {
+    if (isset($this->timezone)) {
+      return $this->timezone;
+    }
     $entity = $this->getParentEntity();
     if (empty($entity)) {
       return NULL;
@@ -952,7 +979,7 @@ class SmartDateRule extends ContentEntityBase {
     $field_values = $entity->get($this->field_name->getString())->getValue();
     if (is_array($field_values)) {
       foreach ($field_values as $value) {
-        if (is_array($value) && isset($value['rrule']) && $value['rrule'] == $this->id) {
+        if (is_array($value) && isset($value['rrule']) && $value['rrule'] == $this->id()) {
           return $value['timezone'];
         }
       }

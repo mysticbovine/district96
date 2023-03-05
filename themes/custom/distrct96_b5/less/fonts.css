@@ -1,0 +1,5 @@
+@font-face {
+  font-family: "LubalinGraphEF";
+  src: url("../fonts/lubalin_graph_regular_2-webfont.eot");
+  src: url("../fonts/lubalin_graph_regular_2-webfont.eot?#iefix") format("embedded-opentype"), url("../fonts/lubalin_graph_regular_2-webfont.woff2") format("woff2"), url("../fonts/lubalin_graph_regular_2-webfont.woff") format("woff"), url("../fonts/lubalin_graph_regular_2-webfont.ttf") format("truetype"), url("../fonts/lubalin_graph_regular_2-webfont.svg#LubalinGraphEF") format("svg");
+}

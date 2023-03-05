@@ -155,17 +155,17 @@ class XmlSitemapLinkStorage implements XmlSitemapLinkStorageInterface {
     // Temporary validation checks.
     // @todo Remove in final?
     if ($link['priority'] < 0 || $link['priority'] > 1) {
-      trigger_error("The XML sitemap link for {$link['type']} {$link['id']} has an invalid priority of {$link['priority']}.<br/>" . var_export($link, TRUE), E_USER_ERROR);
+      trigger_error("The XML Sitemap link for {$link['type']} {$link['id']} has an invalid priority of {$link['priority']}.<br/>" . var_export($link, TRUE), E_USER_ERROR);
     }
     if ($link['changecount'] < 0) {
-      trigger_error("The XML sitemap link for {$link['type']} {$link['id']} has a negative changecount value. Please report this to https://www.drupal.org/node/516928.<br/>" . var_export($link, TRUE), E_USER_ERROR);
+      trigger_error("The XML Sitemap link for {$link['type']} {$link['id']} has a negative changecount value. Please report this to https://www.drupal.org/node/516928.<br/>" . var_export($link, TRUE), E_USER_ERROR);
       $link['changecount'] = 0;
     }
 
     // Throw an error with the link does not start with a slash.
     // @see \Drupal\Core\Url::fromInternalUri()
     if ($link['loc'][0] !== '/') {
-      trigger_error("The XML sitemap link path {$link['loc']} for {$link['type']} {$link['id']} is invalid because it does not start with a slash.", E_USER_ERROR);
+      trigger_error("The XML Sitemap link path {$link['loc']} for {$link['type']} {$link['id']} is invalid because it does not start with a slash.", E_USER_ERROR);
     }
 
     // Check if this is a changed link and set the regenerate flag if necessary.

@@ -1,0 +1,4 @@
+reading_time:
+  container: { }
+  words_per_minute: 225
+  unit_of_time: minute

@@ -1,0 +1,40 @@
+$brand_blue: #003D5F !default;
+
+// body.user-logged-in  {
+    // margin-top: 50px; 
+    // .fixed-top{
+    //     top: 39px;
+    // }
+    // main {
+    //     margin-top: 48px;
+    // }
+    // &.toolbar-tray-open.toolbar-vertical{
+    //     margin-top: 50px; 
+    //     .fixed-top{
+    //         top: 39px;          
+    //         z-index: 500;
+    //     }
+    //     main {
+    //         margin-top: 48px;
+    //     }
+    // }
+   
+    
+    // &.toolbar-tray-open {
+    //     margin-top: 120px; 
+    //     .fixed-top{
+    //         top: 79px;
+    //     }
+    //     main {
+    //         margin-top: 0;
+    //     }
+    // }
+    // .contextual-region {
+    //     position: relative;
+    //     z-index: -1;
+    // }
+// } 
+
+.bg-primary {
+    background-color: rgba($brand_blue, 1) !important;
+}

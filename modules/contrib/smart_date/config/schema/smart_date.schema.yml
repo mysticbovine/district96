@@ -76,6 +76,18 @@ field.formatter.settings.smartdate_duration:
       type: string
       label: 'Duration Separator'
       translation context: 'Smart date display'
+    unit:
+      type: string
+      label: 'Units'
+      translation context: 'Smart date display'
+    decimals:
+      type: integer
+      label: 'Decimals'
+      translation context: 'Smart date display'
+    suffix:
+      type: string
+      label: 'Duration Suffix'
+      translation context: 'Smart date display'
 
 field.formatter.settings.smartdate_plain:
   type: field.formatter.settings.datetime_base

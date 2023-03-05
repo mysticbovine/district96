@@ -63,3 +63,4 @@
 
 *.zip
 bigdump.php
+node_modules

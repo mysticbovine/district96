@@ -31,5 +31,3 @@ docker-compose.override.yml
 /composer.spoons.json
 /composer.spoons.lock
 /.env
-.envrc
-.envrc.local

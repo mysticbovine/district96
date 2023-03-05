@@ -3,7 +3,7 @@
 namespace Drupal\Tests\xmlsitemap\Functional;
 
 /**
- * Unit tests for the XML sitemap module.
+ * Unit tests for the XML Sitemap module.
  *
  * @group xmlsitemap
  */
@@ -66,7 +66,7 @@ class XmlSitemapUnitTest extends XmlSitemapTestBase {
 
     foreach ($values as $i => $value) {
       $actual = xmlsitemap_get_changefreq($value);
-      $this->assertSame($expected[$i], $actual);
+      $this->assertEquals($expected[$i], $actual);
     }
   }
 

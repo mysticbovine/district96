@@ -1,0 +1,31 @@
+bootstrap5-js-latest:
+  version: '5.2.0'
+  js:
+    dist/bootstrap/5.2.0/dist/js/bootstrap.bundle.js: {}
+
+global-styling:
+  css:
+    theme:
+      css/style.css: {}
+
+drupal.nav-tabs:
+  version: '5.2.0'
+  js:
+    js/nav-tabs.js: {}
+  dependencies:
+    - core/matchmedia
+    - core/jquery
+    - core/drupal
+    - core/once
+    - core/drupal.debounce
+    - core/collapse
+
+style-guide:
+  version: '5.2.0'
+  js:
+    dist/bootstrap/5.2.0/site/content/docs/5.2/examples/cheatsheet/cheatsheet.js: {}
+  css:
+    theme:
+      dist/bootstrap/5.2.0/site/content/docs/5.2/examples/cheatsheet/cheatsheet.css: {}
+  dependencies:
+    - bootstrap5/bootstrap5-js-latest

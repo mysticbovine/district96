@@ -48,7 +48,7 @@ function smart_date_post_update_translatable_config() {
   }
 
   // Obtain configuration from yaml files.
-  $config_path = drupal_get_path('module', 'smart_date') . '/config/install/';
+  $config_path = \Drupal::service('extension.list.module')->getPath('smart_date') . '/config/install/';
   $source      = new FileStorage($config_path);
 
   // Load the provided default entities.

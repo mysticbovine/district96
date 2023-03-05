@@ -1,0 +1,11 @@
+name: sticky
+type: module
+description: Sticky is a module that gives you the ability to make any element on your website to always stay visible.
+core: 8.x
+core_version_requirement: ^8 || ^9
+package: Content
+
+# Information added by Drupal.org packaging script on 2021-07-28
+version: '2.0.0'
+project: 'sticky'
+datestamp: 1627460896

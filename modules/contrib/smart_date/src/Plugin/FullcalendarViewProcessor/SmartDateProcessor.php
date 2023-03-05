@@ -18,6 +18,8 @@ use Drupal\smart_date\SmartDateTrait;
  */
 class SmartDateProcessor extends FullcalendarViewProcessorBase {
 
+  use SmartDateTrait;
+
   /**
    * Process retrieved values before being passed to Fullcalendar.
    *
@@ -40,7 +42,7 @@ class SmartDateProcessor extends FullcalendarViewProcessorBase {
     }
     $format_label = $start_field_options['settings']['format'];
     // Load the format specified in the View.
-    $format = SmartDateTrait::loadSmartDateFormat($format_label);
+    $format = $this->loadSmartDateFormat($format_label);
     $multiple = $fields[$start_field]->multiple;
     // If not a Smart Date field or not existing config, nothing to do.
     if (strpos($start_field_options['type'], 'smartdate') !== 0 || empty($variables['#attached']['drupalSettings']['fullCalendarView'][$view_index]['calendar_options'])) {
@@ -60,13 +62,17 @@ class SmartDateProcessor extends FullcalendarViewProcessorBase {
           $value['id'] = $row->_entity->id();
           $lookup_key = $value['id'] . '-' . $delta;
           $entries_index = $mappings[$lookup_key];
-          $this->updateEntry($entries[$entries_index], $value, $format);
+          if (!empty($entries[$entries_index])) {
+            $this->updateEntry($entries[$entries_index], $value, $format);
+          }
         }
       }
       else {
         $values[0]['delta'] = 0;
         $values[0]['id'] = $row->_entity->id();
-        $this->updateEntry($entries[$key], $values[0], $format);
+        if (!empty($entries[$key])) {
+          $this->updateEntry($entries[$key], $values[0], $format);
+        }
       }
     }
     // Update the entries.
@@ -116,7 +122,7 @@ class SmartDateProcessor extends FullcalendarViewProcessorBase {
       $timezone = $row_data['timezone'];
     }
     // Check for all day events.
-    if (SmartDateTrait::isAllDay($start, $end, $timezone)) {
+    if ($this->isAllDay($start, $end, $timezone)) {
       $entry['start'] = date('Y-m-d', $start);
       // The end date is inclusive for a all day event in full calendar,
       // which is not what we want. So we need one day offset.

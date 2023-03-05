@@ -71,8 +71,26 @@ class RangeFieldUiTest extends RangeBrowserTestBase {
 
     switch ($field_type) {
       case 'range_decimal':
-        $this->assertEquals($settings['precision'], $test_settings['precision'], new FormattableMarkup('Correct precision setting %value found for the %field_type field type', ['%value' => $settings['precision'], '%field_type' => $field_type]));
-        $this->assertEquals($settings['scale'], $test_settings['scale'], new FormattableMarkup('Correct scale setting %value found for the %field_type field type', ['%value' => $settings['scale'], '%field_type' => $field_type]));
+        $this->assertEquals(
+          $settings['precision'], $test_settings['precision'],
+          new FormattableMarkup(
+            'Correct precision setting %value found for the %field_type field type',
+            [
+              '%value' => $settings['precision'],
+              '%field_type' => $field_type,
+            ]
+          )
+        );
+        $this->assertEquals(
+          $settings['scale'], $test_settings['scale'],
+          new FormattableMarkup(
+            'Correct scale setting %value found for the %field_type field type',
+            [
+              '%value' => $settings['scale'],
+              '%field_type' => $field_type,
+            ]
+          )
+        );
         break;
     }
   }
@@ -93,16 +111,105 @@ class RangeFieldUiTest extends RangeBrowserTestBase {
       case 'range_integer':
       case 'range_float':
       case 'range_decimal':
-        $this->assertEquals($settings['min'], $test_settings['min'], new FormattableMarkup('Correct minimum setting %value found for the %field_type field type', ['%value' => $settings['min'], '%field_type' => $field_type]));
-        $this->assertEquals($settings['max'], $test_settings['max'], new FormattableMarkup('Correct maximum setting %value found for the %field_type field type', ['%value' => $settings['max'], '%field_type' => $field_type]));
-        $this->assertEquals($settings['field']['prefix'], $test_settings['field']['prefix'], new FormattableMarkup('Correct FIELD prefix setting %value found for the %field_type field type', ['%value' => $settings['field']['prefix'], '%field_type' => $field_type]));
-        $this->assertEquals($settings['field']['suffix'], $test_settings['field']['suffix'], new FormattableMarkup('Correct FIELD suffix setting %value found for the %field_type field type', ['%value' => $settings['field']['suffix'], '%field_type' => $field_type]));
-        $this->assertEquals($settings['from']['prefix'], $test_settings['from']['prefix'], new FormattableMarkup('Correct FROM prefix setting %value found for the %field_type field type', ['%value' => $settings['from']['prefix'], '%field_type' => $field_type]));
-        $this->assertEquals($settings['from']['suffix'], $test_settings['from']['suffix'], new FormattableMarkup('Correct FROM suffix setting %value found for the %field_type field type', ['%value' => $settings['from']['suffix'], '%field_type' => $field_type]));
-        $this->assertEquals($settings['to']['prefix'], $test_settings['to']['prefix'], new FormattableMarkup('Correct TO prefix setting %value found for the %field_type field type', ['%value' => $settings['to']['prefix'], '%field_type' => $field_type]));
-        $this->assertEquals($settings['to']['suffix'], $test_settings['to']['suffix'], new FormattableMarkup('Correct TO suffix setting %value found for the %field_type field type', ['%value' => $settings['to']['suffix'], '%field_type' => $field_type]));
-        $this->assertEquals($settings['combined']['prefix'], $test_settings['combined']['prefix'], new FormattableMarkup('Correct COMBINED prefix setting %value found for the %field_type field type', ['%value' => $settings['combined']['prefix'], '%field_type' => $field_type]));
-        $this->assertEquals($settings['combined']['suffix'], $test_settings['combined']['suffix'], new FormattableMarkup('Correct COMBINED suffix setting %value found for the %field_type field type', ['%value' => $settings['combined']['suffix'], '%field_type' => $field_type]));
+        $this->assertEquals(
+          $settings['min'], $test_settings['min'],
+          new FormattableMarkup(
+            'Correct minimum setting %value found for the %field_type field type',
+            [
+              '%value' => $settings['min'],
+              '%field_type' => $field_type,
+            ]
+          )
+        );
+        $this->assertEquals($settings['max'], $test_settings['max'],
+          new FormattableMarkup(
+            'Correct maximum setting %value found for the %field_type field type',
+            [
+              '%value' => $settings['max'],
+              '%field_type' => $field_type,
+            ]
+          )
+        );
+        $this->assertEquals(
+          $settings['field']['prefix'], $test_settings['field']['prefix'],
+          new FormattableMarkup(
+            'Correct FIELD prefix setting %value found for the %field_type field type',
+            [
+              '%value' => $settings['field']['prefix'],
+              '%field_type' => $field_type,
+            ]
+          )
+        );
+        $this->assertEquals(
+          $settings['field']['suffix'], $test_settings['field']['suffix'],
+          new FormattableMarkup(
+            'Correct FIELD suffix setting %value found for the %field_type field type',
+            [
+              '%value' => $settings['field']['suffix'],
+              '%field_type' => $field_type,
+            ]
+          )
+        );
+        $this->assertEquals(
+          $settings['from']['prefix'], $test_settings['from']['prefix'],
+          new FormattableMarkup(
+            'Correct FROM prefix setting %value found for the %field_type field type',
+            [
+              '%value' => $settings['from']['prefix'],
+              '%field_type' => $field_type,
+            ]
+          )
+        );
+        $this->assertEquals(
+          $settings['from']['suffix'], $test_settings['from']['suffix'],
+          new FormattableMarkup(
+            'Correct FROM suffix setting %value found for the %field_type field type',
+            [
+              '%value' => $settings['from']['suffix'],
+              '%field_type' => $field_type,
+            ]
+          )
+        );
+        $this->assertEquals(
+          $settings['to']['prefix'], $test_settings['to']['prefix'],
+          new FormattableMarkup(
+            'Correct TO prefix setting %value found for the %field_type field type',
+            [
+              '%value' => $settings['to']['prefix'],
+              '%field_type' => $field_type,
+            ]
+          )
+        );
+        $this->assertEquals(
+          $settings['to']['suffix'], $test_settings['to']['suffix'],
+          new FormattableMarkup(
+            'Correct TO suffix setting %value found for the %field_type field type',
+            [
+              '%value' => $settings['to']['suffix'],
+              '%field_type' => $field_type,
+            ]
+          )
+        );
+        $this->assertEquals(
+          $settings['combined']['prefix'], $test_settings['combined']['prefix'],
+          new FormattableMarkup(
+            'Correct COMBINED prefix setting %value found for the %field_type field type',
+            [
+              '%value' => $settings['combined']['prefix'],
+              '%field_type' => $field_type,
+            ]
+          )
+        );
+        $this->assertEquals(
+          $settings['combined']['suffix'], $test_settings['combined']['suffix'],
+          new FormattableMarkup(
+            'Correct COMBINED suffix setting %value found for the %field_type field type',
+            [
+              '%value' => $settings['combined']['suffix'],
+              '%field_type' => $field_type,
+            ]
+          )
+        );
         break;
     }
   }

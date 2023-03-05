@@ -12,7 +12,7 @@ class XmlSitemapFunctionalTest extends XmlSitemapTestBase {
   /**
    * {@inheritdoc}
    */
-  public static $modules = ['path', 'help'];
+  protected static $modules = ['path', 'help'];
 
   /**
    * {@inheritdoc}
@@ -86,7 +86,7 @@ class XmlSitemapFunctionalTest extends XmlSitemapTestBase {
     $this->drupalLogin($this->admin_user);
     $this->state->set('xmlsitemap_generated_last', $this->time->getRequestTime());
     $this->state->set('xmlsitemap_rebuild_needed', TRUE);
-    $this->assertXMLSitemapProblems('The XML sitemap data is out of sync and needs to be completely rebuilt.');
+    $this->assertXMLSitemapProblems('The XML Sitemap data is out of sync and needs to be completely rebuilt.');
     $this->clickLink('completely rebuilt');
     $this->assertSession()->statusCodeEquals(200);
     $this->state->set('xmlsitemap_rebuild_needed', FALSE);

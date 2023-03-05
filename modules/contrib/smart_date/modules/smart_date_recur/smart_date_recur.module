@@ -366,12 +366,12 @@ function smart_date_recur_widget_extra_fields(&$element, $item, $context) {
     '#title' => t('on the'),
     '#options' => [
       '' => t('- Select -'),
-      '1' => t('First'),
-      '2' => t('Second'),
-      '3' => t('Third'),
-      '4' => t('Fourth'),
-      '5' => t('Fifth'),
-      '-1' => t('Last'),
+      '1' => t('First', [], ['context' => 'date_ordinal']),
+      '2' => t('Second', [], ['context' => 'date_ordinal']),
+      '3' => t('Third', [], ['context' => 'date_ordinal']),
+      '4' => t('Fourth', [], ['context' => 'date_ordinal']),
+      '5' => t('Fifth', [], ['context' => 'date_ordinal']),
+      '-1' => t('Last', [], ['context' => 'date_ordinal']),
     ],
     '#default_value' => $defaults['which'],
     '#states' => [
@@ -701,6 +701,11 @@ function smart_date_recur_generate_rows(&$values, $entity_type, $bundle, $field_
       // New rrule, so construct object.
       $rrule = SmartDateRule::create($rrule_values);
     }
+    // Ensure the rrule timezone matches the configured timezone on the field,
+    // if set.
+    if (isset($item['timezone'])) {
+      $rrule->setTimezone($item['timezone']);
+    }
     // Generate instances.
     $instances = $rrule->getRuleInstances($before);
     $rrule->set('instances', ['data' => $instances]);
@@ -755,9 +760,20 @@ function smart_date_recur_cron() {
   // Get the data we need, and group it by impacted entity.
   $ids = \Drupal::entityTypeManager()->getStorage('smart_date_rule')->getRuleIdsToCheck();
   foreach (SmartDateRule::loadMultiple($ids) as $rule) {
+    if (!is_object($rule) || !property_exists($rule, 'entity_type')) {
+      // Invalid rule, might be an orphaned rule.
+      // TODO: Delete invalid rule?
+      // TODO: Log a warning.
+      continue;
+    }
     $entity_type = $rule->entity_type->getString();
     // $bundle = $rule->bundle->getString();
     $entity_id = $rule->getParentEntity(TRUE);
+    if (!$entity_id) {
+      // Invalid entity, might be an orphaned rule.
+      // TODO: Log a warning.
+      continue;
+    }
     $field_name = $rule->field_name->getString();
     $rrid = $rule->id();
     // Group the collected data by impacted entity.

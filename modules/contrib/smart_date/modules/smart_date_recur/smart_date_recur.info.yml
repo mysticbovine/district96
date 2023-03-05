@@ -1,15 +1,13 @@
 type: module
 name: 'Smart Date Recurring'
 description: Extends Smart Date to allow events to be recurring.
-core: 8.x
-core_version_requirement: ^8 || ^9
+core_version_requirement: ^9 || ^10
 package: Field types
-php: 7.1
 dependencies:
  - drupal:datetime
  - smart_date:smart_date
 
-# Information added by Drupal.org packaging script on 2022-01-25
-version: '3.5.0'
+# Information added by Drupal.org packaging script on 2022-08-27
+version: '3.6.1'
 project: 'smart_date'
-datestamp: 1643119105
+datestamp: 1661631738

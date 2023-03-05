@@ -158,3 +158,22 @@ function smart_date_form_node_form_alter(&$form, FormStateInterface $form_state,
     $form[$start_field]['widget'][0]['end_value']['#default_value'] = $end_time;
   }
 }
+
+/**
+ * Implements hook_views_plugins_filter_alter().
+ *
+ * Replace the core date views filter with a version supporting granularity.
+ */
+function smart_date_views_plugins_filter_alter(array &$plugins) {
+  $plugins['date']['class'] = 'Drupal\smart_date\Plugin\views\filter\Date';
+  $plugins['date']['provider'] = 'smart_date';
+}
+
+/**
+ * Implements hook_views_plugins_argument_alter().
+ *
+ * Replace the core date views argument with a version with more options.
+ */
+function smart_date_views_plugins_argument_alter(array &$plugins) {
+  $plugins['date']['class'] = 'Drupal\smart_date\Plugin\views\argument\Date';
+}

@@ -43,7 +43,7 @@ class MigrateCaptchaPointsTest extends MigrateDrupal7TestBase {
     parent::setUp();
     $this->loadFixture(implode(DIRECTORY_SEPARATOR, [
       DRUPAL_ROOT,
-      drupal_get_path('module', 'captcha'),
+      \Drupal::service('extension.list.module')->getPath('captcha'),
       'tests',
       'fixtures',
       'drupal7.php',

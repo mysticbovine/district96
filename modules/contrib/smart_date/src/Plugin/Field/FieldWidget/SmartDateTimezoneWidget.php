@@ -172,7 +172,7 @@ class SmartDateTimezoneWidget extends SmartDateInlineWidget implements Container
     $add_abbr = $this->getSetting('add_abbreviations');
 
     $zones = [];
-    foreach ($zonelist as $zone) {
+    foreach ($zonelist as $value => $zone) {
       if (!is_string($zone)) {
         $zone = $zone->render();
       }
@@ -180,7 +180,7 @@ class SmartDateTimezoneWidget extends SmartDateInlineWidget implements Container
       // reasons and should not be used, the list is filtered by a regular
       // expression.
       if (preg_match('!^((Africa|America|Antarctica|Arctic|Asia|Atlantic|Australia|Europe|Indian|Pacific)/|UTC$)!', $zone)) {
-        $zones[$zone] = t('@zone', [
+        $zones[$value] = t('@zone', [
           '@zone' => t(str_replace('_', ' ', $zone)),
         ]);
       }

@@ -31,6 +31,17 @@ class RangeUpdatePathTest extends UpdatePathTestBase {
 
     \Drupal::service('entity.last_installed_schema.repository')
       ->setLastInstalledFieldStorageDefinitions('node', $definitions);
+
+    // Rebuild the router, see https://www.drupal.org/project/drupal/issues/3145563#comment-14094965
+    // In a nutshell:
+    //
+    // What happens now when a class that implements \Serializable is that a
+    // "Warning: Erroneous data format for unserializing" shows up and the
+    // function unserialize() returns false.
+
+    // That is because a class that implements \Serializable is expected to have
+    // the letter 'C' in the serialize string instead of the letter 'O'.
+    \Drupal::service('router.builder')->rebuild();
   }
 
   /**
@@ -38,7 +49,7 @@ class RangeUpdatePathTest extends UpdatePathTestBase {
    */
   protected function setDatabaseDumpFiles() {
     $this->databaseDumpFiles = [
-      DRUPAL_ROOT . '/core/modules/system/tests/fixtures/update/drupal-8.8.0.bare.standard.php.gz',
+      DRUPAL_ROOT . '/core/modules/system/tests/fixtures/update/drupal-9.4.0.bare.standard.php.gz',
       __DIR__ . '/../../../fixtures/update/drupal-8.range-8100.php',
     ];
   }
@@ -87,9 +98,10 @@ class RangeUpdatePathTest extends UpdatePathTestBase {
     $this->runUpdates();
 
     $this->drupalLogin($this->drupalCreateUser([
-        'administer node display',
-        'administer node form display',
-        'create page content',
+      'administer node fields',
+      'administer node display',
+      'administer node form display',
+      'create page content',
     ]));
 
     // Ensure no regressions while editing content.
@@ -100,20 +112,27 @@ class RangeUpdatePathTest extends UpdatePathTestBase {
     ];
 
     $this->drupalGet('node/add/page');
+    $edit = [
+      'title[0][value]' => 'test',
+    ];
     foreach ($range_fields as $field_name) {
-      $edit = [
+      $edit += [
         $field_name . '[0][from]' => 0,
         $field_name . '[0][to]' => 5,
       ];
-      $this->submitForm($edit, 'Save');
     }
+    $this->submitForm($edit, 'Save');
+    $this->assertSession()->pageTextContains('Basic page test has been created.');
 
     // Ensure no regressions while editing range fields configuration.
     foreach ($range_fields as $field_name) {
       $this->drupalGet('admin/structure/types/manage/page/fields');
-      $this->drupalGet('admin/structure/types/manage/page/fields/node.page.' . $field_name);
-      $this->drupalGet('admin/structure/types/manage/page/fields/node.page.' . $field_name);
-      $this->drupalGet('admin/structure/types/manage/page/fields/node.page.' . $field_name . '/storage');
+      $this->click('#' . strtr($field_name, '_', '-') . ' .dropbutton a[title="Edit field settings."]');
+      $this->submitForm([], 'Save settings');
+      $this->assertSession()->pageTextMatches('/Saved \w+ configuration./');
+      $this->click('#' . strtr($field_name, '_', '-') . ' .dropbutton a[title="Edit storage settings."]');
+      $this->submitForm([], 'Save field settings');
+      $this->assertSession()->pageTextMatches('/Updated field \w+ field settings./');
     }
 
     // Ensure no regressions while editing range fields display.
@@ -125,8 +144,10 @@ class RangeUpdatePathTest extends UpdatePathTestBase {
       $this->drupalGet('admin/structure/types/manage/page/display/' . $view_mode);
       foreach ($range_fields as $field_name) {
         $this->submitForm([], $field_name . '_settings_edit');
-        $this->submitForm([], 'Cancel');
+        $this->submitForm([], 'Update');
       }
+      $this->submitForm([], 'Save');
+      $this->assertSession()->pageTextContains('Your settings have been saved.');
     }
 
     // Ensure no regressions while editing range fields form display.
@@ -135,9 +156,12 @@ class RangeUpdatePathTest extends UpdatePathTestBase {
       $this->drupalGet('admin/structure/types/manage/page/form-display/' . $form_mode);
       foreach ($range_fields as $field_name) {
         $this->submitForm([], $field_name . '_settings_edit');
-        $this->submitForm([], 'Cancel');
+        $this->submitForm([], 'Update');
       }
+      $this->submitForm([], 'Save');
+      $this->assertSession()->pageTextContains('Your settings have been saved.');
     }
+
   }
 
 }

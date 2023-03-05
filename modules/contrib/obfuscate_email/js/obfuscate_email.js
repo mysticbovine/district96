@@ -64,14 +64,13 @@
     }
 
     if (clickable.length) {
-      clickable.forEach(function (element) {
-        element.addEventListener('click', function (event) {
+        Array.prototype.slice.call(elements).forEach( function(element) {
+          element.addEventListener('click', function (event) {
           if (element.className.split(/\s+/).indexOf('link-processed') === -1) {
             event.preventDefault();
             setMailAddress(element);
             element.classList.add('link-processed');
           }
-
         });
       });
 

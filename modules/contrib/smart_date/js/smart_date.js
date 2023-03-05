@@ -66,7 +66,7 @@
         }
 
         // Calculate and set End Time only if All Day is not checked.
-        if (wrapper.querySelector('input.allday').checked == false) {
+        if (!wrapper.querySelector('input.allday') || wrapper.querySelector('input.allday').checked == false) {
           end.setHours(start_array[0]);
           end.setMinutes(parseInt(start_array[1]) + duration);
 
@@ -245,7 +245,9 @@
             let end_date = wrapper.querySelector('input.time-end.form-date');
             end_date.style.display = '';
             let end_date_label = wrapper.querySelector('.time-start + .label');
-            end_date_label.style.display = '';
+            if (end_date_label) {
+              end_date_label.style.display = '';
+            }
           }
           // Save the current start and end_date.
           checkbox.dataset.start = start_time.value;
@@ -313,7 +315,7 @@
         let end_date = wrapper.querySelector('.time-end.form-date');
         let hide_me = end_date.dataset.hide;
         let allday = wrapper.querySelector('.allday');
-        if (hide_me == 1 && end_date.value == start_date.value && allday.checked == false) {
+        if (hide_me == 1 && end_date.value == start_date.value && allday && allday.checked == false) {
           end_date.style.visibility = 'hidden';
         }
         else {

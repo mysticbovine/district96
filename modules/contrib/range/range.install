@@ -4,6 +4,7 @@
  * @file
  * Install, update and uninstall functions for the range module.
  */
+
 use Drupal\Core\Entity\Entity\EntityViewDisplay;
 
 /**

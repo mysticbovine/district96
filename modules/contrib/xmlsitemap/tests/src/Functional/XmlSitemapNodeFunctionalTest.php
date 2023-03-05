@@ -23,7 +23,7 @@ class XmlSitemapNodeFunctionalTest extends XmlSitemapTestBase {
   /**
    * {@inheritdoc}
    */
-  public static $modules = ['taxonomy'];
+  protected static $modules = ['taxonomy'];
 
   /**
    * Nodes created during the test for testCron() method.

@@ -1,0 +1,13 @@
+<?php
+
+/**
+ * @file
+ * District 96 B5 theme file.
+ */
+function distrct96_b5_theme_suggestions_page_alter(array &$suggestions, array $variables) {
+
+  if ($node = \Drupal::routeMatch()->getParameter('node')) {
+    $content_type = $node->bundle();
+    $suggestions[] = 'page__'.$content_type;
+  }
+}

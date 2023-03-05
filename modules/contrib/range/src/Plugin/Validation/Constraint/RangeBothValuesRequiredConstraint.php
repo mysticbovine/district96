@@ -14,6 +14,11 @@ use Symfony\Component\Validator\Constraint;
  */
 class RangeBothValuesRequiredConstraint extends Constraint {
 
+  /**
+   * The default violation message.
+   *
+   * @var string
+   */
   public $message = 'Both range values (FROM and TO) are required.';
 
 }

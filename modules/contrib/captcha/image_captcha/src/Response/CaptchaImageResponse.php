@@ -99,6 +99,7 @@ class CaptchaImageResponse extends Response {
     else {
       $this->headers->set('content-type', 'image/png');
     }
+    $this->headers->set('cache-control', 'no-store, must-revalidate');
 
     return parent::sendHeaders();
   }
@@ -135,7 +136,7 @@ class CaptchaImageResponse extends Response {
    *   Array representation of RGB color value.
    */
   protected function hexToRgb($hex) {
-    if (strlen($hex) == 4) {
+    if (mb_strlen($hex) == 4) {
       $hex = $hex[1] . $hex[1] . $hex[2] . $hex[2] . $hex[3] . $hex[3];
     }
     $c = hexdec($hex);
@@ -159,7 +160,7 @@ class CaptchaImageResponse extends Response {
     $fonts = _image_captcha_get_enabled_fonts();
 
     $font_size = $this->config->get('image_captcha_font_size');
-    list($width, $height) = _image_captcha_image_size($code);
+    [$width, $height] = _image_captcha_image_size($code);
 
     $image = imagecreatetruecolor($width, $height);
     if (!$image) {

@@ -127,14 +127,14 @@ abstract class RangeItemBase extends FieldItemBase implements RangeItemInterface
     $element[$element_name]['prefix'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Prefix'),
-      '#default_value' => $this->getSetting($element_name)['prefix'],
+      '#default_value' => $this->getSetting($element_name)['prefix'] ?? '',
       '#size' => 60,
       '#description' => $this->t("Define a string that should be prefixed to the value, like '$ ' or '&euro; '. Leave blank for none."),
     ];
     $element[$element_name]['suffix'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Suffix'),
-      '#default_value' => $this->getSetting($element_name)['suffix'],
+      '#default_value' => $this->getSetting($element_name)['suffix'] ?? '',
       '#size' => 60,
       '#description' => $this->t("Define a string that should be suffixed to the value, like ' m', ' kb/s'. Leave blank for none."),
     ];

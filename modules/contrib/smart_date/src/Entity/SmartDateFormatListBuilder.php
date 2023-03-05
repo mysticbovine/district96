@@ -14,6 +14,8 @@ use Drupal\smart_date\SmartDateTrait;
  */
 class SmartDateFormatListBuilder extends EntityListBuilder {
 
+  use SmartDateTrait;
+
   /**
    * {@inheritdoc}
    */
@@ -35,7 +37,7 @@ class SmartDateFormatListBuilder extends EntityListBuilder {
       ['smart_date_format' => $entity->id()]
     );
     // Show a preview and list the primary PHP codes.
-    $formatted = SmartDateTrait::formatSmartDate(time(), time() + 3600, $entity->getOptions(), NULL, 'string');
+    $formatted = $this->formatSmartDate(time(), time() + 3600, $entity->getOptions(), NULL, 'string');
     $row['preview']['data'] = $formatted;
     $row['date_format']['data'] = $entity->get('date_format');
     $row['time_format']['data'] = $entity->get('time_format');

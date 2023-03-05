@@ -1,0 +1,36 @@
+name: Bootstrap5
+type: theme
+description: 'Theme with Bootstrap 5 css library'
+core_version_requirement: ^9.2 || ^10
+base theme: classy
+
+libraries:
+  - bootstrap5/bootstrap5-js-latest
+  - bootstrap5/global-styling
+
+ckeditor_stylesheets:
+  - css/style.css
+ckeditor5-stylesheets:
+  - css/style.css
+
+stylesheets-remove:
+  - '@classy/css/components/tabs.css'
+  - '@classy/css/components/button.css'
+  - '@classy/css/components/link.css'
+  - '@classy/css/layout/media-library.css'
+
+regions:
+  header: Header
+  nav_branding: 'Navigation branding region'
+  nav_main: 'Main navigation region'
+  nav_additional: 'Additional navigation region (eg search form, social icons, etc)'
+  breadcrumb: Breadcrumbs
+  content: 'Main content'
+  sidebar_first: 'Sidebar first'
+  sidebar_second: 'Sidebar second'
+  footer: Footer
+
+# Information added by Drupal.org packaging script on 2022-08-06
+version: '2.0.0'
+project: 'bootstrap5'
+datestamp: 1659829882

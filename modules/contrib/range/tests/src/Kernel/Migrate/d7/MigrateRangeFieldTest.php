@@ -114,9 +114,9 @@ class MigrateRangeFieldTest extends MigrateDrupal7TestBase {
         [
           'min' => NULL,
           'max' => NULL,
+          'field' => ['prefix' => '', 'suffix' => ''],
           'from' => ['prefix' => '', 'suffix' => ''],
           'to' => ['prefix' => '', 'suffix' => ''],
-          'field' => ['prefix' => '', 'suffix' => ''],
           'combined' => ['prefix' => '', 'suffix' => ''],
           // FieldConfigBase::getSettings() is merging field settings with
           // field storage settings; so let's add them here.
@@ -133,9 +133,9 @@ class MigrateRangeFieldTest extends MigrateDrupal7TestBase {
         [
           'min' => -10.5,
           'max' => 10.5,
+          'field' => ['prefix' => '', 'suffix' => ''],
           'from' => ['prefix' => '', 'suffix' => ''],
           'to' => ['prefix' => '', 'suffix' => ''],
-          'field' => ['prefix' => '', 'suffix' => ''],
           'combined' => ['prefix' => '', 'suffix' => ''],
         ],
       ],
@@ -145,10 +145,10 @@ class MigrateRangeFieldTest extends MigrateDrupal7TestBase {
         [
           'min' => NULL,
           'max' => NULL,
+          'field' => ['prefix' => 'FIELD PREFIX', 'suffix' => 'FIELD SUFFIX'],
           'from' => ['prefix' => 'FROM Prefix', 'suffix' => 'FROM Suffix'],
           'to' => ['prefix' => 'TO PREFIX', 'suffix' => 'TO SUFFIX'],
-          'field' => ['prefix' => 'FIELD PREFIX', 'suffix' => 'FIELD SUFFIX'],
-          'combined' => ['prefix' => 'COMBINED PREFIX', 'suffix' => 'COMBINED SUFFIX'],
+          'combined' => ['prefix' => 'COMBINED PR', 'suffix' => 'COMBINED SF'],
         ],
       ],
     ];
@@ -222,14 +222,14 @@ class MigrateRangeFieldTest extends MigrateDrupal7TestBase {
         'field_decimal',
         'range_decimal',
         [
+          'range_separator' => ' - ',
           'thousand_separator' => '.',
           'decimal_separator' => ', ',
           'scale' => 3,
-          'range_separator' => ' - ',
           'range_combine' => TRUE,
+          'field_prefix_suffix' => TRUE,
           'from_prefix_suffix' => TRUE,
           'to_prefix_suffix' => TRUE,
-          'field_prefix_suffix' => TRUE,
           'combined_prefix_suffix' => TRUE,
         ],
       ],
@@ -238,12 +238,12 @@ class MigrateRangeFieldTest extends MigrateDrupal7TestBase {
         'field_decimal',
         'range_decimal_sprintf',
         [
-          'format_string' => '%.0f',
           'range_separator' => '--',
+          'format_string' => '%.0f',
           'range_combine' => FALSE,
+          'field_prefix_suffix' => FALSE,
           'from_prefix_suffix' => FALSE,
           'to_prefix_suffix' => FALSE,
-          'field_prefix_suffix' => FALSE,
           'combined_prefix_suffix' => FALSE,
         ],
       ],
@@ -253,12 +253,12 @@ class MigrateRangeFieldTest extends MigrateDrupal7TestBase {
         'range_integer',
         [
           'range_separator' => '-',
+          'thousand_separator' => ' ',
           'range_combine' => TRUE,
+          'field_prefix_suffix' => FALSE,
           'from_prefix_suffix' => FALSE,
           'to_prefix_suffix' => TRUE,
-          'field_prefix_suffix' => FALSE,
           'combined_prefix_suffix' => FALSE,
-          'thousand_separator' => ' ',
         ],
       ],
       'range_integer_sprintf' => [
@@ -266,12 +266,12 @@ class MigrateRangeFieldTest extends MigrateDrupal7TestBase {
         'field_integer',
         'range_integer_sprintf',
         [
-          'format_string' => '%x',
           'range_separator' => '|',
+          'format_string' => '%x',
           'range_combine' => TRUE,
+          'field_prefix_suffix' => FALSE,
           'from_prefix_suffix' => FALSE,
           'to_prefix_suffix' => FALSE,
-          'field_prefix_suffix' => FALSE,
           'combined_prefix_suffix' => FALSE,
         ],
       ],
@@ -282,9 +282,9 @@ class MigrateRangeFieldTest extends MigrateDrupal7TestBase {
         [
           'range_separator' => '-',
           'range_combine' => TRUE,
+          'field_prefix_suffix' => FALSE,
           'from_prefix_suffix' => FALSE,
           'to_prefix_suffix' => FALSE,
-          'field_prefix_suffix' => FALSE,
           'combined_prefix_suffix' => TRUE,
         ],
       ],
@@ -296,9 +296,16 @@ class MigrateRangeFieldTest extends MigrateDrupal7TestBase {
    *
    * @dataProvider fieldDataMigrationDataProvider
    */
-  public function testFieldDataMigration($field_name, $expected) {
+  public function testFieldDataMigration($field_name, $data) {
     $node = Node::load(1);
-    $this->assertSame($expected, $node->{$field_name}->getValue());
+    foreach ($data as $i => $expected) {
+      // Normalize data presentation, as this test is about data value, and is
+      // not about amount of zeros in the end (there is a difference between
+      // database drivers).
+      $format = $field_name === 'field_integer' ? '%d' : '%.2f';
+      $this->assertSame($expected['from'], sprintf($format, $node->{$field_name}->get($i)->from));
+      $this->assertSame($expected['to'], sprintf($format, $node->{$field_name}->get($i)->to));
+    }
   }
 
   /**
@@ -310,12 +317,12 @@ class MigrateRangeFieldTest extends MigrateDrupal7TestBase {
         'field_decimal',
         [
           [
-            'from' => '12.0000',
-            'to' => '18.0000',
+            'from' => '12.00',
+            'to' => '18.00',
           ],
           [
-            'from' => '-44.3300',
-            'to' => '66.7700',
+            'from' => '-44.33',
+            'to' => '66.77',
           ],
         ],
       ],
@@ -323,8 +330,8 @@ class MigrateRangeFieldTest extends MigrateDrupal7TestBase {
         'field_float',
         [
           [
-            'from' => '2.5',
-            'to' => '4.5',
+            'from' => '2.50',
+            'to' => '4.50',
           ],
         ],
       ],

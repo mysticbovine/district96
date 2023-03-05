@@ -9,7 +9,6 @@ use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Field\WidgetBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
-use Drupal\inline_entity_form\Element\InlineEntityForm;
 use Drupal\inline_entity_form\TranslationHelper;
 
 /**
@@ -35,12 +34,7 @@ class InlineEntityFormSimple extends InlineEntityFormBase {
     // WidgetSubmit will be needed once extractFormValues fills the $form_state.
     $parents = array_merge($element['#field_parents'], [$items->getName()]);
     $ief_id = $this->makeIefId($parents);
-
-    // Get state from storage.
-    $widget_state = $form_state->get(['inline_entity_form', $ief_id]);
-    if (!$widget_state) {
-      $form_state->set(['inline_entity_form', $ief_id], []);
-    }
+    $form_state->set(['inline_entity_form', $ief_id], []);
 
     $element = [
       '#type' => $this->getSetting('collapsible') ? 'details' : 'fieldset',
@@ -59,20 +53,13 @@ class InlineEntityFormSimple extends InlineEntityFormBase {
       $element['warning']['#markup'] = $this->t('Unable to load the referenced entity.');
       return $element;
     }
-
-    /** @var \Drupal\Core\Entity\EntityInterface $entity */
     $entity = $item->entity;
-
-    if (isset($widget_state['entities'][$delta]['entity'])) {
-      $entity = $widget_state['entities'][$delta]['entity'];
-    }
-
     $op = $entity ? 'edit' : 'add';
     $langcode = $items->getEntity()->language()->getId();
     $parents = array_merge($element['#field_parents'], [
       $items->getName(),
       $delta,
-      'inline_entity_form'
+      'inline_entity_form',
     ]);
     $bundle = $this->getBundle();
     $element['inline_entity_form'] = $this->getInlineEntityForm($op, $bundle, $langcode, $delta, $parents, $entity);
@@ -147,14 +134,15 @@ class InlineEntityFormSimple extends InlineEntityFormBase {
     $submitted_values = $form_state->getValue($parents);
     $values = [];
     foreach ($items as $delta => $value) {
-      $element = NestedArray::getValue($form, [$field_name, 'widget', $delta]);
-      $inline_form_handler = InlineEntityForm::getInlineFormHandler($element['inline_entity_form']['#entity_type']);
-      /** @var \Drupal\Core\Entity\EntityInterface $entity */
-      $entity = $element['inline_entity_form']['#entity'];
-      $inline_form_handler->buildEntity($element['inline_entity_form'], $entity, $form_state);
-
-      $weight = isset($submitted_values[$delta]['_weight']) ? $submitted_values[$delta]['_weight'] : 0;
-      $values[$weight] = ['entity' => $entity];
+      if ($element = NestedArray::getValue(
+        $form,
+        [$field_name, 'widget', $delta]
+      )) {
+        /** @var \Drupal\Core\Entity\EntityInterface $entity */
+        $entity = $element['inline_entity_form']['#entity'];
+        $weight = $submitted_values[$delta]['_weight'] ?? 0;
+        $values[$weight] = ['entity' => $entity];
+      }
     }
 
     // Sort items base on weights.
@@ -189,7 +177,7 @@ class InlineEntityFormSimple extends InlineEntityFormBase {
     $field_name = $this->fieldDefinition->getName();
     $field_state = WidgetBase::getWidgetState($form['#parents'], $field_name, $form_state);
     foreach ($items as $delta => $item) {
-      $field_state['original_deltas'][$delta] = isset($item->_original_delta) ? $item->_original_delta : $delta;
+      $field_state['original_deltas'][$delta] = $item->_original_delta ?? $delta;
       unset($item->_original_delta, $item->weight);
     }
     WidgetBase::setWidgetState($form['#parents'], $field_name, $form_state, $field_state);

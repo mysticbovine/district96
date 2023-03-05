@@ -51,10 +51,10 @@ class SmartDateOnlyWidget extends SmartDateInlineWidget {
         $item['end_value'] = $item['time_wrapper']['end_value'];
       }
       // Force to all day.
-      if ($item['value'] && $item['value'] instanceof DrupalDateTime) {
+      if (!empty($item['value']) && $item['value'] instanceof DrupalDateTime) {
         $item['value']->setTime(0, 0, 0);
       }
-      if ($item['end_value'] && $item['value'] instanceof DrupalDateTime) {
+      if (!empty($item['end_value']) && $item['value'] instanceof DrupalDateTime) {
         $item['end_value']->setTime(23, 59, 0);
       }
     }

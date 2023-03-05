@@ -14,6 +14,11 @@ use Symfony\Component\Validator\Constraint;
  */
 class RangeFromGreaterToConstraint extends Constraint {
 
+  /**
+   * The default violation message.
+   *
+   * @var string
+   */
   public $message = 'The FROM value is higher than the TO value.';
 
 }

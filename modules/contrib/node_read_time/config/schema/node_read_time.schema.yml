@@ -1,0 +1,24 @@
+node_read_time.settings:
+  type: config_object
+  label: 'Node read time settings'
+  mapping:
+    reading_time:
+      type: mapping
+      label: 'Reading time settings'
+      mapping:
+        container:
+          type: sequence
+          label: 'Container'
+          sequence:
+            type: mapping
+            label: 'Container for content types'
+            mapping:
+              is_activated:
+                type: integer
+                label: 'Per content type setting'
+        words_per_minute:
+          type: integer
+          label: 'Words per minute'
+        unit_of_time:
+          type: string
+          label: 'Unit of time'

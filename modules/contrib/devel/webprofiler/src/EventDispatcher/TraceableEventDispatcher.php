@@ -122,10 +122,10 @@ class TraceableEventDispatcher extends ContainerAwareEventDispatcher implements 
    *
    * @param string $eventName
    *   The event name.
-   * @param \Symfony\Component\EventDispatcher\Event|\Drupal\Component\EventDispatcher\Event $event
+   * @param \Symfony\Component\EventDispatcher\Event $event
    *   The event.
    */
-  protected function preDispatch($eventName, $event) {
+  protected function preDispatch($eventName, Event $event) {
     switch ($eventName) {
       case KernelEvents::VIEW:
       case KernelEvents::RESPONSE:
@@ -142,10 +142,10 @@ class TraceableEventDispatcher extends ContainerAwareEventDispatcher implements 
    *
    * @param string $eventName
    *   The event name.
-   * @param \Symfony\Component\EventDispatcher\Event|\Drupal\Component\EventDispatcher\Event $event
+   * @param \Symfony\Component\EventDispatcher\Event $event
    *   The event.
    */
-  protected function postDispatch($eventName, $event) {
+  protected function postDispatch($eventName, Event $event) {
     switch ($eventName) {
       case KernelEvents::CONTROLLER:
         $this->stopwatch->start('controller', 'section');
