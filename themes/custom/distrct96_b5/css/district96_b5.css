@@ -502,6 +502,33 @@
 .menu--account a.nav-link {
   color: #fff;
 }
+.breadcrumb {
+  padding: 16px;
+  background-color: #eceeee;
+  border-radius: 4px;
+}
+.path-node.page-node-type-article .region-content {
+  border-radius: 4px;
+  border: 1px solid #d1d6d6;
+  padding: 24px;
+}
+.field--name-field-tags .field__items .field__item {
+  display: inline-block;
+}
+.field--name-field-tags .field__items .field__item a {
+  border-radius: 4px;
+  border: 1px solid #d1d6d6;
+  background-color: #eceeee;
+  padding: 16px;
+  display: inline-block;
+  margin-right: 16px;
+  text-decoration: none;
+  color: #333;
+}
+.field--name-field-tags .field__items .field__item a:hover {
+  background-color: #d1d6d6;
+  text-decoration: underline;
+}
 body {
   font-family: 'Montserrat', sans-serif;
 }

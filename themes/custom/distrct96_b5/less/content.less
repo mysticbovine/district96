@@ -1,0 +1,40 @@
+// main: "district96_b5.less", compress: true, sourceMap: true
+//
+@import 'variables';
+
+.path-node{
+    &.page-node-type-article{
+        .region-content{
+            border-radius: 4px;
+            border: 1px solid lighten(@grey, 15%);
+            padding: 24px;
+        }
+    } 
+}
+//Tags
+.field--name-field-tags{
+  
+    // .field__label{
+    //     margin-bottom: 20px;
+    // }
+    .field__items{      
+        .field__item{
+            display: inline-block;
+            a{                
+                border-radius: 4px;
+                border: 1px solid lighten(@grey, 15%);
+                background-color: lighten(@grey, 25%);
+                padding: 16px;
+                display: inline-block;
+                margin-right: 16px;
+                text-decoration: none;
+                color: @text;
+                &:hover{
+                    background-color: lighten(@grey, 15%);
+                    text-decoration: underline;
+                }
+            }
+            
+        }
+    }
+}
