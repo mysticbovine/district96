@@ -100,8 +100,9 @@
       {{ author_picture }}
       <div{{ author_attributes.addClass('node__submitted', 'd-flex', 'justify-content-between', 'align-items-center', 'mb-4') }}>
 
+
         {% if node.getOwner.field_dis.value %}
-            {% set author %}
+            {% set author %}            
                 {{ node.getOwner.field_dis.value }}
             {% endset %}      
         {% else %}

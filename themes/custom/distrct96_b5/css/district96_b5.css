@@ -532,6 +532,7 @@
   font-size: 18px;
   font-weight: 500;
   text-decoration: none;
+  line-height: 18px;
 }
 .page-title {
   font-size: 2em;
@@ -580,7 +581,9 @@
 .shareto .social-sharing-buttons {
   margin: 0;
 }
-.path-node.page-node-type-article .region-content {
+.path-node.page-node-type-article .region-content,
+.path-node.page-node-type-news .region-content,
+.path-node.page-node-type-resources .region-content {
   border-radius: 4px;
   border: 1px solid #d1d6d6;
   padding: 24px;
@@ -601,6 +604,10 @@
 .field--name-field-tags .field__items .field__item a:hover {
   background-color: #d1d6d6;
   text-decoration: underline;
+}
+.field--name-field-file-upload,
+.field--name-field-news-source {
+  margin-bottom: 24px;
 }
 footer.node__meta {
   padding: 0;

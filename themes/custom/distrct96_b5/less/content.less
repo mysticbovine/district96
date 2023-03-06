@@ -50,7 +50,9 @@
     }
 }
 .path-node{
-    &.page-node-type-article{
+    &.page-node-type-article,
+    &.page-node-type-news,
+    &.page-node-type-resources{
         .region-content{
             border-radius: 4px;
             border: 1px solid lighten(@grey, 15%);
@@ -84,6 +86,10 @@
             
         }
     }
+}
+.field--name-field-file-upload,
+.field--name-field-news-source {
+    margin-bottom: 24px;
 }
 footer {
     &.node__meta{
