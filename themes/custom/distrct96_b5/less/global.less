@@ -10,7 +10,15 @@ body {
 	font-family: "LubalinGraphEF", "Helvetica Neue", Helvetica, Arial, sans-serif; 
 } 
 .h1, .h2, .h3, .h4, h1, h2, h3, h4, h5, .h5{
-	font-family: "LubalinGraphEF", "Helvetica Neue", Helvetica, Arial, sans-serif; 
+	// font-family: "LubalinGraphEF", "Helvetica Neue", Helvetica, Arial, sans-serif; 
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+}
+a {
+    color: @link;
+    &:hover {
+        color: lighten(@link,25%);
+    }
 }
 // Header //
 .block-system-branding-block{

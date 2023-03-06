@@ -14,6 +14,7 @@
 #}
 {{ title_prefix }}
 {% if title %}
-  <h1{{ title_attributes.addClass(['display-6', 'page-title']) }}>{{ title }}</h1>
+{{content.field_category}}
+  <h1{{ title_attributes.addClass(['page-title']) }}>{{ title }}</h1>
 {% endif %}
 {{ title_suffix }}
