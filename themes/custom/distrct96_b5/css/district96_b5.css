@@ -640,6 +640,20 @@ a:hover {
 .block-system-branding-block {
   min-width: 300px;
 }
+@media (min-width: 992px) {
+  .large-screen-menu {
+    display: flex !important;
+  }
+  .mobile-screen-menu {
+    display: none !important;
+  }
+}
+.large-screen-menu {
+  display: none ;
+}
+.mobile-screen-menu {
+  display: flex;
+}
 .featureImage {
   position: relative;
 }
