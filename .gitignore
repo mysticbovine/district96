@@ -64,3 +64,6 @@
 *.zip
 bigdump.php
 node_modules
+.ftpquota
+error_log
+phpinfo.php
