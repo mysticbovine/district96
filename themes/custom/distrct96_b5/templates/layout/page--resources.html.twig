@@ -61,7 +61,7 @@ set footer_classes = ' ' ~
 
   {% if page.nav_branding or page.nav_main or page.nav_additional %}
   <nav class="{{ nav_classes }}">
-    <div class="{{ b5_top_container }} d-flex align-items-start">
+    <div class="{{ b5_top_container }} d-flex flex-md-row flex-lg-column justify-content-between">
     {# <div class="container-lg d-flex align-items-start"> #}
       {{ page.nav_branding }}
 
@@ -71,10 +71,10 @@ set footer_classes = ' ' ~
         <span class="navbar-toggler-icon"></span>
       </button>
 
-      <div class="collapse navbar-collapse justify-content-md-end flex-wrap" id="navbarSupportedContent">
-        {{ page.nav_main }}
-        {{ page.nav_additional }}
-      </div>
+        <div class="collapse navbar-collapse w-100 justify-content-md-end flex-wrap" id="navbarSupportedContent">
+            {{ page.nav_main }}
+            {{ page.nav_additional }}
+        </div>
     </div>
   </nav>
   {% endif %}

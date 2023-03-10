@@ -41,3 +41,52 @@
         // font-size: 20px;
     }
 }
+
+button.navbar-toggler {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+}
+
+//Mobile User menu 
+.user-logged-in {
+    .mobile{
+        
+    }
+    li.loggedin {
+        display: block !important;
+    }
+    li.loggedout {
+        display: none;
+    }
+}
+.mobile-screen-menu{
+    .field--name-body{
+        width: 100%;
+    }
+}
+
+.mobile{
+    li{
+        &.nav-item {
+           
+            text-align: center;
+        }
+        &.loggedin {
+            display: none;
+        }
+        &.loggedout {
+            display: block;
+        }
+        i {
+            display: block;
+        }
+
+    }
+    }
+    .loggedin {
+        display: none;
+    }
+   .loggedout {
+        display: block;
+    }

@@ -502,6 +502,38 @@
 .menu--account a.nav-link {
   color: #fff;
 }
+button.navbar-toggler {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+}
+.user-logged-in li.loggedin {
+  display: block !important;
+}
+.user-logged-in li.loggedout {
+  display: none;
+}
+.mobile-screen-menu .field--name-body {
+  width: 100%;
+}
+.mobile li.nav-item {
+  text-align: center;
+}
+.mobile li.loggedin {
+  display: none;
+}
+.mobile li.loggedout {
+  display: block;
+}
+.mobile li i {
+  display: block;
+}
+.loggedin {
+  display: none;
+}
+.loggedout {
+  display: block;
+}
 .breadcrumb {
   padding: 16px;
   background-color: #eceeee;
@@ -649,7 +681,7 @@ a:hover {
   }
 }
 .large-screen-menu {
-  display: none ;
+  display: none;
 }
 .mobile-screen-menu {
   display: flex;
