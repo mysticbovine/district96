@@ -78,6 +78,7 @@ function file_entity_install() {
   // Queue all files to be classified during cron runs using the Queue API.
   $queue = \Drupal::queue('file_entity_type_determine');
   $ids = \Drupal::entityQuery('file')
+    ->accessCheck(FALSE)
     ->execute();
   foreach ($ids as $id) {
     $queue->createItem($id);
