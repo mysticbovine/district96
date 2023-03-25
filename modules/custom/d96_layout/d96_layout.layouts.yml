@@ -1,0 +1,27 @@
+layout_onecolumnfixed_section:
+  label: 'One Column in a fixed container'
+  path: layouts
+  template: layout--onecolumnfixed-section
+  library: d96_layout/onecolumnfixed_section
+  category: 'Custom grid'
+  default_region: first
+  icon_map:
+    - [first]
+  regions:
+    first:
+      label: First
+
+layout_twocolumnsfixed_section:
+  label: 'Two Columns in a fixed container'
+  path: layouts
+  template: layout--twocolumnsfixed-section
+  library: d96_layout/twocolumnsfixed_section
+  category: 'Custom grid'
+  default_region: first
+  icon_map:
+    - [first, second]
+  regions:
+    first:
+      label: First
+    second:
+      label: Second

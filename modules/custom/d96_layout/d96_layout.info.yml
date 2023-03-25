@@ -1,0 +1,5 @@
+name: D96 Layouts
+type: module
+description: Custom layouts for layoutbuilding for District 96.
+package: Custom
+core_version_requirement: ^9 || ^10
