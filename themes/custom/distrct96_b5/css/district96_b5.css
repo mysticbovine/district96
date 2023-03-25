@@ -580,7 +580,9 @@ button.navbar-toggler {
   margin-top: 24px;
   margin-bottom: 24px;
 }
-.field--name-field-category a {
+.field--name-field-category a,
+.field--name-field-leader-division a,
+.field--name-field-leader-area a {
   border-radius: 0;
   font-size: 15px;
   line-height: 31px;
@@ -596,7 +598,9 @@ button.navbar-toggler {
   text-align: center;
   display: inline-block;
 }
-.field--name-field-category a:hover {
+.field--name-field-category a:hover,
+.field--name-field-leader-division a:hover,
+.field--name-field-leader-area a:hover {
   background-color: #262626;
   color: #fff;
 }

@@ -42,7 +42,10 @@
 %}
 
 <div{{ attributes.addClass(classes) }}>
-  <div class="background-w-image" style="background:url({{backgroundImg}}); background-size: cover;background-position: top center">  </div>
+  {% if backgroundImg != "" %}
+    <div class="background-w-image" style="background:url({{backgroundImg}}); background-size: cover;background-position: top center">  </div>
+  {% endif %}
+ 
     {% if fullWidth == "yes" %}
       <div class="container">
     {% endif %}
