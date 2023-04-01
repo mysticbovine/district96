@@ -1,0 +1,5 @@
+entity.layout_content_type.collection:
+  title: Layout types
+  parent: system.admin_structure
+  description: Create and manage Layout content types.
+  route_name: entity.layout_content_type.collection

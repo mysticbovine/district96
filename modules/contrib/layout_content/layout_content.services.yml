@@ -1,0 +1,4 @@
+services:
+  layout_content_type.repository:
+    class: Drupal\layout_content\Entity\Repository\LayoutContentTypeRepository
+    arguments: ['@entity_type.manager']

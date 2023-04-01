@@ -1,0 +1,30 @@
+# entity.layout_content_type.collection:
+#   path: '/admin/structure/layout-content-type'
+#   defaults:
+#     _entity_list: 'layout_content_type'
+#     _title: 'Custom layout types'
+#   requirements:
+#     _permission: 'administer custom layouts'
+
+# entity.layout_content_type.add:
+#   path: '/admin/structure/layout-content-type/add'
+#   defaults:
+#     _entity_form: 'layout_content_type.add'
+#     _title: 'Add Custom Layout'
+#   requirements:
+#     _permission: 'administer custom layouts'
+
+# entity.layout_content_type.edit_form:
+#   path: '/admin/structure/layout-content-type/edit/{layout_content_type}'
+#   defaults:
+#     _entity_form: 'layout_content_type.edit'
+#   requirements:
+#     _permission: 'administer custom layouts'
+
+# entity.layout_content_type.delete_form:
+#   path: '/admin/structure/layout-content-type/delete/{layout_content_type}'
+#   defaults:
+#     _entity_form: 'layout_content_type.delete'
+#     _title: 'Delete'
+#   requirements:
+#     _permission: 'administer custom layouts'

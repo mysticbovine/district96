@@ -1,0 +1,57 @@
+<?php
+
+declare(strict_types = 1);
+
+use Drupal\Component\Utility\Html;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\layout_content\Entity\LayoutContentType;
+use Drupal\layout_content\LayoutContentEntityOperations;
+
+function layout_content_theme(): array {
+  return [
+    'layout_content' => [
+      'render element' => 'content',
+    ],
+  ];
+}
+
+function layout_content_theme_suggestions_layout_content(array $variables): array {
+  $layout_content = $variables['content']['#layout_content'];
+  return [
+    'layout_content__' . $layout_content->bundle(),
+  ];
+}
+
+/**
+ * Implements hook_entity_extra_field_info().
+ */
+function layout_content_entity_extra_field_info(): array {
+  $extra = ['layout_content' => []];
+  foreach (LayoutContentType::loadMultiple() as $layout_content_type) {
+    $extra['layout_content'][$layout_content_type->id()]['display']['layout_regions'] = [
+      'label' => t('Layout Regions'),
+      'description' => t('The position where layout regions will be rendered.'),
+      'weight' => 0,
+    ];
+  }
+
+  return $extra;
+}
+
+function layout_content_entity_presave(EntityInterface $entity): void {
+  Drupal::classResolver(LayoutContentEntityOperations::class)->preSave($entity);
+}
+
+function layout_content_entity_delete(EntityInterface $entity): void {
+  Drupal::classResolver(LayoutContentEntityOperations::class)->delete($entity);
+}
+
+function template_preprocess_layout_content(array &$variables): void {
+  $layout_content = $variables['content']['#layout_content'];
+
+  $variables['attributes']['class'][] = 'layout-content';
+  $variables['attributes']['class'][] = 'layout-content--'
+    . Html::cleanCssIdentifier($layout_content->bundle());
+}

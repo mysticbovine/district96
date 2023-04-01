@@ -6,3 +6,40 @@ global-styling:
       css/district96_b5.css: {}
   js:
     js/scripts.js: {}
+
+csv2table:
+  version: 1.x
+  js:
+    js/tablejs/csv2table.min.js: {}
+    js/tablejs/config.js: {}
+  dependencies:
+    - core/jquery
+
+tablesorter:
+  version: 1.x
+  css:
+    theme:
+      css/tablesorter/theme.default.min.css: {}
+      css/tablesorter/theme.bootstrap.min.css: {}
+      css/tablesorter/theme.bootstrap_3.min.css: {}
+  js:
+    js/tablesorter/jquery.tablesorter.min.js: {}
+    js/tablesorter/jquery.tablesorter.widgets.min.js: {}
+    js/tablesorter/parser-date-weekday.js: {}
+    js/tablesorter/tablesorter.settings.js: {}
+  dependencies:
+    - core/jquery
+
+fullcalendar:
+    version: 1.x
+    css:
+      theme:
+        libraries/fullcalendar/lib/fullcalendar.min.css: {}
+    js:
+      https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.js: {}
+      https://unpkg.com/popper.js/dist/umd/popper.min.js: {}
+      https://unpkg.com/tooltip.js/dist/umd/tooltip.min.js: {}
+      libraries/fullcalendar/lib/fullcalendar.min.js: {}
+      libraries/fullcalendar/lib/events.js: {}
+    dependencies:
+      - core/jquery

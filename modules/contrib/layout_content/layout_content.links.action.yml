@@ -1,0 +1,5 @@
+layout_content_type.add:
+  route_name: entity.layout_content_type.add_form
+  title: 'Add custom layout type'
+  appears_on:
+    - entity.layout_content_type.collection
