@@ -11,35 +11,81 @@ margin: 40px auto;
 padding: 0 10px;
 }
 
-// District
-.category-1  .fc-daygrid-event-dot{
-    color: @district;
+.fc{
+// Week View
+.fc-v-event{
+  &.category-1 {
+    background-color: @district;
     border-color: @district;
-}
-// Clubs
-.category-3 .fc-daygrid-event-dot{
-    color: @club;
-    border-color: @club;
-}
-// International
-.category-2  .fc-daygrid-event-dot{
-    color: @ti;
-    border-color: @ti;
-}
-//Contests
-.category-8  .fc-daygrid-event-dot{
-    color: @contests;
-    border-color: @contests;
-}
-//Training
-.category-904  .fc-daygrid-event-dot{
-    color: @training;
-    border-color: @training;
+  }
+  &.category-3 {
+    background-color: @club;
+      border-color: @club;
+  } 
+  &.category-2 {
+    background-color: @ti;
+      border-color: @ti;
+  } 
+  &.category-8 {
+    background-color: @contests;
+      border-color: @contests;
+  } 
+  &.category-904 {
+    background-color: @training;
+      border-color: @training;
+  } 
 }
 
-.category-113  .fc-daygrid-event-dot{
-    color: pink;
-    border-color: pink;
+// District
+  .category-1   {
+    .fc-daygrid-event-dot, .fc-list-event-dot{
+      color: @district;
+      border-color: @district;
+    } 
+  }
+  // Clubs
+
+  .category-3 {
+    .fc-daygrid-event-dot, .fc-list-event-dot{
+      color: @club;
+      border-color: @club;
+    }
+  } 
+  // International
+  .category-2 {
+    .fc-daygrid-event-dot, .fc-list-event-dot{
+      color: @ti;
+      border-color: @ti;
+    } 
+  } 
+  //Contests
+  .category-8 {
+    .fc-daygrid-event-dot, .fc-list-event-dot{
+      color: @contests;
+      border-color: @contests;
+  }
+  } 
+  //Training
+  .category-904 {
+    .fc-daygrid-event-dot, .fc-list-event-dot{
+      color: @training;
+      border-color: @training;
+    } 
+  }
+
+  .category-113  {
+    .fc-daygrid-event-dot, .fc-list-event-dot{
+      color: pink;
+      border-color: pink;
+    } 
+  }
+}
+//List View fix
+td.fc-list-event-title {
+  width: 100%;
+}
+tr.fc-list-event {
+  display: block !important;
 }
 // Tool tip
 
