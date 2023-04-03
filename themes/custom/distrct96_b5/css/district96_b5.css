@@ -722,6 +722,9 @@ tr.fc-list-event {
   margin-left: 0;
   margin-right: 0;
 }
+#block-calendarofeventsblock {
+  position: relative;
+}
 #loading {
   display: none;
   position: absolute;
