@@ -569,7 +569,9 @@ button.navbar-toggler {
 .path-leaders,
 .path-speaker-bureau,
 .path-district-director-team,
-.path-in-memoriamold {
+.path-in-memoriamold,
+.path-in-memoriam,
+.path-node {
   /* role-92 = all division directors */
   /* role-93 = all area directors */
   /* role-770 = assistant div directors */
@@ -578,10 +580,14 @@ button.navbar-toggler {
 .path-speaker-bureau .leader,
 .path-district-director-team .leader,
 .path-in-memoriamold .leader,
+.path-in-memoriam .leader,
+.path-node .leader,
 .path-leaders .speaker,
 .path-speaker-bureau .speaker,
 .path-district-director-team .speaker,
-.path-in-memoriamold .speaker {
+.path-in-memoriamold .speaker,
+.path-in-memoriam .speaker,
+.path-node .speaker {
   width: 250px;
   text-align: center;
   margin: 10px auto;
@@ -589,7 +595,9 @@ button.navbar-toggler {
 .path-leaders .leadermain,
 .path-speaker-bureau .leadermain,
 .path-district-director-team .leadermain,
-.path-in-memoriamold .leadermain {
+.path-in-memoriamold .leadermain,
+.path-in-memoriam .leadermain,
+.path-node .leadermain {
   width: 200px;
   text-align: center;
   margin: 10px auto;
@@ -597,7 +605,9 @@ button.navbar-toggler {
 .path-leaders h3,
 .path-speaker-bureau h3,
 .path-district-director-team h3,
-.path-in-memoriamold h3 {
+.path-in-memoriamold h3,
+.path-in-memoriam h3,
+.path-node h3 {
   margin-top: 30px;
   border-bottom: 1px solid #ccc;
   background: #333;
@@ -609,7 +619,9 @@ button.navbar-toggler {
 .path-leaders .img-circle img,
 .path-speaker-bureau .img-circle img,
 .path-district-director-team .img-circle img,
-.path-in-memoriamold .img-circle img {
+.path-in-memoriamold .img-circle img,
+.path-in-memoriam .img-circle img,
+.path-node .img-circle img {
   border-radius: 50%;
   border: 2px solid #772432;
   margin: auto;
@@ -618,20 +630,28 @@ button.navbar-toggler {
 .path-speaker-bureau .role-93,
 .path-district-director-team .role-93,
 .path-in-memoriamold .role-93,
+.path-in-memoriam .role-93,
+.path-node .role-93,
 .path-leaders .role-92,
 .path-speaker-bureau .role-92,
 .path-district-director-team .role-92,
 .path-in-memoriamold .role-92,
+.path-in-memoriam .role-92,
+.path-node .role-92,
 .path-leaders .role-770,
 .path-speaker-bureau .role-770,
 .path-district-director-team .role-770,
-.path-in-memoriamold .role-770 {
+.path-in-memoriamold .role-770,
+.path-in-memoriam .role-770,
+.path-node .role-770 {
   text-align: center;
 }
 .path-leaders .role-93 h3,
 .path-speaker-bureau .role-93 h3,
 .path-district-director-team .role-93 h3,
-.path-in-memoriamold .role-93 h3 {
+.path-in-memoriamold .role-93 h3,
+.path-in-memoriam .role-93 h3,
+.path-node .role-93 h3 {
   color: #333;
   background: transparent;
   text-align: center;
@@ -641,13 +661,17 @@ button.navbar-toggler {
 .path-leaders .field-content,
 .path-speaker-bureau .field-content,
 .path-district-director-team .field-content,
-.path-in-memoriamold .field-content {
+.path-in-memoriamold .field-content,
+.path-in-memoriam .field-content,
+.path-node .field-content {
   text-align: center;
 }
 .path-leaders .view-clubs,
 .path-speaker-bureau .view-clubs,
 .path-district-director-team .view-clubs,
-.path-in-memoriamold .view-clubs {
+.path-in-memoriamold .view-clubs,
+.path-in-memoriam .view-clubs,
+.path-node .view-clubs {
   margin: 20px auto;
   max-width: 200px;
   text-align: left;
@@ -655,7 +679,9 @@ button.navbar-toggler {
 .path-leaders .division,
 .path-speaker-bureau .division,
 .path-district-director-team .division,
-.path-in-memoriamold .division {
+.path-in-memoriamold .division,
+.path-in-memoriam .division,
+.path-node .division {
   display: -ms-flexbox;
   display: -webkit-flex;
   display: flex;
@@ -678,7 +704,9 @@ button.navbar-toggler {
 .path-leaders .role-92,
 .path-speaker-bureau .role-92,
 .path-district-director-team .role-92,
-.path-in-memoriamold .role-92 {
+.path-in-memoriamold .role-92,
+.path-in-memoriam .role-92,
+.path-node .role-92 {
   -webkit-order: 0;
   -ms-flex-order: 0;
   order: 0;
@@ -692,7 +720,9 @@ button.navbar-toggler {
 .path-leaders .role-770,
 .path-speaker-bureau .role-770,
 .path-district-director-team .role-770,
-.path-in-memoriamold .role-770 {
+.path-in-memoriamold .role-770,
+.path-in-memoriam .role-770,
+.path-node .role-770 {
   -webkit-order: 0;
   -ms-flex-order: 0;
   order: 0;
@@ -707,14 +737,20 @@ button.navbar-toggler {
 .path-speaker-bureau .role-93,
 .path-district-director-team .role-93,
 .path-in-memoriamold .role-93,
+.path-in-memoriam .role-93,
+.path-node .role-93,
 .path-leaders .leader,
 .path-speaker-bureau .leader,
 .path-district-director-team .leader,
 .path-in-memoriamold .leader,
+.path-in-memoriam .leader,
+.path-node .leader,
 .path-leaders .speaker,
 .path-speaker-bureau .speaker,
 .path-district-director-team .speaker,
-.path-in-memoriamold .speaker {
+.path-in-memoriamold .speaker,
+.path-in-memoriam .speaker,
+.path-node .speaker {
   -webkit-order: 0;
   -ms-flex-order: 0;
   order: 0;
