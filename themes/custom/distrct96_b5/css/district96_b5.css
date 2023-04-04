@@ -566,6 +566,165 @@ button.navbar-toggler {
   text-decoration: none;
   line-height: 18px;
 }
+.path-leaders,
+.path-speaker-bureau,
+.path-district-director-team,
+.path-in-memoriamold {
+  /* role-92 = all division directors */
+  /* role-93 = all area directors */
+  /* role-770 = assistant div directors */
+}
+.path-leaders .leader,
+.path-speaker-bureau .leader,
+.path-district-director-team .leader,
+.path-in-memoriamold .leader,
+.path-leaders .speaker,
+.path-speaker-bureau .speaker,
+.path-district-director-team .speaker,
+.path-in-memoriamold .speaker {
+  width: 250px;
+  text-align: center;
+  margin: 10px auto;
+}
+.path-leaders .leadermain,
+.path-speaker-bureau .leadermain,
+.path-district-director-team .leadermain,
+.path-in-memoriamold .leadermain {
+  width: 200px;
+  text-align: center;
+  margin: 10px auto;
+}
+.path-leaders h3,
+.path-speaker-bureau h3,
+.path-district-director-team h3,
+.path-in-memoriamold h3 {
+  margin-top: 30px;
+  border-bottom: 1px solid #ccc;
+  background: #333;
+  color: #fff;
+  padding: 15px 10px 10px;
+  border-radius: 5px;
+  text-align: center;
+}
+.path-leaders .img-circle img,
+.path-speaker-bureau .img-circle img,
+.path-district-director-team .img-circle img,
+.path-in-memoriamold .img-circle img {
+  border-radius: 50%;
+  border: 2px solid #772432;
+  margin: auto;
+}
+.path-leaders .role-93,
+.path-speaker-bureau .role-93,
+.path-district-director-team .role-93,
+.path-in-memoriamold .role-93,
+.path-leaders .role-92,
+.path-speaker-bureau .role-92,
+.path-district-director-team .role-92,
+.path-in-memoriamold .role-92,
+.path-leaders .role-770,
+.path-speaker-bureau .role-770,
+.path-district-director-team .role-770,
+.path-in-memoriamold .role-770 {
+  text-align: center;
+}
+.path-leaders .role-93 h3,
+.path-speaker-bureau .role-93 h3,
+.path-district-director-team .role-93 h3,
+.path-in-memoriamold .role-93 h3 {
+  color: #333;
+  background: transparent;
+  text-align: center;
+  border: none;
+  padding: 0;
+}
+.path-leaders .field-content,
+.path-speaker-bureau .field-content,
+.path-district-director-team .field-content,
+.path-in-memoriamold .field-content {
+  text-align: center;
+}
+.path-leaders .view-clubs,
+.path-speaker-bureau .view-clubs,
+.path-district-director-team .view-clubs,
+.path-in-memoriamold .view-clubs {
+  margin: 20px auto;
+  max-width: 200px;
+  text-align: left;
+}
+.path-leaders .division,
+.path-speaker-bureau .division,
+.path-district-director-team .division,
+.path-in-memoriamold .division {
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  -webkit-justify-content: space-around;
+  -ms-flex-pack: justify;
+  justify-content: space-around;
+  -webkit-align-content: flex-start;
+  -ms-flex-line-pack: start;
+  align-content: flex-start;
+  -webkit-align-items: flex-start;
+  -ms-flex-align: start;
+  align-items: flex-start;
+}
+.path-leaders .role-92,
+.path-speaker-bureau .role-92,
+.path-district-director-team .role-92,
+.path-in-memoriamold .role-92 {
+  -webkit-order: 0;
+  -ms-flex-order: 0;
+  order: 0;
+  -webkit-flex: 0 1 100%;
+  -ms-flex: 0 1 100%;
+  flex: 0 1 100%;
+  -webkit-align-self: flex-start;
+  -ms-flex-item-align: start;
+  align-self: flex-start;
+}
+.path-leaders .role-770,
+.path-speaker-bureau .role-770,
+.path-district-director-team .role-770,
+.path-in-memoriamold .role-770 {
+  -webkit-order: 0;
+  -ms-flex-order: 0;
+  order: 0;
+  -webkit-flex: 0 1 50%;
+  -ms-flex: 0 1 50%;
+  flex: 0 1 50%;
+  -webkit-align-self: flex-start;
+  -ms-flex-item-align: start;
+  align-self: flex-start;
+}
+.path-leaders .role-93,
+.path-speaker-bureau .role-93,
+.path-district-director-team .role-93,
+.path-in-memoriamold .role-93,
+.path-leaders .leader,
+.path-speaker-bureau .leader,
+.path-district-director-team .leader,
+.path-in-memoriamold .leader,
+.path-leaders .speaker,
+.path-speaker-bureau .speaker,
+.path-district-director-team .speaker,
+.path-in-memoriamold .speaker {
+  -webkit-order: 0;
+  -ms-flex-order: 0;
+  order: 0;
+  -webkit-flex: 0 1 auto;
+  -ms-flex: 0 1 auto;
+  flex: 0 1 auto;
+  -webkit-align-self: auto;
+  -ms-flex-item-align: auto;
+  align-self: auto;
+}
 #calendar {
   max-width: 1100px;
   margin: 40px auto;

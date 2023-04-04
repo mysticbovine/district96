@@ -1,0 +1,108 @@
+// main: "district96_b5.less", compress: true, sourceMap: true
+//Search: https://codepen.io/choogoor/pen/NGJVMb
+@import 'variables';
+
+.path-leaders,
+.path-speaker-bureau,
+.path-district-director-team,
+.path-in-memoriamold {
+  /* role-92 = all division directors */
+  /* role-93 = all area directors */
+  /* role-770 = assistant div directors */
+  .leader,
+  .speaker {
+    width: 250px;
+    text-align: center; 
+    margin: 10px auto;
+  } 
+  .leadermain {
+    width: 200px;
+    text-align: center; 
+    margin: 10px auto;
+  }
+  h3 { 
+    margin-top: 30px;
+    border-bottom: 1px solid #ccc;
+    background: #333;
+    color: #fff;
+    padding: 15px 10px 10px;
+    border-radius: 5px;
+    text-align: center;
+  }
+  .img-circle img {
+    border-radius: 50%;
+    border: 2px solid #772432;
+    margin: auto;
+  }
+  .role-93, .role-92, .role-770 {
+    text-align: center;
+  }
+  .role-93 h3 {
+    color: #333;
+    background: transparent;
+    text-align: center;
+    border: none;
+    padding: 0;
+  }
+  .field-content{
+    text-align: center;
+  }
+  .view-clubs {
+    margin: 20px auto;
+    max-width: 200px;
+    text-align: left;
+  }
+  .division {
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -webkit-justify-content: space-around;
+    -ms-flex-pack: justify;
+    justify-content: space-around;
+    -webkit-align-content: flex-start;
+    -ms-flex-line-pack: start;
+    align-content: flex-start;
+    -webkit-align-items: flex-start;
+    -ms-flex-align: start;
+    align-items: flex-start;
+  }
+.role-92 {
+  -webkit-order: 0;
+  -ms-flex-order: 0;
+  order: 0;
+  -webkit-flex: 0 1 100%;
+  -ms-flex: 0 1 100%;
+  flex: 0 1 100%;
+  -webkit-align-self: flex-start;
+  -ms-flex-item-align: start;
+  align-self: flex-start;
+}
+.role-770 {
+  -webkit-order: 0;
+  -ms-flex-order: 0;
+  order: 0;
+  -webkit-flex: 0 1 50%;
+  -ms-flex: 0 1 50%;
+  flex: 0 1 50%;
+  -webkit-align-self: flex-start;
+  -ms-flex-item-align: start;
+  align-self: flex-start;
+}
+  .role-93, .leader, .speaker {
+    -webkit-order: 0;
+    -ms-flex-order: 0;
+    order: 0;
+    -webkit-flex: 0 1 auto;
+    -ms-flex: 0 1 auto;
+    flex: 0 1 auto;
+    -webkit-align-self: auto;
+    -ms-flex-item-align: auto;
+    align-self: auto;
+  }
+}

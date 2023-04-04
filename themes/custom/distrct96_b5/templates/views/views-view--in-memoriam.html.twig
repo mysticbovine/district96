@@ -39,7 +39,7 @@
     dom_id ? 'js-view-dom-id-' ~ dom_id,
   ]
 %}
-<div{{ attributes.addClass(classes) }}>
+<div{{ attributes.addClass(classes, 'container') }}>
   {{ title_prefix }}
   {% if title %}
 {{ title }}
@@ -62,7 +62,7 @@
   {% endif %}
 
   {% if rows %}
-    <div class="view-content">
+    <div class="view-content d-flex flex-wrap justify-content-around">
       {{ rows }}
     </div>
   {% elseif empty %}
