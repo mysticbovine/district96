@@ -550,6 +550,9 @@ button.navbar-toggler {
   font-size: 32px;
 }
 /* Footer Map */
+.footermap {
+  margin-top: 40px;
+}
 .footermap a:hover {
   text-decoration: underline !important;
 }
