@@ -534,6 +534,62 @@ button.navbar-toggler {
 .loggedout {
   display: block;
 }
+/* Social links */
+.social {
+  display: inline-block;
+}
+.social ul {
+  margin-left: 0;
+  padding-left: 0;
+}
+.social ul li {
+  display: inline-block;
+  margin-right: 10px;
+}
+.social ul li a {
+  font-size: 32px;
+}
+/* Footer Map */
+.footermap a:hover {
+  text-decoration: underline !important;
+}
+.footermap li {
+  font-size: 14px;
+  width: 200px;
+}
+.footermap .footermap-item--depth-1 {
+  font-size: 18px;
+  font-weight: bold;
+  padding-bottom: 20px;
+}
+.footermap .footermap-item--depth-2 {
+  font-size: 14px;
+  font-weight: normal;
+  text-indent: -9px;
+  margin-left: 11px;
+  padding-right: 20px;
+}
+.footermap ul li ul {
+  padding-left: 2rem;
+  padding-inline-start: 0;
+}
+.footermap ul li ul li:before {
+  display: inline-block;
+  font-family: bootstrap-icons !important;
+  font-style: normal;
+  font-weight: normal !important;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  vertical-align: -0.125em;
+  -webkit-font-smoothing: antialiased;
+  content: "\F285";
+}
+@media (min-width: 992px) {
+  .footermap .navbar-brand img {
+    height: 80px;
+  }
+}
 .breadcrumb {
   padding: 16px;
   background-color: #eceeee;
@@ -762,7 +818,6 @@ button.navbar-toggler {
   align-self: auto;
 }
 #calendar {
-  max-width: 1100px;
   margin: 40px auto;
   padding: 0 10px;
 }

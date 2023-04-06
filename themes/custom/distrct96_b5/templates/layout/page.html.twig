@@ -124,6 +124,14 @@ set footer_classes = ' ' ~
 {% if page.footer %}
 <footer class="mt-auto {{ footer_classes }}">
   <div class="{{ b5_top_container }}">
+    <div class="row">
+      <div class="col-sm-3">
+          {{ page.footer_first }}
+      </div>
+      <div class="col-sm-9">
+          {{ page.footer_second }}
+      </div>
+    </div>
     {{ page.footer }}
   </div>
 </footer>

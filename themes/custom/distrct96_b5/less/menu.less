@@ -90,3 +90,63 @@ button.navbar-toggler {
    .loggedout {
         display: block;
     }
+/* Social links */
+.social {
+    display: inline-block;
+    ul{
+        margin-left: 0;
+        padding-left: 0;
+        li {
+            display: inline-block;
+            margin-right: 10px;
+            a {
+                font-size: 32px;
+            }
+        }
+    }
+     
+}
+/* Footer Map */
+.footermap {
+    a:hover {
+        text-decoration: underline !important;
+    }
+    li {
+        font-size: 14px;
+        width: 200px;       
+    }
+    .footermap-item--depth-1{
+        font-size: 18px;
+        font-weight: bold;
+        padding-bottom: 20px;
+    }
+    .footermap-item--depth-2{
+        font-size: 14px;
+        font-weight: normal;
+        text-indent: -9px;
+        margin-left: 11px;
+        padding-right: 20px;
+    }
+    ul li ul {
+        padding-left: 2rem;
+        padding-inline-start: 0;
+        li:before {
+            display: inline-block;
+            font-family: bootstrap-icons !important;
+            font-style: normal;
+            font-weight: normal !important;
+            font-variant: normal;
+            text-transform: none;
+            line-height: 1;
+            vertical-align: -0.125em;
+            -webkit-font-smoothing: antialiased;
+            content: "\F285";
+        }
+    }
+    @media (min-width: 992px){
+        .navbar-brand img {
+            height: 80px;
+        }
+    }
+        
+}

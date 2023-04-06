@@ -18,4 +18,6 @@ regions:
   content: 'Main content'
   sidebar_first: 'Sidebar first'
   sidebar_second: 'Sidebar second'
-  footer: Footer
+  footer_first: 'Footer First'
+  footer_second: 'Footer Second'
+  footer: 'Bottom Footer'
