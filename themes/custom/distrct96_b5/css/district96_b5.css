@@ -483,6 +483,7 @@
 }
 .navbar-expand-lg {
   z-index: 100;
+  box-shadow: 0 6px 10px #0000002b;
 }
 .region-nav-main {
   width: 100%;
@@ -630,7 +631,7 @@ button.navbar-toggler {
 .path-district-director-team,
 .path-in-memoriamold,
 .path-in-memoriam,
-.path-node {
+.path-nodeWHY {
   /* role-92 = all division directors */
   /* role-93 = all area directors */
   /* role-770 = assistant div directors */
@@ -640,13 +641,13 @@ button.navbar-toggler {
 .path-district-director-team .leader,
 .path-in-memoriamold .leader,
 .path-in-memoriam .leader,
-.path-node .leader,
+.path-nodeWHY .leader,
 .path-leaders .speaker,
 .path-speaker-bureau .speaker,
 .path-district-director-team .speaker,
 .path-in-memoriamold .speaker,
 .path-in-memoriam .speaker,
-.path-node .speaker {
+.path-nodeWHY .speaker {
   width: 250px;
   text-align: center;
   margin: 10px auto;
@@ -656,7 +657,7 @@ button.navbar-toggler {
 .path-district-director-team .leadermain,
 .path-in-memoriamold .leadermain,
 .path-in-memoriam .leadermain,
-.path-node .leadermain {
+.path-nodeWHY .leadermain {
   width: 200px;
   text-align: center;
   margin: 10px auto;
@@ -666,7 +667,7 @@ button.navbar-toggler {
 .path-district-director-team h3,
 .path-in-memoriamold h3,
 .path-in-memoriam h3,
-.path-node h3 {
+.path-nodeWHY h3 {
   margin-top: 30px;
   border-bottom: 1px solid #ccc;
   background: #333;
@@ -680,7 +681,7 @@ button.navbar-toggler {
 .path-district-director-team .img-circle img,
 .path-in-memoriamold .img-circle img,
 .path-in-memoriam .img-circle img,
-.path-node .img-circle img {
+.path-nodeWHY .img-circle img {
   border-radius: 50%;
   border: 2px solid #772432;
   margin: auto;
@@ -690,19 +691,19 @@ button.navbar-toggler {
 .path-district-director-team .role-93,
 .path-in-memoriamold .role-93,
 .path-in-memoriam .role-93,
-.path-node .role-93,
+.path-nodeWHY .role-93,
 .path-leaders .role-92,
 .path-speaker-bureau .role-92,
 .path-district-director-team .role-92,
 .path-in-memoriamold .role-92,
 .path-in-memoriam .role-92,
-.path-node .role-92,
+.path-nodeWHY .role-92,
 .path-leaders .role-770,
 .path-speaker-bureau .role-770,
 .path-district-director-team .role-770,
 .path-in-memoriamold .role-770,
 .path-in-memoriam .role-770,
-.path-node .role-770 {
+.path-nodeWHY .role-770 {
   text-align: center;
 }
 .path-leaders .role-93 h3,
@@ -710,7 +711,7 @@ button.navbar-toggler {
 .path-district-director-team .role-93 h3,
 .path-in-memoriamold .role-93 h3,
 .path-in-memoriam .role-93 h3,
-.path-node .role-93 h3 {
+.path-nodeWHY .role-93 h3 {
   color: #333;
   background: transparent;
   text-align: center;
@@ -722,7 +723,7 @@ button.navbar-toggler {
 .path-district-director-team .field-content,
 .path-in-memoriamold .field-content,
 .path-in-memoriam .field-content,
-.path-node .field-content {
+.path-nodeWHY .field-content {
   text-align: center;
 }
 .path-leaders .view-clubs,
@@ -730,7 +731,7 @@ button.navbar-toggler {
 .path-district-director-team .view-clubs,
 .path-in-memoriamold .view-clubs,
 .path-in-memoriam .view-clubs,
-.path-node .view-clubs {
+.path-nodeWHY .view-clubs {
   margin: 20px auto;
   max-width: 200px;
   text-align: left;
@@ -740,7 +741,7 @@ button.navbar-toggler {
 .path-district-director-team .division,
 .path-in-memoriamold .division,
 .path-in-memoriam .division,
-.path-node .division {
+.path-nodeWHY .division {
   display: -ms-flexbox;
   display: -webkit-flex;
   display: flex;
@@ -765,7 +766,7 @@ button.navbar-toggler {
 .path-district-director-team .role-92,
 .path-in-memoriamold .role-92,
 .path-in-memoriam .role-92,
-.path-node .role-92 {
+.path-nodeWHY .role-92 {
   -webkit-order: 0;
   -ms-flex-order: 0;
   order: 0;
@@ -781,7 +782,7 @@ button.navbar-toggler {
 .path-district-director-team .role-770,
 .path-in-memoriamold .role-770,
 .path-in-memoriam .role-770,
-.path-node .role-770 {
+.path-nodeWHY .role-770 {
   -webkit-order: 0;
   -ms-flex-order: 0;
   order: 0;
@@ -797,19 +798,19 @@ button.navbar-toggler {
 .path-district-director-team .role-93,
 .path-in-memoriamold .role-93,
 .path-in-memoriam .role-93,
-.path-node .role-93,
+.path-nodeWHY .role-93,
 .path-leaders .leader,
 .path-speaker-bureau .leader,
 .path-district-director-team .leader,
 .path-in-memoriamold .leader,
 .path-in-memoriam .leader,
-.path-node .leader,
+.path-nodeWHY .leader,
 .path-leaders .speaker,
 .path-speaker-bureau .speaker,
 .path-district-director-team .speaker,
 .path-in-memoriamold .speaker,
 .path-in-memoriam .speaker,
-.path-node .speaker {
+.path-nodeWHY .speaker {
   -webkit-order: 0;
   -ms-flex-order: 0;
   order: 0;
@@ -1200,6 +1201,84 @@ tr.fc-list-event {
 footer.node__meta {
   padding: 0;
 }
+.view-recent-news-and-posts.view-display-id-block_1 .description .body {
+  display: none;
+}
+.view-recent-news-and-posts.view-display-id-block_1 .first .views-field-field-image {
+  min-width: 50%;
+}
+.view-recent-news-and-posts.view-display-id-block_1 .first .views-field.views-field-nothing {
+  min-width: 50%;
+}
+.view-recent-news-and-posts.view-display-id-block_1 .first .description {
+  padding-left: 15px;
+}
+.view-recent-news-and-posts.view-display-id-block_1 .first .description .body {
+  margin-top: 10px;
+  display: block;
+}
+.view-recent-news-and-posts.view-display-id-block_1 .first h3 {
+  margin-top: 0;
+  font-size: 1.75em;
+}
+.view-recent-news-and-posts.view-display-id-block_1 legend {
+  display: none;
+}
+.view-recent-news-and-posts.view-display-id-block_1 fieldset.form-item {
+  border: 0;
+}
+.view-recent-news-and-posts.view-display-id-block_1 .byline {
+  font-size: 0.9em;
+}
+.view-recent-news-and-posts.view-display-id-block_1 h3 {
+  font-size: 1.25em;
+  margin-top: 20px;
+}
+.view-recent-news-and-posts.view-display-id-block_1 h3 a {
+  color: #333;
+  text-decoration: none;
+}
+.view-recent-news-and-posts.view-display-id-block_1 h3 a:hover {
+  color: #000000;
+  text-decoration: underline;
+}
+.view-recent-news-and-posts.view-display-id-block_1 .bef-exposed-form .form--inline > .form-item {
+  float: left;
+  display: inline-flex;
+  width: 100%;
+}
+.view-recent-news-and-posts.view-display-id-block_1 label {
+  display: block;
+  white-space: nowrap;
+  padding: 10px 10px 10px 0;
+  font-weight: bold;
+}
+.view-recent-news-and-posts.view-display-id-block_1 .bef-links ul {
+  display: inline-block;
+  padding-left: 0;
+  margin-left: 0;
+}
+.view-recent-news-and-posts.view-display-id-block_1 .bef-links ul li {
+  display: inline-block;
+  padding: 10px 10px 10px 0;
+}
+.view-recent-news-and-posts.view-display-id-block_1 .bef-links a.bef-link {
+  color: rgba(51, 51, 51, 0.8);
+  text-decoration: none;
+  padding: 5px 10px;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+}
+.view-recent-news-and-posts.view-display-id-block_1 .bef-links a.bef-link:hover,
+.view-recent-news-and-posts.view-display-id-block_1 .bef-links a.bef-link.bef-link--selected {
+  color: #333;
+  border-bottom: 2px solid #772432;
+}
+.view-recent-news-and-posts.view-display-id-block_1 .form-select {
+  border: none;
+  background-image: unset;
+  padding: 0;
+  margin: 0;
+}
 body {
   font-family: 'Montserrat', sans-serif;
 }
@@ -1221,6 +1300,7 @@ h5,
 }
 a {
   color: #004165;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
 }
 a:hover {
   color: #0093e4;

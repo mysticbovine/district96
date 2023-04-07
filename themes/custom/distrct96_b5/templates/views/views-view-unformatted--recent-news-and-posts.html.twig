@@ -18,8 +18,7 @@
 {% if title %}
   <h3>{{ title }}</h3>
 {% endif %}
-<div class="container">
-  <div class="row">
+
     {% for row in rows %}
       {%
         set row_classes = [
@@ -27,16 +26,17 @@
         ]
       %}
         {% if loop.first %}
-          <div{{ row.attributes.addClass(row_classes, 'col-lg-12 first d-flex') }}>
+          <div{{ row.attributes.addClass(row_classes, 'col-lg-12 first d-flex mb-4') }}>
             {{- row.content -}}
           </div>
           </div>
         <div class="row" >
         {% else %}
-          <div{{ row.attributes.addClass(row_classes, 'col-lg-3') }}>
-            {{- row.content -}}
+          <div{{ row.attributes.addClass(row_classes, 'col-lg-3 d-flex') }}>
+            <div class="d-flex-column align-items-stretch flex-fill">
+              {{- row.content -}}
+            </div>
+            
           </div>
       {% endif %}
     {% endfor %}
-  </div>
-</div>

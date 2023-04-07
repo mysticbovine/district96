@@ -81,7 +81,13 @@ set footer_classes = ' ' ~
   {% endif %}
 
 </header>
-
+  {% if page.breadcrumb %}
+    <div class="mb-5 breadcrumb"> 
+      <div class="container">  
+      {{ page.breadcrumb }}
+      </div>
+    </div>
+  {% endif %}
 <main role="main">
   <a id="main-content" tabindex="-1"></a>{# link is in html.html.twig #}
 
@@ -98,10 +104,9 @@ set footer_classes = ' ' ~
    %}
 
 
+  
   <div class="{{ b5_top_container }}">
-    {% if page.breadcrumb %}
-      {{ page.breadcrumb }}
-    {% endif %}
+
     <div class="row g-0">
       {% if page.sidebar_first %}
         <div class="order-2 order-lg-1 {{ sidebar_first_classes }}">

@@ -62,6 +62,7 @@ set footer_classes = ' ' ~
   {% if page.nav_branding or page.nav_main or page.nav_additional %}
   <nav class="{{ nav_classes }}">
     <div class="{{ b5_top_container }} d-flex flex-md-row flex-lg-column justify-content-between">
+    {# <div class="{{ b5_top_container }} d-flex align-items-start"> #}
     {# <div class="container-lg d-flex align-items-start"> #}
       {{ page.nav_branding }}
 
@@ -71,17 +72,23 @@ set footer_classes = ' ' ~
         <span class="navbar-toggler-icon"></span>
       </button>
 
-        <div class="collapse navbar-collapse w-100 justify-content-md-end flex-wrap" id="navbarSupportedContent">
-            {{ page.nav_main }}
-            {{ page.nav_additional }}
-        </div>
+      <div class="collapse navbar-collapse w-100 justify-content-md-end flex-wrap" id="navbarSupportedContent">
+        {{ page.nav_main }}
+        {{ page.nav_additional }}
+      </div>
     </div>
   </nav>
   {% endif %}
 
 </header>
-
-<main role="main">
+  {% if page.breadcrumb %}
+    <div class="mb-5 breadcrumb"> 
+      <div class="container">  
+      {{ page.breadcrumb }}
+      </div>
+    </div>
+  {% endif %}
+<main role="main" class="container-fluid g-0">
   <a id="main-content" tabindex="-1"></a>{# link is in html.html.twig #}
 
   {%
@@ -97,12 +104,10 @@ set footer_classes = ' ' ~
    %}
 
 
-  <div class="container mt-4 mb-5">
+  
   {# <div class="{{ b5_top_container }}"> #}
-    {% if page.breadcrumb %}
-      {{ page.breadcrumb }}
-    {% endif %}
-    <div class="row">
+
+    <div class="row g-0">
       {% if page.sidebar_first %}
         <div class="order-2 order-lg-1 {{ sidebar_first_classes }}">
           {{ page.sidebar_first }}
@@ -117,13 +122,21 @@ set footer_classes = ' ' ~
         </div>
       {% endif %}
     </div>
-  </div>
+
 
 </main>
 
 {% if page.footer %}
 <footer class="mt-auto {{ footer_classes }}">
   <div class="{{ b5_top_container }}">
+    <div class="row">
+      <div class="col-sm-3">
+          {{ page.footer_first }}
+      </div>
+      <div class="col-sm-9">
+          {{ page.footer_second }}
+      </div>
+    </div>
     {{ page.footer }}
   </div>
 </footer>

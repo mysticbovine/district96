@@ -103,3 +103,103 @@ footer {
         padding: 0;
     }
 }
+
+// home page block for new, resource and articles
+.view-recent-news-and-posts {
+    &.view-display-id-block_1{
+      
+        .description {
+            .body{
+                display: none;
+            }
+        }
+        .first{
+   
+            .views-field-field-image{
+                min-width: 50%;
+            }
+            .views-field.views-field-nothing {
+                min-width: 50%;
+            }
+            .description {
+                padding-left: 15px;
+
+                .body{
+                    margin-top: 10px;
+                    display: block;
+                }
+            }
+            h3 {
+                margin-top: 0;
+                font-size: 1.75em;
+            }
+        }
+        legend {
+            display: none;
+        }
+        fieldset.form-item{
+            border: 0;
+        }
+        .byline{
+            font-size: .9em
+        }  
+        h3 {
+            font-size: 1.25em;
+            margin-top: 20px;
+            a {
+                color: @text;
+                text-decoration: none;
+                &:hover{
+                    color: darken(@text, 20%);
+                    text-decoration: underline;
+                }
+            }
+        }
+  
+        // filter    
+        .bef-exposed-form .form--inline > .form-item {
+            float: left;
+            display: inline-flex;
+            width: 100%;
+        }
+        label {
+            display: block;
+            white-space: nowrap;
+            padding: 10px 10px 10px 0;
+            font-weight: bold;
+        }
+        .bef-links{
+            ul {
+                display: inline-block;
+                padding-left: 0;
+                margin-left: 0;
+                li {
+                    display: inline-block;
+                    padding: 10px 10px 10px 0;
+                }
+            }
+            a.bef-link{
+                color: fade(@text, 80%);
+                text-decoration: none;
+                padding: 5px 10px;
+                transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+                &:hover, &.bef-link--selected {
+                    color: @text;
+                    border-bottom: 2px solid @burgundy;
+                }
+            }
+            
+        }
+        .form-select{
+            border: none;
+            background-image: unset;
+            padding: 0;
+            margin: 0;
+        }
+    }
+}
+.view-recent-news-and-posts{
+// All items
+
+
+}

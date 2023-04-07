@@ -97,7 +97,7 @@
 
   {% if display_submitted %}
     <footer class="node__meta">
-      {{ author_picture }}
+
       <div{{ author_attributes.addClass('node__submitted', 'd-flex', 'justify-content-between', 'align-items-center', 'mb-4') }}>
 
 
@@ -121,7 +121,7 @@
     <div class="readtime"><i class="bi bi-stopwatch"></i> {{ content.reading_time }} read </div>
     <div class="shareto d-inline-flex"><span>Share to</span> {{ drupal_block("social_sharing_buttons_block") }}
     </div>
-        {{ metadata }}
+       {{ metadata }}
    
       </div>
     </footer>
