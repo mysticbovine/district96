@@ -81,10 +81,16 @@ a {
 .featureImage{
     position: relative;
     .badge{
+        position: absolute;
+    } 
+ 
+}
+
+    .badge{
         border-radius: 0;
         font-size: 15px;
         line-height: 31px;
-        position: absolute;
+        position: relative;
         left: 0;
         top: 0;
         text-transform: uppercase;
@@ -92,10 +98,15 @@ a {
         background-color: @black;
         color: #fff;
         text-transform: uppercase;
+        &.small {
+            font-size: 10px;
+            line-height: 20px;
+            padding: 5px;
+            padding: 5px 10px 2px;
+        }
     } 
- 
-}
-.MaybeLater {
+
+
     .cat-1 {
         //District
         background-color: @district;
@@ -144,7 +155,7 @@ a {
         //Workshop Series
         background-color: @training;
         }
-}
+
 // Recent News/Blogs
 .view-recent-news-and-posts {
     &.view-display-id-block_1{

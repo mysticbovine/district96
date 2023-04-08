@@ -203,3 +203,37 @@ footer {
 
 
 }
+
+// Upcoming Events list
+.view-id-upcoming_events_and_dates_2023 ,
+.view-id-popular_posts_2023{
+    .views-row{
+        margin-top: .5em;
+    }
+    label {
+        display: block;
+        white-space: nowrap;
+        padding: 10px 10px 10px 0;
+        font-weight: bold;
+    }
+    .bef-exposed-form .form--inline > .form-item {
+        float: left;
+        display: inline-flex;
+        width: 100%;
+    }
+    .views-field-title{
+        a {
+            color: @text;
+            font-weight: bold;
+            text-decoration: none;
+            &:hover{
+                color: darken(@text, 20%);
+                text-decoration: underline;
+            }
+        }
+    }
+    .views-field-field-date-4,.views-field-nothing{
+       font-size: 12px;
+       color: fade(@text, 80%);
+    }
+}

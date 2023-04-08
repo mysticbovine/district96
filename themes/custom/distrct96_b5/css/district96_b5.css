@@ -631,7 +631,7 @@ button.navbar-toggler {
 .path-district-director-team,
 .path-in-memoriamold,
 .path-in-memoriam,
-.path-nodeWHY {
+.block-views-blockhall-of-fame-member-block-1 {
   /* role-92 = all division directors */
   /* role-93 = all area directors */
   /* role-770 = assistant div directors */
@@ -641,13 +641,13 @@ button.navbar-toggler {
 .path-district-director-team .leader,
 .path-in-memoriamold .leader,
 .path-in-memoriam .leader,
-.path-nodeWHY .leader,
+.block-views-blockhall-of-fame-member-block-1 .leader,
 .path-leaders .speaker,
 .path-speaker-bureau .speaker,
 .path-district-director-team .speaker,
 .path-in-memoriamold .speaker,
 .path-in-memoriam .speaker,
-.path-nodeWHY .speaker {
+.block-views-blockhall-of-fame-member-block-1 .speaker {
   width: 250px;
   text-align: center;
   margin: 10px auto;
@@ -657,7 +657,7 @@ button.navbar-toggler {
 .path-district-director-team .leadermain,
 .path-in-memoriamold .leadermain,
 .path-in-memoriam .leadermain,
-.path-nodeWHY .leadermain {
+.block-views-blockhall-of-fame-member-block-1 .leadermain {
   width: 200px;
   text-align: center;
   margin: 10px auto;
@@ -667,7 +667,7 @@ button.navbar-toggler {
 .path-district-director-team h3,
 .path-in-memoriamold h3,
 .path-in-memoriam h3,
-.path-nodeWHY h3 {
+.block-views-blockhall-of-fame-member-block-1 h3 {
   margin-top: 30px;
   border-bottom: 1px solid #ccc;
   background: #333;
@@ -681,7 +681,7 @@ button.navbar-toggler {
 .path-district-director-team .img-circle img,
 .path-in-memoriamold .img-circle img,
 .path-in-memoriam .img-circle img,
-.path-nodeWHY .img-circle img {
+.block-views-blockhall-of-fame-member-block-1 .img-circle img {
   border-radius: 50%;
   border: 2px solid #772432;
   margin: auto;
@@ -691,19 +691,25 @@ button.navbar-toggler {
 .path-district-director-team .role-93,
 .path-in-memoriamold .role-93,
 .path-in-memoriam .role-93,
-.path-nodeWHY .role-93,
+.block-views-blockhall-of-fame-member-block-1 .role-93,
 .path-leaders .role-92,
 .path-speaker-bureau .role-92,
 .path-district-director-team .role-92,
 .path-in-memoriamold .role-92,
 .path-in-memoriam .role-92,
-.path-nodeWHY .role-92,
+.block-views-blockhall-of-fame-member-block-1 .role-92,
 .path-leaders .role-770,
 .path-speaker-bureau .role-770,
 .path-district-director-team .role-770,
 .path-in-memoriamold .role-770,
 .path-in-memoriam .role-770,
-.path-nodeWHY .role-770 {
+.block-views-blockhall-of-fame-member-block-1 .role-770,
+.path-leaders .hall-of-fame,
+.path-speaker-bureau .hall-of-fame,
+.path-district-director-team .hall-of-fame,
+.path-in-memoriamold .hall-of-fame,
+.path-in-memoriam .hall-of-fame,
+.block-views-blockhall-of-fame-member-block-1 .hall-of-fame {
   text-align: center;
 }
 .path-leaders .role-93 h3,
@@ -711,7 +717,13 @@ button.navbar-toggler {
 .path-district-director-team .role-93 h3,
 .path-in-memoriamold .role-93 h3,
 .path-in-memoriam .role-93 h3,
-.path-nodeWHY .role-93 h3 {
+.block-views-blockhall-of-fame-member-block-1 .role-93 h3,
+.path-leaders .hall-of-fame h3,
+.path-speaker-bureau .hall-of-fame h3,
+.path-district-director-team .hall-of-fame h3,
+.path-in-memoriamold .hall-of-fame h3,
+.path-in-memoriam .hall-of-fame h3,
+.block-views-blockhall-of-fame-member-block-1 .hall-of-fame h3 {
   color: #333;
   background: transparent;
   text-align: center;
@@ -723,7 +735,7 @@ button.navbar-toggler {
 .path-district-director-team .field-content,
 .path-in-memoriamold .field-content,
 .path-in-memoriam .field-content,
-.path-nodeWHY .field-content {
+.block-views-blockhall-of-fame-member-block-1 .field-content {
   text-align: center;
 }
 .path-leaders .view-clubs,
@@ -731,7 +743,7 @@ button.navbar-toggler {
 .path-district-director-team .view-clubs,
 .path-in-memoriamold .view-clubs,
 .path-in-memoriam .view-clubs,
-.path-nodeWHY .view-clubs {
+.block-views-blockhall-of-fame-member-block-1 .view-clubs {
   margin: 20px auto;
   max-width: 200px;
   text-align: left;
@@ -741,7 +753,7 @@ button.navbar-toggler {
 .path-district-director-team .division,
 .path-in-memoriamold .division,
 .path-in-memoriam .division,
-.path-nodeWHY .division {
+.block-views-blockhall-of-fame-member-block-1 .division {
   display: -ms-flexbox;
   display: -webkit-flex;
   display: flex;
@@ -766,7 +778,7 @@ button.navbar-toggler {
 .path-district-director-team .role-92,
 .path-in-memoriamold .role-92,
 .path-in-memoriam .role-92,
-.path-nodeWHY .role-92 {
+.block-views-blockhall-of-fame-member-block-1 .role-92 {
   -webkit-order: 0;
   -ms-flex-order: 0;
   order: 0;
@@ -782,7 +794,7 @@ button.navbar-toggler {
 .path-district-director-team .role-770,
 .path-in-memoriamold .role-770,
 .path-in-memoriam .role-770,
-.path-nodeWHY .role-770 {
+.block-views-blockhall-of-fame-member-block-1 .role-770 {
   -webkit-order: 0;
   -ms-flex-order: 0;
   order: 0;
@@ -798,19 +810,25 @@ button.navbar-toggler {
 .path-district-director-team .role-93,
 .path-in-memoriamold .role-93,
 .path-in-memoriam .role-93,
-.path-nodeWHY .role-93,
+.block-views-blockhall-of-fame-member-block-1 .role-93,
 .path-leaders .leader,
 .path-speaker-bureau .leader,
 .path-district-director-team .leader,
 .path-in-memoriamold .leader,
 .path-in-memoriam .leader,
-.path-nodeWHY .leader,
+.block-views-blockhall-of-fame-member-block-1 .leader,
 .path-leaders .speaker,
 .path-speaker-bureau .speaker,
 .path-district-director-team .speaker,
 .path-in-memoriamold .speaker,
 .path-in-memoriam .speaker,
-.path-nodeWHY .speaker {
+.block-views-blockhall-of-fame-member-block-1 .speaker,
+.path-leaders .hall-of-fame,
+.path-speaker-bureau .hall-of-fame,
+.path-district-director-team .hall-of-fame,
+.path-in-memoriamold .hall-of-fame,
+.path-in-memoriam .hall-of-fame,
+.block-views-blockhall-of-fame-member-block-1 .hall-of-fame {
   -webkit-order: 0;
   -ms-flex-order: 0;
   order: 0;
@@ -820,6 +838,33 @@ button.navbar-toggler {
   -webkit-align-self: auto;
   -ms-flex-item-align: auto;
   align-self: auto;
+}
+.hall-of-fame .views-field-title,
+.hall-of-fame .card-title {
+  font-weight: bold;
+}
+.hall-of-fame .views-field-title a,
+.hall-of-fame .card-title a {
+  color: #333;
+  font-weight: bold;
+  text-decoration: none;
+}
+.hall-of-fame .views-field-title a:hover,
+.hall-of-fame .card-title a:hover {
+  color: #000000;
+  text-decoration: underline;
+}
+.hall-of-fame .card {
+  border: none;
+}
+.hall-of-fame .card .card-body {
+  padding: 0;
+}
+.path-taxonomy {
+  display: none;
+}
+.path-taxonomy .taxonomy-term {
+  margin-bottom: 20px;
 }
 #calendar {
   margin: 40px auto;
@@ -1279,6 +1324,41 @@ footer.node__meta {
   padding: 0;
   margin: 0;
 }
+.view-id-upcoming_events_and_dates_2023 .views-row,
+.view-id-popular_posts_2023 .views-row {
+  margin-top: 0.5em;
+}
+.view-id-upcoming_events_and_dates_2023 label,
+.view-id-popular_posts_2023 label {
+  display: block;
+  white-space: nowrap;
+  padding: 10px 10px 10px 0;
+  font-weight: bold;
+}
+.view-id-upcoming_events_and_dates_2023 .bef-exposed-form .form--inline > .form-item,
+.view-id-popular_posts_2023 .bef-exposed-form .form--inline > .form-item {
+  float: left;
+  display: inline-flex;
+  width: 100%;
+}
+.view-id-upcoming_events_and_dates_2023 .views-field-title a,
+.view-id-popular_posts_2023 .views-field-title a {
+  color: #333;
+  font-weight: bold;
+  text-decoration: none;
+}
+.view-id-upcoming_events_and_dates_2023 .views-field-title a:hover,
+.view-id-popular_posts_2023 .views-field-title a:hover {
+  color: #000000;
+  text-decoration: underline;
+}
+.view-id-upcoming_events_and_dates_2023 .views-field-field-date-4,
+.view-id-popular_posts_2023 .views-field-field-date-4,
+.view-id-upcoming_events_and_dates_2023 .views-field-nothing,
+.view-id-popular_posts_2023 .views-field-nothing {
+  font-size: 12px;
+  color: rgba(51, 51, 51, 0.8);
+}
 body {
   font-family: 'Montserrat', sans-serif;
 }
@@ -1326,10 +1406,13 @@ a:hover {
   position: relative;
 }
 .featureImage .badge {
+  position: absolute;
+}
+.badge {
   border-radius: 0;
   font-size: 15px;
   line-height: 31px;
-  position: absolute;
+  position: relative;
   left: 0;
   top: 0;
   padding: 0 11px 0 8px;
@@ -1337,40 +1420,46 @@ a:hover {
   color: #fff;
   text-transform: uppercase;
 }
-.MaybeLater .cat-1 {
+.badge.small {
+  font-size: 10px;
+  line-height: 20px;
+  padding: 5px;
+  padding: 5px 10px 2px;
+}
+.cat-1 {
   background-color: #772432;
 }
-.MaybeLater .cat-2 {
+.cat-2 {
   background-color: #772432;
 }
-.MaybeLater .cat-3 {
+.cat-3 {
   background-color: #00B233;
 }
-.MaybeLater .cat-4 {
+.cat-4 {
   background-color: #772432;
 }
-.MaybeLater .cat-5 {
+.cat-5 {
   background-color: #000;
 }
-.MaybeLater .cat-6 {
+.cat-6 {
   background-color: #000;
 }
-.MaybeLater .cat-7 {
+.cat-7 {
   background-color: #00B233;
 }
-.MaybeLater .cat-8 {
+.cat-8 {
   background-color: #F2DF74;
 }
-.MaybeLater .cat-112 {
+.cat-112 {
   background-color: #772432;
 }
-.MaybeLater .cat-113 {
+.cat-113 {
   background-color: #772432;
 }
-.MaybeLater .cat-564 {
+.cat-564 {
   background-color: #F2DF74;
 }
-.MaybeLater .cat-904 {
+.cat-904 {
   background-color: #F2DF74;
 }
 .view-recent-news-and-posts.view-display-id-block_1 .description .body {

@@ -7,7 +7,7 @@
 .path-district-director-team,
 .path-in-memoriamold,
 .path-in-memoriam,
-.path-nodeWHY {
+.block-views-blockhall-of-fame-member-block-1 {
   /* role-92 = all division directors */
   /* role-93 = all area directors */
   /* role-770 = assistant div directors */
@@ -36,16 +36,19 @@
     border: 2px solid #772432;
     margin: auto;
   }
-  .role-93, .role-92, .role-770 {
+  .role-93, .role-92, .role-770, .hall-of-fame {
     text-align: center;
   }
-  .role-93 h3 {
-    color: #333;
-    background: transparent;
-    text-align: center;
-    border: none;
-    padding: 0;
+  .role-93, .hall-of-fame{
+    h3 {
+      color: #333;
+      background: transparent;
+      text-align: center;
+      border: none;
+      padding: 0;
+    }
   }
+ 
   .field-content{
     text-align: center;
   }
@@ -96,7 +99,7 @@
   -ms-flex-item-align: start;
   align-self: flex-start;
 }
-  .role-93, .leader, .speaker {
+  .role-93, .leader, .speaker, .hall-of-fame {
     -webkit-order: 0;
     -ms-flex-order: 0;
     order: 0;
@@ -110,4 +113,31 @@
 }
 .node--type-leader{
 
+}
+.hall-of-fame {
+  .views-field-title, .card-title{
+    font-weight: bold;
+    a {
+      color: @text;
+      font-weight: bold;
+      text-decoration: none;
+      &:hover{
+          color: darken(@text, 20%);
+          text-decoration: underline;
+      }
+  }
+  }
+  .card{
+    border: none;
+    .card-body{
+      padding: 0;
+
+    }
+  }
+}
+.path-taxonomy{
+  display: none;
+  .taxonomy-term{
+    margin-bottom: 20px;
+  }
 }
