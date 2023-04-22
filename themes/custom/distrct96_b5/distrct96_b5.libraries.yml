@@ -26,7 +26,7 @@ tablesorter:
     libraries/tablesorter/js/jquery.tablesorter.min.js: {}
     libraries/tablesorter/js/jquery.tablesorter.widgets.min.js: {}
     libraries/tablesorter/js/parsers/parser-date-weekday.min.js: {}
-    libraries/tablesorter/settings/find-a-club.tablesorter.settings.js: {}
+    libraries/tablesorter/tablesorter.settings.js: {}
   dependencies:
     - core/jquery
 
