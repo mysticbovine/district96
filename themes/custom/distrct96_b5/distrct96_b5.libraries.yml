@@ -19,14 +19,13 @@ tablesorter:
   version: 1.x
   css:
     theme:
-      css/tablesorter/theme.default.min.css: {}
-      css/tablesorter/theme.bootstrap.min.css: {}
-      css/tablesorter/theme.bootstrap_3.min.css: {}
+      libraries/tablesorter/css/theme.default.min.css: {}
+      libraries/tablesorter/css/theme.bootstrap.min.css: {}
+      libraries/tablesorter/css/theme.bootstrap_3.min.css: {}
   js:
-    js/tablesorter/jquery.tablesorter.min.js: {}
-    js/tablesorter/jquery.tablesorter.widgets.min.js: {}
-    js/tablesorter/parser-date-weekday.js: {}
-    js/tablesorter/tablesorter.settings.js: {}
+    libraries/tablesorter/js/jquery.tablesorter.min.js: {}
+    libraries/tablesorter/js/jquery.tablesorter.widgets.min.js: {}
+    libraries/tablesorter/js/parsers/parser-date-weekday.min.js: {}
   dependencies:
     - core/jquery
 
@@ -43,3 +42,10 @@ fullcalendar:
       libraries/fullcalendar/lib/events.js: {}
     dependencies:
       - core/jquery
+
+find-a-club:
+    version: 1.x
+    js:
+       libraries/tablesorter/settings/find-a-club.tablesorter.settings.js: {}
+    dependencies:
+      - distrct96_b5/tablesorter

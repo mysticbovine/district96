@@ -18,6 +18,7 @@
 (function ($, Drupal, Bootstrap) {
 
 	$(function() {
+    console.log("Table sorter added Finda club");
         $.tablesorter.themes.bootstrap = {
             // these classes are added to the table. To see other table classes available,
             // look here: http://getbootstrap.com/css/#tables
@@ -43,12 +44,12 @@
             odd          : ''  // odd row zebra striping
           };
 
-        $("#cot").tablesorter({
+        $("#find-a-club").tablesorter({
             // this will apply the bootstrap theme if "uitheme" widget is included
             // the widgetOptions.uitheme is no longer required to be set
             theme : "bootstrap",
 
-            sortList: [[1,0],[0,0]],
+            // sortList: [[1,0],[0,0]],
         
             widthFixed: true,
         
@@ -87,9 +88,10 @@
 
                 // Add select menu to this column
                 // set the column value to true, and/or add "filter-select" class name to header
-                '.zone' : true, 
-                '.host' : true 
-              
+                '.views-field-field-club-typo' : true, 
+                '.views-field-field-meeting-type' : true, 
+                '.views-field-field-frequency': true,
+                '.views-field-field-meeting-day': true
               }
            
         
