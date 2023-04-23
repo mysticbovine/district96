@@ -32,7 +32,7 @@
     'block-' ~ plugin_id|clean_class,
   ]
 %}
-{{ attach_library('distrct96_b5/fullcalendar') }}
+{{ attach_library('distrct96_b5/trainingcalendar') }}
 <div{{ attributes.addClass(classes) }}>
   {{ title_prefix }}
   {% if label %}
@@ -40,6 +40,6 @@
   {% endif %}
   {{ title_suffix }}
   {% block content %}
-    {{ content }}
+   {{ content }}
   {% endblock %}
 </div>

@@ -31,15 +31,28 @@ tablesorter:
     - core/jquery
 
 fullcalendar:
-    version: 1.x
-    css:
-      theme:
-        libraries/fullcalendar/lib/fullcalendar.min.css: {}
-    js:
-      https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.js: {}
-      https://unpkg.com/popper.js/dist/umd/popper.min.js: {}
-      https://unpkg.com/tooltip.js/dist/umd/tooltip.min.js: {}
-      libraries/fullcalendar/lib/fullcalendar.min.js: {}
-      libraries/fullcalendar/lib/events.js: {}
-    dependencies:
-      - core/jquery
+  version: 1.x
+  css:
+    theme:
+      libraries/fullcalendar/lib/fullcalendar.min.css: {}
+  js:
+    https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.js: {}
+    https://unpkg.com/popper.js/dist/umd/popper.min.js: {}
+    https://unpkg.com/tooltip.js/dist/umd/tooltip.min.js: {}
+    libraries/fullcalendar/lib/fullcalendar.min.js: {}
+  dependencies:
+    - core/jquery
+
+eventcalendar:
+  version: 1.x
+  js:
+    libraries/fullcalendar/lib/events.js: {}
+  dependencies:
+    - distrct96_b5/fullcalendar
+
+trainingcalendar:
+  version: 1.x
+  js:
+    libraries/fullcalendar/lib/training.js: {}
+  dependencies:
+    - distrct96_b5/fullcalendar
