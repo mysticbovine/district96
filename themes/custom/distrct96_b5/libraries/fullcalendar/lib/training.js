@@ -9,7 +9,7 @@
         // Training Events
         var calendarEl = document.getElementById('training');
         var filterEvents = document.querySelector("#filterEvents");
-    
+        var url = '/event/cot-feed.json';
     
         var calendar = new FullCalendar.Calendar(calendarEl, {
           headerToolbar: {
@@ -43,7 +43,7 @@
           },
           events: {
     
-            url: '/event/cot-feed.json',
+            url: url,
             failure: function() {
               document.getElementById('script-warning').style.display = 'block'
             },

@@ -9,11 +9,8 @@
         // All Events
         var calendarEl = document.getElementById('calendar');
         var filterEvents = document.querySelector("#filterEvents");
-    if (calendarEl == 'calendar'){
-      url = '/event/calendar-feed.json';
-    } else if (calendarEl == 'training'){
-      url = '/event/cot-feed.json';
-    }
+        var url = '/event/calendar-feed.json';
+   
     
         var calendar = new FullCalendar.Calendar(calendarEl, {
           headerToolbar: {
@@ -46,7 +43,7 @@
           },
           events: {
     
-            url: '/event/calendar-feed.json',
+            url:url,
             failure: function() {
               document.getElementById('script-warning').style.display = 'block'
             },
