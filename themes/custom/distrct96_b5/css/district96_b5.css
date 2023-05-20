@@ -1341,6 +1341,13 @@ footer.node__meta {
     width: 300px;
   }
 }
+.node--type-leader .field--name-field-leader-image {
+  text-align: center;
+}
+.node--type-leader img {
+  border: 2px solid #772432;
+  border-radius: 50%;
+}
 .view-id-upcoming_events_and_dates_2023 .views-row,
 .view-id-popular_posts_2023 .views-row {
   margin-top: 0.5em;
