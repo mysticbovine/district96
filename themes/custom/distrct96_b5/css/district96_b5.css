@@ -1336,6 +1336,11 @@ footer.node__meta {
 
 
 }*/
+@media (min-width: 1200px) {
+  .view-speakers-bureau .views-row {
+    width: 300px;
+  }
+}
 .view-id-upcoming_events_and_dates_2023 .views-row,
 .view-id-popular_posts_2023 .views-row {
   margin-top: 0.5em;
