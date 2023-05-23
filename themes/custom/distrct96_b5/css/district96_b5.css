@@ -1337,7 +1337,23 @@ footer.node__meta {
 
 }*/
 @media (min-width: 1200px) {
+  .view-district-leadership-history .views-row,
   .view-speakers-bureau .views-row {
+    width: 300px;
+  }
+}
+.view-district-leadership-history .img-circle img,
+.view-speakers-bureau .img-circle img {
+  border: 2px solid #772432;
+  border-radius: 50%;
+}
+.view-district-leadership-history .views-field-nothing,
+.view-speakers-bureau .views-field-nothing {
+  text-align: center;
+}
+@media (min-width: 1200px) {
+  .view-district-leadership-history .views-field-nothing,
+  .view-speakers-bureau .views-field-nothing {
     width: 300px;
   }
 }
