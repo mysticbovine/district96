@@ -224,6 +224,11 @@ footer {
         @media (min-width: 1200px) {  width: 300px; }
         text-align: center;
     }
+    h3 {
+        p {
+            font-size: 1em
+        }
+    }
 }
 //node--type-leader 
 .node--type-leader{
@@ -233,6 +238,108 @@ footer {
     img {
         border: 2px solid @burgundy;
         border-radius: 50%;
+    }
+}
+//  Menu Button Row
+.block-inline-blockbutton-row{
+
+
+    .field--name-field-icon-buttons{
+        text-align: center;
+      
+        .field__item{
+            position: relative;
+        }
+        i {
+            font-size: 20px;
+            color: #fff;
+            @media (min-width: 768px) { font-size: 30px; }
+            @media (min-width: 992px) { font-size: 40px; }
+        }
+        a{
+            font-size: 16px;
+            color: #fff;
+            text-decoration: none;
+            display: block;
+            @media (min-width: 768px) { font-size: 20px; }
+            @media (min-width: 992px) { font-size: 20px; }
+        }
+        .opacity-1{
+            background: fade(#fff, 0%);
+            &:hover {
+                background: fade(#fff, 10%);
+            }
+        }
+        .opacity-2{
+            background: fade(#fff, 10%);
+            &:hover {
+                background: fade(#fff, 20%);
+            }
+        }
+        .opacity-3{
+            background: fade(#fff, 15%);
+            &:hover {
+                background: fade(#fff, 25%);
+            }
+        }
+        .opacity-4{
+            background: fade(#fff, 20%);
+            &:hover {
+                background: fade(#fff, 30%);
+            }
+        }
+        .opacity-5{
+            background: fade(#fff, 25%);
+            &:hover {
+                background: fade(#fff, 35%);
+            }
+        }
+    }
+    &.bg-yellow, &.bg-grey{
+       
+        .field--name-field-icon-buttons{
+             color:  fade(@black, 70%);
+             &:hover {
+                color: @black;
+            }
+            a { 
+                color: fade(@black, 70%);
+                &:hover {
+                    color: @black;
+                }
+            }
+            .opacity-1{
+                background: fade(@black, 0%);
+                &:hover {
+                    background: fade(@black, 10%);
+                }
+            }
+            .opacity-2{
+                background: fade(@black, 10%);
+                &:hover {
+                    background: fade(@black, 20%);
+                }
+            }
+            .opacity-3{
+                background: fade(@black, 15%);
+                &:hover {
+                    background: fade(@black, 25%);
+                }
+            }
+            .opacity-4{
+                background: fade(@black, 20%);
+                &:hover {
+                    background: fade(@black, 30%);
+                }
+            }
+            .opacity-5{
+                background: fade(@black, 25%);
+                &:hover {
+                    background: fade(@black, 35%);
+                }
+            }
+        }
+       
     }
 }
 

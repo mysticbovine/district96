@@ -1361,12 +1361,139 @@ footer.node__meta {
     width: 300px;
   }
 }
+.view-district-leadership-history h3 p,
+.view-leader-award-history h3 p,
+.view-speakers-bureau h3 p {
+  font-size: 1em;
+}
 .node--type-leader .field--name-field-leader-image {
   text-align: center;
 }
 .node--type-leader img {
   border: 2px solid #772432;
   border-radius: 50%;
+}
+.block-inline-blockbutton-row .field--name-field-icon-buttons {
+  text-align: center;
+}
+.block-inline-blockbutton-row .field--name-field-icon-buttons .field__item {
+  position: relative;
+}
+.block-inline-blockbutton-row .field--name-field-icon-buttons i {
+  font-size: 20px;
+  color: #fff;
+}
+@media (min-width: 768px) {
+  .block-inline-blockbutton-row .field--name-field-icon-buttons i {
+    font-size: 30px;
+  }
+}
+@media (min-width: 992px) {
+  .block-inline-blockbutton-row .field--name-field-icon-buttons i {
+    font-size: 40px;
+  }
+}
+.block-inline-blockbutton-row .field--name-field-icon-buttons a {
+  font-size: 16px;
+  color: #fff;
+  text-decoration: none;
+  display: block;
+}
+@media (min-width: 768px) {
+  .block-inline-blockbutton-row .field--name-field-icon-buttons a {
+    font-size: 20px;
+  }
+}
+@media (min-width: 992px) {
+  .block-inline-blockbutton-row .field--name-field-icon-buttons a {
+    font-size: 20px;
+  }
+}
+.block-inline-blockbutton-row .field--name-field-icon-buttons .opacity-1 {
+  background: rgba(255, 255, 255, 0);
+}
+.block-inline-blockbutton-row .field--name-field-icon-buttons .opacity-1:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+.block-inline-blockbutton-row .field--name-field-icon-buttons .opacity-2 {
+  background: rgba(255, 255, 255, 0.1);
+}
+.block-inline-blockbutton-row .field--name-field-icon-buttons .opacity-2:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+.block-inline-blockbutton-row .field--name-field-icon-buttons .opacity-3 {
+  background: rgba(255, 255, 255, 0.15);
+}
+.block-inline-blockbutton-row .field--name-field-icon-buttons .opacity-3:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+.block-inline-blockbutton-row .field--name-field-icon-buttons .opacity-4 {
+  background: rgba(255, 255, 255, 0.2);
+}
+.block-inline-blockbutton-row .field--name-field-icon-buttons .opacity-4:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+.block-inline-blockbutton-row .field--name-field-icon-buttons .opacity-5 {
+  background: rgba(255, 255, 255, 0.25);
+}
+.block-inline-blockbutton-row .field--name-field-icon-buttons .opacity-5:hover {
+  background: rgba(255, 255, 255, 0.35);
+}
+.block-inline-blockbutton-row.bg-yellow .field--name-field-icon-buttons,
+.block-inline-blockbutton-row.bg-grey .field--name-field-icon-buttons {
+  color: rgba(0, 0, 0, 0.7);
+}
+.block-inline-blockbutton-row.bg-yellow .field--name-field-icon-buttons:hover,
+.block-inline-blockbutton-row.bg-grey .field--name-field-icon-buttons:hover {
+  color: #000;
+}
+.block-inline-blockbutton-row.bg-yellow .field--name-field-icon-buttons a,
+.block-inline-blockbutton-row.bg-grey .field--name-field-icon-buttons a {
+  color: rgba(0, 0, 0, 0.7);
+}
+.block-inline-blockbutton-row.bg-yellow .field--name-field-icon-buttons a:hover,
+.block-inline-blockbutton-row.bg-grey .field--name-field-icon-buttons a:hover {
+  color: #000;
+}
+.block-inline-blockbutton-row.bg-yellow .field--name-field-icon-buttons .opacity-1,
+.block-inline-blockbutton-row.bg-grey .field--name-field-icon-buttons .opacity-1 {
+  background: rgba(0, 0, 0, 0);
+}
+.block-inline-blockbutton-row.bg-yellow .field--name-field-icon-buttons .opacity-1:hover,
+.block-inline-blockbutton-row.bg-grey .field--name-field-icon-buttons .opacity-1:hover {
+  background: rgba(0, 0, 0, 0.1);
+}
+.block-inline-blockbutton-row.bg-yellow .field--name-field-icon-buttons .opacity-2,
+.block-inline-blockbutton-row.bg-grey .field--name-field-icon-buttons .opacity-2 {
+  background: rgba(0, 0, 0, 0.1);
+}
+.block-inline-blockbutton-row.bg-yellow .field--name-field-icon-buttons .opacity-2:hover,
+.block-inline-blockbutton-row.bg-grey .field--name-field-icon-buttons .opacity-2:hover {
+  background: rgba(0, 0, 0, 0.2);
+}
+.block-inline-blockbutton-row.bg-yellow .field--name-field-icon-buttons .opacity-3,
+.block-inline-blockbutton-row.bg-grey .field--name-field-icon-buttons .opacity-3 {
+  background: rgba(0, 0, 0, 0.15);
+}
+.block-inline-blockbutton-row.bg-yellow .field--name-field-icon-buttons .opacity-3:hover,
+.block-inline-blockbutton-row.bg-grey .field--name-field-icon-buttons .opacity-3:hover {
+  background: rgba(0, 0, 0, 0.25);
+}
+.block-inline-blockbutton-row.bg-yellow .field--name-field-icon-buttons .opacity-4,
+.block-inline-blockbutton-row.bg-grey .field--name-field-icon-buttons .opacity-4 {
+  background: rgba(0, 0, 0, 0.2);
+}
+.block-inline-blockbutton-row.bg-yellow .field--name-field-icon-buttons .opacity-4:hover,
+.block-inline-blockbutton-row.bg-grey .field--name-field-icon-buttons .opacity-4:hover {
+  background: rgba(0, 0, 0, 0.3);
+}
+.block-inline-blockbutton-row.bg-yellow .field--name-field-icon-buttons .opacity-5,
+.block-inline-blockbutton-row.bg-grey .field--name-field-icon-buttons .opacity-5 {
+  background: rgba(0, 0, 0, 0.25);
+}
+.block-inline-blockbutton-row.bg-yellow .field--name-field-icon-buttons .opacity-5:hover,
+.block-inline-blockbutton-row.bg-grey .field--name-field-icon-buttons .opacity-5:hover {
+  background: rgba(0, 0, 0, 0.35);
 }
 .view-id-upcoming_events_and_dates_2023 .views-row,
 .view-id-popular_posts_2023 .views-row {
