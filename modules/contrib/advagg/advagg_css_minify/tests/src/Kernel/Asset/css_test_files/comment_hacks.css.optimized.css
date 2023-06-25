@@ -1,4 +1,4 @@
-.test1{display:block}/*\*/html .clear-block{height:1%}.clear-block{display:block;font:italic bold 12px/30px Georgia,serif}/**/.test2{display:block}.bkslshv1{background-color:#c00}.test3{display:block}.test4{display:block}.comment-in-double-quotes:before{content:"/* ";
+.test1{display:block}html .clear-block{height:1%}.clear-block{display:block;font:italic bold 12px/30px Georgia,serif}.test2{display:block}.bkslshv1{background-color:#c00}.test3{display:block}.test4{display:block}.comment-in-double-quotes:before{content:"/* ";
 }
 .this_rule_must_stay {
   color: #f00;

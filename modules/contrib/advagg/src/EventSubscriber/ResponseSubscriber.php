@@ -4,8 +4,8 @@ namespace Drupal\advagg\EventSubscriber;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Render\HtmlResponse;
+use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -45,10 +45,10 @@ class ResponseSubscriber implements EventSubscriberInterface {
   /**
    * Passes HtmlResponse responses on to other functions if enabled.
    *
-   * @param \Symfony\Component\HttpKernel\Event\FilterResponseEvent $event
+   * @param \Symfony\Component\HttpKernel\Event\ResponseEvent $event
    *   The event to process.
    */
-  public function processResponse(FilterResponseEvent $event) {
+  public function processResponse(ResponseEvent $event) {
     // Only subscribe to the event if DNS prefetching is enabled.
     if ($this->config->get('dns_prefetch')) {
       $response = $event->getResponse();
@@ -74,15 +74,15 @@ class ResponseSubscriber implements EventSubscriberInterface {
   /**
    * Force absolute paths.
    *
-   * @param \Symfony\Component\HttpKernel\Event\FilterResponseEvent $response
+   * @param \Symfony\Component\HttpKernel\Event\ResponseEvent $event
    *   The response event object.
    */
-  public function forceAbsolutePaths(FilterResponseEvent $response) {
+  public function forceAbsolutePaths(ResponseEvent $event) {
     // Skip if not enabled.
     if (!$this->config->get('path.convert.absolute')) {
       return;
     }
-    $response = $response->getResponse();
+    $response = $event->getResponse();
 
     // Only process Html Responses.
     if (!$response instanceof HtmlResponse) {

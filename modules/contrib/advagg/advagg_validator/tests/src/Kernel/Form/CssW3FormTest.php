@@ -25,7 +25,7 @@ class CssW3FormTest extends KernelTestBase {
    *
    * @var array
    */
-  public static $modules = [];
+  protected static $modules = [];
 
   /**
    * {@inheritdoc}

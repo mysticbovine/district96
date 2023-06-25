@@ -18,7 +18,7 @@ class CssMinifyPagesTest extends AdminPagesTest {
    *
    * @var array
    */
-  public static $modules = ['advagg_css_minify'];
+  protected static $modules = ['advagg_css_minify'];
 
   /**
    * Routes to test.

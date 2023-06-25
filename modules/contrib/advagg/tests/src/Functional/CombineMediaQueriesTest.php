@@ -18,7 +18,7 @@ class CombineMediaQueriesTest extends AdvaggFunctionalTestBase {
    *
    * @var array
    */
-  public static $modules = ['advagg', 'advagg_test'];
+  protected static $modules = ['advagg', 'advagg_test'];
 
   /**
    * Tests path converting functions, and that saving a change to them works.
@@ -34,7 +34,7 @@ class CombineMediaQueriesTest extends AdvaggFunctionalTestBase {
     // Test combine media.
     $edit = [];
     $edit['css_combine_media'] = TRUE;
-    $this->drupalPostForm(NULL, $edit, 'op');
+    $this->submitForm($edit, 'op');
 
     $config = $this->config('advagg.settings');
     $this->assertTrue($config->get('css.combine_media'));

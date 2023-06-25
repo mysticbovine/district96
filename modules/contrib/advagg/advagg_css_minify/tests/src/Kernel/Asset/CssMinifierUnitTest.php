@@ -17,7 +17,7 @@ class CssMinifierUnitTest extends KernelTestBase {
    *
    * @var array
    */
-  public static $modules = ['advagg_css_minify'];
+  protected static $modules = ['advagg_css_minify'];
 
   /**
    * The Minifier.

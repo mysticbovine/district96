@@ -18,7 +18,7 @@ class AdvaggPathManipulationTest extends AdvaggFunctionalTestBase {
    *
    * @var array
    */
-  public static $modules = ['advagg', 'advagg_test'];
+  protected static $modules = ['advagg', 'advagg_test'];
 
   /**
    * Tests path converting functions, and that saving a change to them works.
@@ -36,7 +36,7 @@ class AdvaggPathManipulationTest extends AdvaggFunctionalTestBase {
     $edit['path_convert_absolute_to_protocol_relative'] = FALSE;
     $edit['path_convert_force_https'] = TRUE;
     $edit['path_convert_absolute'] = FALSE;
-    $this->drupalPostForm(NULL, $edit, 'op');
+    $this->submitForm($edit, 'op');
 
     $config = $this->config('advagg.settings');
     $this->assertTrue($config->get('path.convert.force_https'));
@@ -49,7 +49,7 @@ class AdvaggPathManipulationTest extends AdvaggFunctionalTestBase {
     $edit['path_convert_absolute_to_protocol_relative'] = FALSE;
     $edit['path_convert_force_https'] = FALSE;
     $edit['path_convert_absolute'] = TRUE;
-    $this->drupalPostForm(NULL, $edit, 'op');
+    $this->submitForm($edit, 'op');
 
     global $base_root;
     $config = $this->config('advagg.settings');

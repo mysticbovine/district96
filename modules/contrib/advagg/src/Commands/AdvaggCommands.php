@@ -5,7 +5,7 @@ namespace Drupal\advagg\Commands;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
-use Drupal\Core\File\FileSystem;
+use Drupal\Core\File\FileSystemInterface;
 use Drush\Commands\DrushCommands;
 
 /**
@@ -30,7 +30,7 @@ class AdvaggCommands extends DrushCommands {
   /**
    * Provides helpers to operate on files and stream wrappers.
    *
-   * @var \Drupal\Core\File\FileSystem
+   * @var \Drupal\Core\File\FileSystemInterface
    */
   protected $fileSystem;
 
@@ -41,10 +41,10 @@ class AdvaggCommands extends DrushCommands {
    *   The AdvAgg cache.
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   A config factory for retrieving required config objects.
-   * @param \Drupal\Core\File\FileSystem $file_system
+   * @param \Drupal\Core\File\FileSystemInterface $file_system
    *   Provides helpers to operate on files and stream wrappers.
    */
-  public function __construct(CacheBackendInterface $cache, ConfigFactoryInterface $config_factory, FileSystem $file_system) {
+  public function __construct(CacheBackendInterface $cache, ConfigFactoryInterface $config_factory, FileSystemInterface $file_system) {
     $this->cache = $cache;
     $this->advaggConfig = $config_factory->getEditable('advagg.settings');
     $this->fileSystem = $file_system;

@@ -18,7 +18,7 @@ class ModifierPagesTest extends AdminPagesTest {
    *
    * @var array
    */
-  public static $modules = ['advagg_mod'];
+  protected static $modules = ['advagg_mod'];
 
   /**
    * Routes to test.

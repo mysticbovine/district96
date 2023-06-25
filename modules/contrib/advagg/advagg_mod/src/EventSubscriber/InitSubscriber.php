@@ -11,7 +11,7 @@ use Drupal\advagg_mod\Asset\TranslateCss;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Render\HtmlResponse;
-use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
+use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -192,15 +192,15 @@ class InitSubscriber implements EventSubscriberInterface {
   /**
    * Apply CSS defer actions.
    *
-   * @param \Symfony\Component\HttpKernel\Event\FilterResponseEvent $response
+   * @param \Symfony\Component\HttpKernel\Event\ResponseEvent $event
    *   The response event object.
    */
-  public function deferCss(FilterResponseEvent $response) {
+  public function deferCss(ResponseEvent $event) {
     // Skip if not enabled.
     if (!advagg_mod_css_defer_active()) {
       return;
     }
-    $response = $response->getResponse();
+    $response = $event->getResponse();
 
     // Only process Html Responses.
     if (!$response instanceof HtmlResponse) {
@@ -214,16 +214,16 @@ class InitSubscriber implements EventSubscriberInterface {
   /**
    * Apply defer JS changes.
    *
-   * @param \Symfony\Component\HttpKernel\Event\FilterResponseEvent $response
+   * @param \Symfony\Component\HttpKernel\Event\ResponseEvent $event
    *   The response event object.
    */
-  public function deferJs(FilterResponseEvent $response) {
+  public function deferJs(ResponseEvent $event) {
     // Skip if not enabled.
     if (!$this->config->get('js_defer')) {
       return;
     }
 
-    $response = $response->getResponse();
+    $response = $event->getResponse();
 
     // Only process Html Responses.
     if (!$response instanceof HtmlResponse) {
@@ -237,15 +237,15 @@ class InitSubscriber implements EventSubscriberInterface {
   /**
    * Apply CSS defer actions.
    *
-   * @param \Symfony\Component\HttpKernel\Event\FilterResponseEvent $response
+   * @param \Symfony\Component\HttpKernel\Event\ResponseEvent $event
    *   The response event object.
    */
-  public function asyncJs(FilterResponseEvent $response) {
+  public function asyncJs(ResponseEvent $event) {
     // Skip if not enabled.
     if (!$this->config->get('js_async') || $this->config->get('js_defer')) {
       return;
     }
-    $response = $response->getResponse();
+    $response = $event->getResponse();
 
     // Only process Html Responses.
     if (!$response instanceof HtmlResponse) {

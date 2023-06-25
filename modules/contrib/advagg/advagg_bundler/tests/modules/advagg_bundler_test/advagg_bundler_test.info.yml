@@ -3,7 +3,7 @@ description: 'Provides assets for automated testing.'
 package: Testing
 type: module
 
-# Information added by Drupal.org packaging script on 2020-06-05
-version: '8.x-4.1'
+# Information added by Drupal.org packaging script on 2022-07-18
+version: '5.0.0'
 project: 'advagg'
-datestamp: 1591377167
+datestamp: 1658178952

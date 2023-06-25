@@ -61,12 +61,14 @@ function advagg_cron($bypass = FALSE) {
   $outdated = ['css' => [], 'js' => []];
   $file_system = \Drupal::service('file_system');
   $cache = \Drupal::cache('advagg');
+  $stale_file_threshold = \Drupal::config('system.performance')->get('stale_file_threshold');
+  
   foreach (['css', 'js'] as $type) {
     $path = $file_system->realpath("public://{$type}/optimized");
     if ($files = glob("{$path}/*.{$type}")) {
       foreach ($files as $file) {
-        // Only delete files older than 1 week.
-        if (filemtime($file) > ($time - 604800)) {
+        // Only delete files older than stale file threshold defined under Cron Options.
+        if (filemtime($file) > ($time - $stale_file_threshold)) {
           continue;
         }
         $filename = str_replace(['css_', 'js_'], '', pathinfo($file, PATHINFO_FILENAME));

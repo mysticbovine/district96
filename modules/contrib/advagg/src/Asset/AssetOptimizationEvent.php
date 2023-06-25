@@ -2,7 +2,7 @@
 
 namespace Drupal\advagg\Asset;
 
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * @defgroup advagg_optimization_event Asset Optimization Event

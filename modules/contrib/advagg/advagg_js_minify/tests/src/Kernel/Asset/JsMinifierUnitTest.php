@@ -17,7 +17,7 @@ class JsMinifierUnitTest extends KernelTestBase {
    *
    * @var array
    */
-  public static $modules = ['advagg_js_minify'];
+  protected static $modules = ['advagg_js_minify'];
 
   /**
    * The Minifier.

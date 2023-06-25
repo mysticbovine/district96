@@ -6,6 +6,7 @@ use Drupal\Component\Utility\Unicode;
 use Drupal\advagg\Asset\SingleAssetOptimizerBase;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Psr\Log\LoggerInterface;
+use tubalmartin\CssMin\Minifier as CSSmin;
 
 /**
  * Optimizes a JavaScript asset.
@@ -106,10 +107,7 @@ class CssMinifier extends SingleAssetOptimizerBase {
    *   Minified contents of the stylesheet including the imported stylesheets.
    */
   protected function minifyCssMin($contents) {
-    if (!class_exists('CSSmin')) {
-      include drupal_get_path('module', 'advagg_css_minify') . '/yui/CSSMin.inc';
-    }
-    $cssmin = new \CSSmin(TRUE);
+    $cssmin = new CSSmin(TRUE);
 
     // Minify the CSS splitting lines after 4k of text.
     $contents = $cssmin->run($contents, 4096);

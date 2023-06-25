@@ -26,7 +26,7 @@ abstract class AdvaggFunctionalTestBase extends BrowserTestBase {
    *
    * @var array
    */
-  public static $modules = ['advagg'];
+  protected static $modules = ['advagg'];
 
   /**
    * A user with permission to administer site configuration.

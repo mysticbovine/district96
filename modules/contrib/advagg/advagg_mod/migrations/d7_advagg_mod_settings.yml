@@ -2,6 +2,7 @@ id: d7_advagg_mod_settings
 label: 'AdvAgg Modifier configuration'
 migration_tags:
   - Drupal 7
+  - Configuration
 source:
   plugin: variable
   variables:
@@ -18,6 +19,7 @@ source:
     - advagg_mod_js_defer
     - advagg_mod_js_footer
     - advagg_mod_js_preprocess
+  source_module: advagg_mod
 process:
   css_adjust_sort_browsers: advagg_mod_css_adjust_sort_browsers
   css_adjust_sort_external: advagg_mod_css_adjust_sort_external

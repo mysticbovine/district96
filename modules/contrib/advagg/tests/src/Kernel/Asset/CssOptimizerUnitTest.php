@@ -16,7 +16,7 @@ class CssOptimizerUnitTest extends KernelTestBase {
    *
    * @var array
    */
-  public static $modules = ['advagg'];
+  protected static $modules = ['advagg'];
 
   /**
    * The Optimizer.

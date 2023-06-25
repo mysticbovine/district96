@@ -18,7 +18,7 @@ class ValidatorPagesTest extends AdminPagesTest {
    *
    * @var array
    */
-  public static $modules = ['advagg_validator'];
+  protected static $modules = ['advagg_validator'];
 
   /**
    * Routes to test.

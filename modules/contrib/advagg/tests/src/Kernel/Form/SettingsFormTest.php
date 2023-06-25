@@ -18,7 +18,7 @@ class SettingsFormTest extends KernelTestBase {
    *
    * @var array
    */
-  public static $modules = [
+  protected static $modules = [
     'advagg',
   ];
 
@@ -44,7 +44,7 @@ class SettingsFormTest extends KernelTestBase {
    */
   public function testCacheLevelOption() {
     $options = $this->settingsForm->getCacheLevelOptions();
-    $this->assertTrue(is_array($options));
+    $this->assertIsArray($options);
     $this->assertTrue(in_array('Development', $options));
     $this->assertTrue(in_array('High', $options));
   }
@@ -54,7 +54,7 @@ class SettingsFormTest extends KernelTestBase {
    */
   public function testShortTimes() {
     $shortTime = $this->settingsForm->getShortTimes();
-    $this->assertTrue(is_array($shortTime));
+    $this->assertIsArray($shortTime);
     $this->assertTrue(in_array('15 minutes', $shortTime));
     $this->assertTrue(in_array('2 days', $shortTime));
   }
@@ -64,7 +64,7 @@ class SettingsFormTest extends KernelTestBase {
    */
   public function testLongTimes() {
     $longTimes = $this->settingsForm->getLongTimes();
-    $this->assertTrue(is_array($longTimes));
+    $this->assertIsArray($longTimes);
     $this->assertTrue(in_array('2 days', $longTimes));
     $this->assertTrue(in_array('2 months', $longTimes));
   }

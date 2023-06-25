@@ -19,7 +19,7 @@ class CdnTest extends AdvaggFunctionalTestBase {
    *
    * @var array
    */
-  public static $modules = ['advagg_cdn', 'advagg_test'];
+  protected static $modules = ['advagg_cdn', 'advagg_test'];
 
   /**
    * Test the cdn functionality and settings configuration.
@@ -38,7 +38,7 @@ class CdnTest extends AdvaggFunctionalTestBase {
       'minified' => FALSE,
     ];
 
-    $this->drupalPostForm(NULL, $edit, $this->t('Save configuration'));
+    $this->submitForm($edit, $this->t('Save configuration'));
     $session = $this->assertSession();
     $session->responseNotContains('jquery.min.js');
     $this->assertTrue($this->config('advagg_cdn.settings')->get('jquery_ui_css'));

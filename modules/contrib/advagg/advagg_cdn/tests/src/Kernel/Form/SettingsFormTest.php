@@ -25,7 +25,7 @@ class SettingsFormTest extends KernelTestBase {
    *
    * @var array
    */
-  public static $modules = [
+  protected static $modules = [
     'system',
     'advagg',
     'advagg_cdn',

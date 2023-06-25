@@ -18,7 +18,7 @@ class ExtMinifyPagesTest extends AdminPagesTest {
    *
    * @var array
    */
-  public static $modules = ['advagg_ext_minify'];
+  protected static $modules = ['advagg_ext_minify'];
 
   /**
    * Routes to test.
