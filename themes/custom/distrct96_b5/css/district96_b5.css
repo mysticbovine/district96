@@ -1498,6 +1498,7 @@ footer.node__meta {
 .view-id-upcoming_events_and_dates_2023 .views-row,
 .view-id-popular_posts_2023 .views-row {
   margin-top: 0.5em;
+  margin-bottom: 0.75em;
 }
 .view-id-upcoming_events_and_dates_2023 label,
 .view-id-popular_posts_2023 label {
