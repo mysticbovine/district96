@@ -117,7 +117,7 @@
         {% endset %}
       {% endif %}
 
-        {% trans %}<div class="author"><i class="bi bi-person-fill"></i> {{ author }}{{education}}</div><div class="date"><i class="bi bi-calendar3"></i> {{ date }}</div>{% endtrans %}
+        {% trans %}<div class="author"><i class="bi bi-person-fill"></i><span class="visually-hidden">By: </span> {{ author }}{{education}}</div><div class="date"><i class="bi bi-calendar3"></i><span class="visually-hidden">Published on:</span> {{ date }}</div>{% endtrans %}
     <div class="readtime"><i class="bi bi-stopwatch"></i> {{ content.reading_time }} read </div>
     <div class="shareto d-inline-flex"><span>Share to</span> {{ drupal_block("social_sharing_buttons_block") }}
     </div>
