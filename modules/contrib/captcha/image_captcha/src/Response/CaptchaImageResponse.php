@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class CaptchaImageResponse extends Response {
 
-  const LOG_LEVEL = 'ERROR';
+  const LOG_LEVEL = 'error';
 
   /**
    * Database connection configuration container.

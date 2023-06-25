@@ -18,3 +18,6 @@ image-captcha-refresh:
   css:
     theme:
       image_captcha_refresh.css: {}
+  dependencies:
+    - core/jquery
+    - core/drupal
