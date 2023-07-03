@@ -626,6 +626,9 @@ button.navbar-toggler {
   text-decoration: none;
   line-height: 18px;
 }
+.path-leaders .area-division .views-field-nothing:first-child {
+  width: 100%;
+}
 .path-leaders,
 .path-speaker-bureau,
 .path-district-director-team,
@@ -772,14 +775,6 @@ button.navbar-toggler {
   -webkit-align-items: flex-start;
   -ms-flex-align: start;
   align-items: flex-start;
-}
-.path-leaders .views-field-nothing:first-child,
-.path-speaker-bureau .views-field-nothing:first-child,
-.path-district-director-team .views-field-nothing:first-child,
-.path-in-memoriamold .views-field-nothing:first-child,
-.path-in-memoriam .views-field-nothing:first-child,
-.block-views-blockhall-of-fame-member-block-1 .views-field-nothing:first-child {
-  width: 100%;
 }
 .path-leaders .role-92,
 .path-speaker-bureau .role-92,
