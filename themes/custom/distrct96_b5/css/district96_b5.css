@@ -34,8 +34,8 @@
   color: #333 !important;
 }
 .bg-primary .btn-default:hover {
-  background-color: #e9ca17;
-  border-color: #e9ca17;
+  background-color: #f0da5d;
+  border-color: #f0da5d;
   color: #fff;
 }
 .bg-primary .btn-default a {
@@ -76,8 +76,8 @@
   color: #333 !important;
 }
 .bg-secondary .btn-default:hover {
-  background-color: #e9ca17;
-  border-color: #e9ca17;
+  background-color: #f0da5d;
+  border-color: #f0da5d;
   color: #fff;
 }
 .bg-secondary .btn-default a {
@@ -118,8 +118,8 @@
   color: #fff !important;
 }
 .bg-light .btn-default:hover {
-  background-color: #290c11;
-  border-color: #290c11;
+  background-color: #631e2a;
+  border-color: #631e2a;
   color: #fff;
 }
 .bg-light .btn-default a {
@@ -170,8 +170,8 @@
   color: #333 !important;
 }
 .bg-blue .btn-default:hover {
-  background-color: #e9ca17;
-  border-color: #e9ca17;
+  background-color: #f0da5d;
+  border-color: #f0da5d;
   color: #fff;
 }
 .bg-blue .btn-default a {
@@ -212,8 +212,8 @@
   color: #333 !important;
 }
 .bg-burgundy .btn-default:hover {
-  background-color: #e9ca17;
-  border-color: #e9ca17;
+  background-color: #f0da5d;
+  border-color: #f0da5d;
   color: #fff;
 }
 .bg-burgundy .btn-default a {
@@ -254,8 +254,8 @@
   color: #fff !important;
 }
 .bg-grey .btn-default:hover {
-  background-color: #290c11;
-  border-color: #290c11;
+  background-color: #631e2a;
+  border-color: #631e2a;
   color: #fff;
 }
 .bg-grey .btn-default a {
@@ -296,8 +296,8 @@
   color: #333 !important;
 }
 .bg-red .btn-default:hover {
-  background-color: #e9ca17;
-  border-color: #e9ca17;
+  background-color: #f0da5d;
+  border-color: #f0da5d;
   color: #fff;
 }
 .bg-red .btn-default a {
@@ -338,8 +338,8 @@
   color: #fff !important;
 }
 .bg-yellow .btn-default:hover {
-  background-color: #000000;
-  border-color: #000000;
+  background-color: #00314b;
+  border-color: #00314b;
   color: #fff;
 }
 .bg-yellow .btn-default a {
@@ -356,8 +356,8 @@
   color: #fff !important;
 }
 .btn-primary:hover {
-  background-color: #000000;
-  border-color: #000000;
+  background-color: #00314b;
+  border-color: #00314b;
   color: #fff;
 }
 .btn-primary a {
@@ -374,8 +374,8 @@
   color: #fff !important;
 }
 .btn-secorndary:hover {
-  background-color: #290c11;
-  border-color: #290c11;
+  background-color: #631e2a;
+  border-color: #631e2a;
   color: #fff;
 }
 .btn-secorndary a {
@@ -392,8 +392,8 @@
   color: #fff !important;
 }
 .btn-blue:hover {
-  background-color: #000000;
-  border-color: #000000;
+  background-color: #00314b;
+  border-color: #00314b;
   color: #fff;
 }
 .btn-blue a {
@@ -410,8 +410,8 @@
   color: #fff !important;
 }
 .btn-burgundy:hover {
-  background-color: #290c11;
-  border-color: #290c11;
+  background-color: #631e2a;
+  border-color: #631e2a;
   color: #fff;
 }
 .btn-burgundy a {
@@ -428,8 +428,8 @@
   color: #fff !important;
 }
 .btn-grey:hover {
-  background-color: #748180;
-  border-color: #748180;
+  background-color: #9ca6a5;
+  border-color: #9ca6a5;
   color: #fff;
 }
 .btn-grey a {
@@ -446,8 +446,8 @@
   color: #fff !important;
 }
 .btn-red:hover {
-  background-color: #751219;
-  border-color: #751219;
+  background-color: #b71d27;
+  border-color: #b71d27;
   color: #fff;
 }
 .btn-red a {
@@ -464,8 +464,8 @@
   color: #333 !important;
 }
 .btn-yellow:hover {
-  background-color: #e9ca17;
-  border-color: #e9ca17;
+  background-color: #f0da5d;
+  border-color: #f0da5d;
   color: #fff;
 }
 .btn-yellow a {
@@ -1284,6 +1284,13 @@ footer.node__meta {
 }
 .view-recent-news-and-posts.view-display-id-block_1 .byline {
   font-size: 0.9em;
+  padding-bottom: 0.5rem;
+}
+.view-recent-news-and-posts.view-display-id-block_1 .byline span {
+  padding-right: 16px;
+}
+.view-recent-news-and-posts.view-display-id-block_1 .byline i.bi-person-fill {
+  font-size: 1em;
 }
 .view-recent-news-and-posts.view-display-id-block_1 h3 {
   font-size: 1.25em;
@@ -1521,18 +1528,31 @@ footer.node__meta {
   color: #333;
   font-weight: bold;
   text-decoration: none;
+  padding-bottom: 20px;
 }
 .view-id-upcoming_events_and_dates_2023 .views-field-title a:hover,
 .view-id-popular_posts_2023 .views-field-title a:hover {
   color: #000000;
   text-decoration: underline;
 }
+.view-id-upcoming_events_and_dates_2023 .views-field-field-date-event-value,
+.view-id-popular_posts_2023 .views-field-field-date-event-value {
+  font-weight: bold;
+}
 .view-id-upcoming_events_and_dates_2023 .views-field-field-date-4,
 .view-id-popular_posts_2023 .views-field-field-date-4,
 .view-id-upcoming_events_and_dates_2023 .views-field-nothing,
-.view-id-popular_posts_2023 .views-field-nothing {
-  font-size: 12px;
+.view-id-popular_posts_2023 .views-field-nothing,
+.view-id-upcoming_events_and_dates_2023 .views-field-field-meeting-type,
+.view-id-popular_posts_2023 .views-field-field-meeting-type,
+.view-id-upcoming_events_and_dates_2023 .views-field-type,
+.view-id-popular_posts_2023 .views-field-type {
+  font-size: 14px;
   color: rgba(51, 51, 51, 0.8);
+}
+.view-id-upcoming_events_and_dates_2023 .byline span,
+.view-id-popular_posts_2023 .byline span {
+  padding-right: 4px;
 }
 body {
   font-family: 'Montserrat', sans-serif;
@@ -1566,6 +1586,15 @@ a:hover {
 @media (min-width: 992px) {
   .large-screen-menu {
     display: flex !important;
+  }
+  .large-screen-menu li.nav-item {
+    margin: 0 16px;
+  }
+  .large-screen-menu li.nav-item:first-child {
+    margin-left: 0;
+  }
+  .large-screen-menu li.nav-item:last-child {
+    margin-right: 0;
   }
   .mobile-screen-menu {
     display: none !important;
@@ -1637,13 +1666,15 @@ a:hover {
 .cat-904 {
   background-color: #F2DF74;
 }
-.view-recent-news-and-posts.view-display-id-block_1 .description .body {
+.view-recent-news-and-posts.view-display-id-block_1 .description .body,
+.view-recent-news-and-posts.view-display-id-block_1 .description .byline {
   display: none;
 }
 .view-recent-news-and-posts.view-display-id-block_1 .first .description {
   padding-left: 15px;
 }
-.view-recent-news-and-posts.view-display-id-block_1 .first .description .body {
+.view-recent-news-and-posts.view-display-id-block_1 .first .description .body,
+.view-recent-news-and-posts.view-display-id-block_1 .first .description .byline {
   display: block;
 }
 .view-recent-news-and-posts.view-display-id-block_1 legend {

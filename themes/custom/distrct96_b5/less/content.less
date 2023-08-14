@@ -146,7 +146,14 @@ footer {
             border: 0;
         }
         .byline{
-            font-size: .9em
+            font-size: .9em;
+            padding-bottom: .5rem;
+            span {
+                padding-right: 16px;
+            }
+            i.bi-person-fill{
+                font-size: 1em;
+            }
         }  
         h3 {
             font-size: 1.25em;
@@ -366,14 +373,23 @@ footer {
             color: @text;
             font-weight: bold;
             text-decoration: none;
+            padding-bottom: 20px;
             &:hover{
                 color: darken(@text, 20%);
                 text-decoration: underline;
             }
         }
     }
-    .views-field-field-date-4,.views-field-nothing{
-       font-size: 12px;
+    .views-field-field-date-event-value {
+        font-weight: bold;
+    }
+    .views-field-field-date-4,.views-field-nothing,.views-field-field-meeting-type, .views-field-type{
+       font-size: 14px;
        color: fade(@text, 80%);
+    }
+    .byline {
+        span {
+            padding-right: 4px;
+        }
     }
 }

@@ -28,6 +28,15 @@ a {
 @media (min-width: 992px) { 
     .large-screen-menu{
         display: flex !important;
+        li.nav-item{
+            margin: 0 16px;
+            &:first-child{
+                margin-left: 0
+            }
+            &:last-child{
+                margin-right: 0;
+            }
+        }
     }
     .mobile-screen-menu{
         display: none !important;
@@ -161,14 +170,14 @@ a {
     &.view-display-id-block_1{
       
         .description {
-            .body{
+            .body, .byline{
                 display: none;
             }
         }
         .first{
             .description {
                 padding-left: 15px;
-                .body{
+                .body, .byline{
                     display: block;
                 }
             }
